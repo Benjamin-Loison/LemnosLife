@@ -1,5 +1,3 @@
-INFO:
-
 Global size: 250 Mo
 7 000 000 ligns
 2 000 000 elements (objects)
