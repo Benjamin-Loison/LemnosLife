@@ -1,0 +1,6 @@
+INFO:
+
+Global size: 250 Mo
+7 000 000 ligns
+2 000 000 elements (objects)
+4 minutes and 7 seconds for executing the SQF script.
