@@ -12,6 +12,7 @@ diag_log "";
 _range = 50000;
 _pos = getPos player;
 
+("Map: " + worldName) call print;
 ("Loading nearestTerrainObjects with radius (m): " +  str _range + " at position (from bottom left on the map): " + str _pos) call print; 
 _objs = nearestTerrainObjects[_pos, [], _range]; 
 "Loading finished !" call print; 
