@@ -20,7 +20,7 @@ _objs = nearestTerrainObjects[_pos, [], _range];
  
  
 infoObj ={ 
- ("Model: " + str (getModelInfo _this select 0)) call print; 
+ ("Model: " + str (getModelInfo _this select 1)) call print; 
  _pos = getPos _this; 
  ("Pos: " + str (_pos select 0) + " " + str (_pos select 1) + " " + str (_pos select 2)) call print; 
  ("Dir: " + str getDir _this) call print; 
