@@ -1,0 +1,8 @@
+[9:4:4] Time's launched !
+[9:4:4] Do not work on: .classpath
+[9:4:4] Do not work on: .project
+[9:4:4] Do not work on: .settings
+[9:4:4] Do not work on: bin
+[9:4:4] Do not work on: logs.txt
+[9:4:4] Do not work on: src
+[9:4:4] Work finished in 27 ms !

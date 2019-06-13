@@ -1,0 +1,11 @@
+[0:22:50] Time's launched !
+[0:22:50] Do not work on: .classpath
+[0:22:50] Do not work on: .project
+[0:22:50] Do not work on: .settings
+[0:22:50] Do not work on: bin
+[0:22:50] Working on: logs.txt
+[0:22:50] Do not work on: src
+[0:22:50] angleBiggest: -1.0
+[0:22:50] roadId: -1
+[0:22:50] segmentId: -1
+[0:22:50] Work finished in 38 ms !
