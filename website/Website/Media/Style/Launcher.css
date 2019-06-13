@@ -1,0 +1,60 @@
+#box_gen{
+	width : 100%;
+	height : 70em;
+	position : absolute;
+	top : 0;
+	left : 0;
+}
+#launcher{
+	position : absolute;
+	top : 24em;
+	left : calc((100% - 627px) / 2);
+	width : 627px;
+}
+#button1{
+	position : absolute;
+	top : 54em;
+	left : 7.5%;
+}
+#button2{
+	position : absolute;
+	top : 57em;
+	left : 7.5%;
+}
+#button3{
+        position : absolute;
+        top : 60em;
+        left : 7.5%;
+}
+#button4{
+        position : absolute;
+        top : 63em;
+        left : 7.5%;
+}
+#text{
+	position : absolute;
+	width : 40%;
+	top : 23.5em;
+	left : 30%;
+	font-size : 2em;
+	font-family : Arila, sans-serif;
+	text-align : center;
+}
+#list{
+	position : absolute;
+	top : 66em;
+	left : 7.5%;
+	width : 85%;
+	height : 12.5em;
+	border : 1px solid #ccc;
+	font-family : Menlo,Monaco,Consolas,"Courier New",monospace;
+	border-radius : .3em;
+}
+#menu
+{
+	position : absolute;
+	top : 0;
+	left : calc((100% - 52.5em) / 2) ;
+        font-family: 'Raleway', sans-serif;
+	z-index : 2;
+}

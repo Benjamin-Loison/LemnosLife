@@ -1,0 +1,86 @@
+#box_gen{
+	width : 100%;
+	height : 60em;
+	position : absolute;
+	top : 0;
+	left : 0;
+}
+
+
+#text{
+	position : absolute;
+	width : 85%;
+	height : 5em;
+	left : 7.5%;
+	top : 32em;
+	font-size : 1.5em;
+	font-family : "Helvetica Neue",Helvetica,Arial,sans-serif;
+	text-align : center;
+
+}
+
+#legal_notices{
+    position : absolute;
+    width : 85%;
+    height : 5em;
+    left : 7.5%;
+    top : 42em;
+    font-size : 1.5em;
+    font-family : "Helvetica Neue",Helvetica,Arial,sans-serif;
+    text-align : center;
+
+}
+
+#text_cookies{
+    position : absolute;
+    width : 85%;
+    height : 5em;
+    left : 7.5%;
+    top : 10em;
+	font-size : 1.5em;
+    font-family : "Helvetica Neue",Helvetica,Arial,sans-serif;
+    text-align : center;
+
+}
+
+#button1{
+	position : absolute;
+	top : 7em;
+	left : 7.5%;
+}
+
+#menu
+{
+	position : absolute;
+	top : 0;
+	left : calc((100% - 52.5em) / 2) ;
+        font-family: 'Raleway', sans-serif;
+	z-index : 2;
+
+}
+
+.img{
+	width : 850px;
+	height : 425px;
+}
+
+#slider{
+	display : block;
+	position : absolute;
+	top : 20em;
+	left : calc((100% - 850px) / 2);
+	height : 425px;
+	width : 850px;
+}
+
+#ac-wrapper {
+	position: relative;
+	top: 105%;
+	width: 100%;
+    z-index: 1001;
+}
+#popup {
+    background: none repeat scroll 0 0 #FFFFFF;
+    height: 100px;
+    width: 100%;
+}

@@ -1,0 +1,132 @@
+@font-face{
+	font-family : 'LemnosLife';
+	src : url("LemnosLife.ttf");
+}
+
+#menu, #menu ul   
+{
+        padding : 0;
+        margin : 0;
+        list-style : none;
+}
+
+#menu a{
+	text-decoration : none;
+	letter-spacing : -0.025em;
+}
+
+.a1
+{
+        display : block;
+        padding : 0;
+        background : transparent;        
+        color : #2F2B2B;
+	text-align : center;
+        width : 15.5em;
+	transition : .5s background .05s, .5s color .05s;
+        line-height : 5.25em;
+        font-size : 1em;
+}
+
+.a2{
+        display : block;
+        padding : 0;
+        background : rgb(0, 153, 255);        
+        color : white;
+	text-indent : 1em;
+        width : 18em;
+	border : none;
+	transition : background .4s;
+	line-height : 4.25em;
+        font-size : .9em;
+}
+
+.reception{
+	display : block;
+        padding : 0;
+	text-align : center;
+        width : 10.5em;
+	background : rgb(0, 153, 255);
+	color : white;
+        line-height : 5.25em;
+        font-size : 1em;
+}
+
+#menu li ul
+{ 
+        position: absolute;
+        width: 50em;
+        max-height : 0em;
+	overflow : hidden;
+	transition : .5s max-height .1s;
+}
+#triangle{
+	position : absolute;
+	top : 5.25em;
+	left : 0;
+	width : 0;
+	height : 0;
+	border-left : 5.25em solid transparent;
+	border-right : 5.25em solid transparent;
+	border-top : 1.7em solid rgb(0, 153, 255);
+	
+}
+
+#menu li
+{
+	float : left;
+}
+
+#menu li ul li
+{
+        border-bottom : .1em solid transparent;
+}
+
+#menu li:hover a{
+	background-color : rgb(0, 153, 255);
+	color : white;
+}
+
+#menu li:hover ul, #menu li li:hover ul, #menu li.sfhover ul, #menu li li.sfhover ul
+{
+        max-height : 16em;
+}
+
+#menu li ul li:hover a{
+	background-color : grey;
+}
+
+#banner{
+	position : absolute;
+	top : 6.6rem;
+	left : 0;
+	width : 100%;
+	line-height : 0rem;
+	background : #0099FF;
+	z-index : 1;
+	color : white;
+	text-align : center;
+	font-size : 4em;
+	font-family : 'LemnosLife', Helvetica, sans-serif;
+	letter-spacing : -.4rem;
+	text-shadow : .3rem .3rem 1rem #1e5799;
+	text-transform : uppercase;
+}
+
+.button{
+	text-decoration : none;
+	display : block;
+	width : 85%;
+	line-height : 2em; 
+	color : white;
+	background: linear-gradient(to bottom, #7db9e8 0%,#207cca 0%,#1e5799 100%);
+	text-align : center;
+	font-family : Arial,sans-serif;
+	font-size : 1em;
+	border-radius : .4em;
+	transition : 1s background .1s;
+}
+
+.button:hover{
+	background : linear-gradient(to bottom, #1e5799 0%,#207cca 100%,#7db9e8 100%);;
+}
