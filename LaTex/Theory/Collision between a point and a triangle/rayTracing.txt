@@ -1,0 +1,62 @@
+// inspiration: https://www.youtube.com/watch?v=BYBMauyizhE
+
+double dotProduct n.X * AB.X + n.Y * AB.Y + n.Z * AB.Z
+if(dotProduct == 0) // plane and line are parallel
+	// check with one point for determine if strictly
+	
+{x = A.X + AB.X * t
+{y = A.Y + AB.Y * t
+{z = A.Z + AB.Z * t
+{n.X * x + n.Y * y + n.Z * z + d = 0
+
+d = - (n.X * C.X + n.Y * C.Y + n.Z * C.Z)
+
+so {n.X * x + n.Y * y + n.Z * z = n.X * C.X + n.Y * C.Y + n.Z * C.Z
+so {n.X * (x - C.X) + n.Y * (y - C.Y) + n.Z * (z - C.Z) = 0
+so {n.X * x + n.Y * y + n.Z * z - (n.X * C.X + n.Y * C.Y + n.Z * C.Z) = 0
+
+so {n.X * (A.X + AB.X * t) + n.Y * (A.Y + AB.Y * t) + n.Z * (A.Z + AB.Z * t) - (n.X * C.X + n.Y * C.Y + n.Z * C.Z) = 0
+so {n.X * (A.X + AB.X * t - C.X) + n.Y * (A.Y + AB.Y * t - C.Y) + n.Z * (A.Z + AB.Z * t - C.Z) = 0
+
+t = (C.X * n.X - A.Y * n.Y + C.Y * n.Y - A.Z * n.Z + C.Z * n.Z - A.X * n.X) / (AB.X * n.X + AB.Y * n.Y + AB.Z * n.Z)
+{x = A.X + AB.X * t
+{y = A.Y + AB.Y * t
+{z = A.Z + AB.Z * t
+
+bool intersection(Vector3D A, Vector3D B, Vector3D C, Vector3D D, Vector3D E, Vector3D* intersectionPoint)
+{
+	Vector3D AB = Vector3D(A, B), CD = Vector3D(C, D), CE = Vector3D(C, E), n = CD.crossProduct(CE);
+	double dotProduct n.X * AB.X + n.Y * AB.Y + n.Z * AB.Z;
+	if(dotProduct == 0) // plane and line are parallel
+	{
+		// check with one point for determine if strictly
+	}
+	else
+	{
+		double t = (C.X * n.X - A.Y * n.Y + C.Y * n.Y - A.Z * n.Z + C.Z * n.Z - A.X * n.X) / (AB.X * n.X + AB.Y * n.Y + AB.Z * n.Z),
+		       x = A.X + AB.X * t,
+               y = A.Y + AB.Y * t,
+			   z = A.Z + AB.Z * t;
+		Line3D lineDebug = Line3D(x, y);
+		lineDebug.render();
+	}
+}
+
+M(x, y, z)
+C, D, E // last point isn't necessary because we work with a rectangle // we admit that the rectangle isn't a single point
+M \in plane <=> \exists(a, b) \in Z², such as:
+{ x = C.X + a * CD.X + b * CE.X
+{ y = C.Y + a * CD.Y + b * CE.Y
+{ z = C.Z + a * CD.Z + b * CE.Z
+
+so
+{ x - C.X = a * CD.X + b * CE.X
+{ y - C.Y = a * CD.Y + b * CE.Y
+
+delta = CD.X * CE.Y - CE.X * CD.Y
+
+a = ((x - C.X) * CE.Y - CE.X * (y - C.Y)) / delta
+b = (CD.X * (y - C.Y) - (x - C.X) * CD.Y) / delta
+
+a = (x - C.X - b * CE.X) / CD.X
+y = C.Y + CD.Y * (x - C.X - b * CE.X) / CD.X + b * CE.Y

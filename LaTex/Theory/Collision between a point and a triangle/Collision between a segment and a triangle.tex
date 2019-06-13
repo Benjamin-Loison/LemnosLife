@@ -1,0 +1,177 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage[left=1cm, right=1cm, top=1cm, bottom=2cm]{geometry}
+\usepackage{xcolor}
+\lstset{
+    frame=tb,
+    tabsize=4,
+    showstringspaces=false,
+    numbers=left,
+    commentstyle=\color{gray},
+    keywordstyle=\color{blue},
+    stringstyle=\color{red}
+}
+
+\begin{document}
+
+    \title{Collision between a segment and a triangle}
+    \author{Benjamin Loison}
+    \date{8 march 2018}
+    \maketitle
+
+    \tableofcontents
+    \clearpage
+
+    \section{Opening speech}
+
+    	The modus operandi (way of proceeding) is composed of four steps (if one fails, we can directly declare that there isn't any collision between the segment and the triangle):\\
+    	
+    	\begin{enumerate}
+
+    	    \item Check whether or not the straight line which supports the segment intersects the plane which supports the triangle (it is an easy mathematic logical operation). Likewise the direction is checked.
+    	    \item Check whether or not the intersection point has a positive scalar factor multiplied by the relative target vector (if we state an endpoint of the segment as the beginning of the target vector and the other endpoint as the end of the target vector). Likewise the way is checked.
+    	  \item Check whether or not the intersection point, inside the triangle plane, is inside the triangle. Likewise this checks whether or not the precise intersection point of the line which supports the segment is in the triangle.
+    	    \item Check whether or not the distance between the origin (of the target vector) and the intersection point is lower or equal to the distance between the origin and the other endpoint of the segment.
+    	    
+    	\end{enumerate}
+    	
+    \section{Let's dive into mathematics}
+    	
+     \subsection{Check if there is an intersection point}
+    
+    	- The cartesian equation of a line is: $\alpha * x + \beta * y + \gamma * z + \lambda = 0$. Where $\lambda$ is a constant which depends of $\alpha$, $\beta$ and $\gamma$.
+    	\\Where here:\\
+    	$\left\{\begin{array}{r c l}
+    	    \alpha=B_x - A_x\\
+    	    \beta=B_y - A_y\\
+    	    \gamma=B_z - A_z\\
+    	\end{array}\right.$\\
+    	If we consider $A$ and $B$ the two points of the segment.\\
+    	Likewise: $\lambda = -(\alpha * A_x + \beta * A_y + \gamma * A_z)$.\\
+    	(If we consider $A$ as the origin point of the segment (the origin can be an arbitrary choice).)\\
+    	So finally: $\alpha * x + \beta * y + \gamma * z - (\alpha * A_x + \beta * A_y + \gamma * A_z) = 0$\\
+    	Id est: $\alpha(x - A_x) + \beta(y - A_y) + \gamma(z - A_z) = 0$\\
+    	Which is equivalent to:\\
+    	$$(B_x - A_x)(x - A_x) + (B_y - A_y)(y - A_y) + (B_z - A_z)(z - A_z) = 0$$
+    	Ie:
+    	$$\alpha x + \beta y + \gamma z = \alpha A_x + \beta A_y + \gamma A_z$$
+    	Ie:
+    	$$x (B_x - A_x) + y (B_y - A_y) + z (B_z - A_z) = A_x (B_x - A_x) + A_y (B_y - A_y) + A_z (B_z - A_z)$$
+    	
+    	%Id est: $(B_x - A_x) * x + (B_y - A_y) * y + (B_z - A_z) * z - ((B_x - A_x) * A_x + (B_y - A_y) * A_y + (B_z - A_z) * A_z) = 0$
+    
+    - The system of equations of the line is:\\
+    $\overrightarrow{AM}$ (with $M(x, y, z)$ a point of the line) and $\overrightarrow{AB}$ are collinears if and only if it exists $k \in \mathbb{Z}$, such as:\\
+    $\left\{\begin{array}{r c l}
+    	    x - A_x = k * (B_x - A_x)\\
+    	    y - A_y = k * (B_y - A_y)\\
+    	    z - A_z = k * (B_z - A_z)
+    \end{array}\right.$\\\\
+    
+    Which involves: $k = \frac{x - A_x}{B_x - A_x}$
+    
+    %- The system of equations of the triangle plane is:\\
+    %$\left\{\begin{array}{r c l}
+    	    %(C_x - D_x) * x + (C_y - D_y) * y + (C_z - D_z) * z = 0\\
+    	    %(E_x - D_x) * x + (E_y - D_y) * y + (E_z - D_z) * z = 0\\
+    	    %z = 1 (arbitrary)
+    %\end{array}\right.$\\\\
+    %
+    %We are going to use the Cramer's determinant:\\
+    %The system is equivalent to:\\
+    %$\left\{\begin{array}{r c l}
+    	    %(C_x - D_x) * x + (C_y - D_y) * y + (C_z - D_z) = 0\\
+    	    %(E_x - D_x) * x + (E_y - D_y) * y + (E_z - D_z) = 0\\
+    %\end{array}\right.$\\\\
+    
+    - The cartesian equation of the triangle plane is:\\
+    $n_x * x + n_y * y + n_z * z + d' = 0$ where $\vec{n}$ is a normal vector to the triangle plane and $d'$ is a constant.\\
+    We compute $\vec{n}$ by using the vector product of two vectors of the triangle like $\overrightarrow{CD}$ and $\overrightarrow{CE}$.\\
+    $\vec{n} = CD \wedge CE = (CD_y * CE_z - CD_z * CE_y, CE_x * CD_z - CD_x * CE_z, CD_x * CE_y - CE_x * CD_y)$\\
+    Then to calculate $d'$ we inject for instance the coordinates of the point $C$.\\
+    $d' = -(n_x * C_x + n_y * C_y + n_z * C_z) = -((CD_y * CE_z - CD_z * CE_y) * C_x + (CE_x * CD_z - CD_x * CE_z) * C_y + (CD_x * CE_y - CE_x * CD_y) * C_z)$\\
+    Finally we got: $$n_x * x + n_y * y + n_z * z - (n_x * C_x + n_y * C_y + n_z * C_z) = 0$$\\
+		Which is equivalent to:\\
+    $$n_x * x + n_y * y + n_z * z = n_x * C_x + n_y * C_y + n_z * C_z$$\\
+    %Ie:
+    %$$x (CD_y * CE_z - CD_z * CE_y) + y (CE_x * CD_z - CD_x * CE_z) + z (CD_x * CE_y - CE_x * CD_y) = (C_x (CD_y * CE_z - CD_z * CE_y) + C_y (CE_x * CD_z - CD_x * CE_z) + C_z (CD_x * CE_y - CE_x * CD_y))$$
+		
+    %To find a point or points which are in the triangle plane and in the line, we combine both system of equations which gives:\\
+    %$\left\{\begin{array}{r c l}
+    %    	(C_x - D_x) * x + (C_y - D_y) * y + (C_z - D_z) = 0\\
+    %    	(E_x - D_x) * x + (E_y - D_y) * y + (E_z - D_z) = 0\\
+    %\end{array}\right.$\\\\
+    
+    Let set $z$ to 1, likewise both equations give:\\
+    $\left\{\begin{array}{r c l}
+    	    n_x * x + n_y * y = n_x * C_x + n_y * C_y + n_z * C_z - n_z\\
+    	    \alpha x + \beta y = \alpha A_x + \beta A_y + \gamma A_z - \gamma
+    \end{array}\right.$\\\\
+    
+    Which is equivalent to:\\
+    $\left\{\begin{array}{r c l}
+    	    n_x x + n_y y = n_x C_x + n_y C_y + n_z (C_z - 1)\\
+    	    \alpha x + \beta y = \alpha A_x + \beta A_y + \gamma (A_z - 1)
+    \end{array}\right.$\\\\
+    
+    Now we use the Cramer's determinant to check whether or not there is a or multiple intersection point:\\
+    $\Delta = n_x * \beta - n_y * \alpha$\\
+    If $\Delta$ is equal to 0, we need to check if the line is in the triangle plane or is parallel to this plane. (easy with coordinates)\\
+    Else we got:\\
+    $\left\{\begin{array}{r c l}
+    	    x = \frac{(n_x C_x + n_y C_y + n_z (C_z - 1)) * \beta - n_y * (\alpha A_x + \beta A_y + \gamma (A_z - 1))}{\Delta}\\
+    	    y = \frac{n_x * (\alpha A_x + \beta A_y + \gamma (A_z - 1)) - \alpha * (n_x C_x + n_y C_y + n_z (C_z - 1))}{\Delta}
+    \end{array}\right.$\\\\
+    
+    	\begin{lstlisting}[language=C++, caption={Implementation in C++ to check (and compute) if there is an intersection point}]
+bool isCollisionSegmentTriangle(Vector3D A, Vector3D B, Vector3D C, Vector3D D,Vector3D E)
+{
+    Vector3D CD = Vector3D(C, D), CE = Vector3D(C, E), n = crossProduct(CD, CE);
+    double alpha = B.X - A.X, beta = B.Y - A.Y, gamma = B.Z - A.Z,
+           delta = n.X * beta - n.Y * alpha;
+    	    	    	    	
+    if(delta == 0)
+    {
+        // check whether or not the triangle plane contains the line or is strictly parallel
+        // we check whether or not a point of which defines the line is in the triangle plane
+        return n.X * A.X + n.Y * A.Y + n.Z * A.Z == n.X * C.X + n.Y * C.Y + n.Z * C.Z;
+    }
+   	else
+   	{ 
+        double x = ((n.X * C.X + n.Y * C.Y + n.Z * (C.Z - 1)) * beta
+                   - n.Y * (alpha * A.X + beta * A.Y + gamma * (A.Z - 1)) / delta,
+               y = (n.X * (alpha * A.X + beta * A.y + gamma * (A.Z - 1))
+                   - alpha * (n.X * C.X + n.Y * C.Y + n.Z * (C.Z - 1))) / delta;
+        // TODO: to continue
+    }
+}
+    	\end{lstlisting}
+    
+    \subsection{Check if the intersection point is in the right way}
+    
+    	We need to check if $k$ is superior or equal to 0. (the formula to compute $k$ was given above)
+    
+		    	\begin{lstlisting}[language=C++, caption={Implementation to check if the intersection point is in the right way}]
+double k = (x - A.X) / (B.X - A.X);
+if(k < 0) return false;
+// TODO: to continue...
+    	\end{lstlisting}
+    
+    \subsection{For a triangle}
+    
+    	I leave it to the reader to complete by doing a simple test if the intersection point is in the triangle (in the triangle plane) by using a triple verification if the point is on the left if we run all the triangle around. Or by using a simple test like decomposing the coordinates of the intersection point with two vectors of the triangle (which define the triangle plane with the coordinates of a point of the triangle). Likewise there is just a test to perform on the components of the new system of coordinates of the intersection point checking if positive and with a linearization to test if it is in the triangle.
+    
+    \subsection{For a rectangle}
+    
+    	It is important to deal with a rectangle and not a quadrilateral because we assume that two "random" vectors (of the segments) of the rectangle are perpendicular.
+    
+    	\begin{enumerate}
+    
+    	    \item By using twice the algorithm defined above for the triangle (reminder: use the four points in the right order)
+    
+    	    \item By decomposing like for the triangle modus operandi and checking if the components of the new syste of coordinates are between (with equal meaning) 0 and 1.
+			
+		\end{enumerate}
+			
+\end{document}
