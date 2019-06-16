@@ -5,7 +5,7 @@
 #define BIOME_DEFAULT_ASCII_INDEX 54
 #include <string>
 
-void loadBiomeChk1k(std::string, bool = false);
+void loadBiomeChk1k(std::string);
 char getBiome(double[2]), getBiome(double, double, std::string);
 std::string getBiomeName(char), getBiomeName(double, double), getBiomeName(double, double, std::string);
 

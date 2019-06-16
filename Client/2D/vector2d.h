@@ -8,7 +8,8 @@ class Vector2D
 {
     public:
         double X, Y, length() const;
-        Vector2D(double = 0, double = 0);
+        Vector2D();
+        Vector2D(double, double);
         Vector2D(std::vector<double>);
         Vector2D(const double coordinates[2]);
         Vector2D(Vector2D, Vector2D);
