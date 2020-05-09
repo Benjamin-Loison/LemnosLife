@@ -1,7 +1,0 @@
-\contentsline {section}{\numberline {1}Opening speech}{2}
-\contentsline {section}{\numberline {2}Computing of a normal vector to a triangle}{2}
-\contentsline {subsection}{\numberline {2.1}First method with substitution}{3}
-\contentsline {subsection}{\numberline {2.2}Second method with Cramer's determinant}{5}
-\contentsline {section}{\numberline {3}Computing the altitude of the ground at the player coordinates}{6}
-\contentsline {subsection}{\numberline {3.1}First method}{6}
-\contentsline {subsection}{\numberline {3.2}Second method}{8}
