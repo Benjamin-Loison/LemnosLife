@@ -13,3 +13,5 @@ Bytes of all codes: 491074
 Chars of all codes: 451649
 
 Chars (without spaces) of all codes: 350172
+
+![alt text](https://lemnoslife.com/Website/Media/Pictures/1.png)
