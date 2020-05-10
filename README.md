@@ -1,6 +1,9 @@
 # LemnosLife
-You can find here some "open" things about the game called "LemnosLife".<br/><br/>
-Please quote the author when you use our "open" things/codes.
+
+Si vous avez un token d'accès au code source complet, utilisez-le ainsi dans un terminal équipé de git: git clone https://di:TOKENg@gitlab.com/Benjamin_Loison/LemnosLife.git
+
+You can find here some stuff about the game called "LemnosLife".<br/><br/>
+Please quote me if you use my code.
 
 Real code with C++:
 
