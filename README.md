@@ -31,8 +31,8 @@ Files: 32
 KLOC: 3
 KB: 75
 
-|       | Files | KLOC | KB |
-| ------|:-----:| ----:|:--:|
-| C++ client code (with installer) | 226 | 29 | 1 573 |
+|                                  | Files | KLOC | KB    |
+| ---------------------------------|:-----:|:----:|:-----:|
+| C++ client code (with installer) | 226   | 29   | 1 573 |
 
 ![alt text](https://github.com/Benjamin-Loison/LemnosLife/raw/master/website/Website/Media/Pictures/1.png)
