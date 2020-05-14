@@ -31,10 +31,10 @@ Files: 32
 KLOC: 3
 KB: 75
 
-| Tables        | Are           | Cool  |
-| ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
+|       | C++ client code (with installer) | Cool  |
+| ------|:--------------------------------:| -----:|
+| Files | 226                              | $1600 |
+| KLOC  | 29                               |   $12 |
+| KB    | 1 573                            |    $1 |
 
 ![alt text](https://github.com/Benjamin-Loison/LemnosLife/raw/master/website/Website/Media/Pictures/1.png)
