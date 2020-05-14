@@ -13,6 +13,6 @@ Following code counting is done without third party or libraries:
 | C++ server code (with server bridge)              | 76    | 10   | 437   |
 | Python and Java (without duplicated APIs) scripts | 68    | 5    | 175   |
 | Website and panel                                 | 32    | 3    | 75    |
-| Total                                             | 402   | 50   | 2 260 |
+| Total                                             | 402   | 47   | 2 260 |
 
 ![alt text](https://github.com/Benjamin-Loison/LemnosLife/raw/master/website/Website/Media/Pictures/1.png)
