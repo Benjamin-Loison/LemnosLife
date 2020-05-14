@@ -5,19 +5,7 @@ Si vous avez un token d'accès au code source complet, utilisez-le ainsi dans un
 You can find here some stuff about the game called "LemnosLife".<br/><br/>
 Please quote me if you use my code.
 
-Following code counting done without third party or libraries:
-
-C++ client code (with installer):
-
-Files: 226
-KLOC: 29
-KB: 1 573
-
-C++ server code (with server bridge):
-
-Files: 76
-KLOC: 10
-KB: 437
+Following code counting is done without third party or libraries:
 
 Python and Java (without duplicated APIs) scripts:
 
@@ -31,8 +19,9 @@ Files: 32
 KLOC: 3
 KB: 75
 
-|                                  | Files | KLOC | KB    |
-| ---------------------------------|:-----:|:----:|:-----:|
-| C++ client code (with installer) | 226   | 29   | 1 573 |
+|                                      | Files | KLOC | KB    |
+| -------------------------------------|:-----:|:----:|:-----:|
+| C++ client code (with installer)     | 226   | 29   | 1 573 |
+| C++ server code (with server bridge) | 76    | 10   | 437   |
 
 ![alt text](https://github.com/Benjamin-Loison/LemnosLife/raw/master/website/Website/Media/Pictures/1.png)
