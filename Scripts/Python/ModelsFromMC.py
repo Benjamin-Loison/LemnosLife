@@ -357,4 +357,13 @@ Notepad++:
 
 Models just using addBox: egrep -Lr "addShape3D|addTrapezoid|addFlexBox|addFlexTrapezoid|addShapeBox" .
 
+Output format:
+
+texture.jpg
+0 QUAD tx0;ty0 tx1;ty1 tx2;ty2 tx3;ty3 x0;y0;z0 x1;y1;z1 x2;y2;z2 x3;y3;z4
+
+QUAD stands for quadrilateral
+First four couples are used as texture coordinates
+Four last triples are used as shape coordinates
+
 """
