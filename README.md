@@ -2,7 +2,7 @@
 
 Si vous avez un token d'accès au code source complet, utilisez-le ainsi dans un terminal équipé de git: git clone https://di:TOKEN@gitlab.com/Benjamin_Loison/LemnosLife.git (66.2 MB)
 
-[Vidéos de développement disponibles ici.](https://www.youtube.com/playlist?list=PLiJOYdwXbxtZqneWzvr21YzEiTG-QiPKZ)
+Vidéos de développement disponibles [ici](https://www.youtube.com/playlist?list=PLiJOYdwXbxtZqneWzvr21YzEiTG-QiPKZ).
 
 You can find here some stuff about the game called "LemnosLife".<br/><br/>
 Please quote me if you use my code.
