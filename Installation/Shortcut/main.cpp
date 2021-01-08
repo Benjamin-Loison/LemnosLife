@@ -3,6 +3,7 @@
 #include "shlobj.h"
 using namespace std;
 
+/// TODO: make a graphical message if the destination executable path isn't reachable
 int main() /// TODO: remove useless console(installer works well without it) come from project settings I think (initial) if needed try to recreate a EMPTY PROJECT
 {
     /*int hConHandle;
@@ -29,7 +30,7 @@ int main() /// TODO: remove useless console(installer works well without it) com
     *stderr = *fp;
     setvbuf(stderr, NULL, _IONBF, 0);
     ios::sync_with_stdio();*/
-    string name = "LemnosLife .exe";
+    string name = "LemnosLife - Installeur.exe";
     ifstream installer(name.c_str());
     if(installer.good())
     {
@@ -42,9 +43,9 @@ int main() /// TODO: remove useless console(installer works well without it) com
     #else
         '/';
     #endif
-    TCHAR szPath[MAX_PATH];
-    SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, 0, szPath);
-    string tmp = string(szPath) + pathSeparator + "LemnosLife" + pathSeparator + "Games" + pathSeparator + "LemnosLife" + pathSeparator + "Updater" + pathSeparator, path = tmp + "LemnosLife-MAJ.exe";
+    //TCHAR szPath[MAX_PATH];
+    //SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, 0, szPath);
+    string tmp = string(getenv("APPDATA")) + pathSeparator + "TerraCraft" + pathSeparator + "Games" + pathSeparator + "LemnosLife" + pathSeparator + "Updater" + pathSeparator, path = tmp + "LemnosLife - MAJ.exe";
     STARTUPINFO si;
     PROCESS_INFORMATION pi;
     ZeroMemory(&si, sizeof(si));
