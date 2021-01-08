@@ -1,29 +1,32 @@
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
-#include <gl.h>
-#include <glu.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
 #include <string>
 #include <thread>
 #include <iostream>
 #include <stdio.h>
 #include <fcntl.h>
 #include <fstream>
-#include <curl.h>
+#include <curl/curl.h>
 #include <sstream>
 #include <vector>
 #include <stdlib.h>
 #include "patch.h"
 #include <deque>
 #include <map>
+#include <windows.h>
+//#include <zipper/unzipper.h>
+//#include <zipper/zipper.h>
 #define lengthActualVersion 50
 using namespace std;
 
 char actualVersion[lengthActualVersion], pathSeparator;
-SDL_Window *screen = 0;
-TTF_Font *font24 = 0, *font35 = 0;
-string getInternet(string), updateLine = "Chargement en cours...", fileDownload = "", versionDownload = "", unit = "", gameFolder = "", majFile = "MAJ.info", path = "", folder = "";
-vector<string> maj, filesToDownload;
+SDL_Window* screen;
+TTF_Font* font24, *font35;
+string getInternet(string), updateLine = "Chargement en cours...", fileDownload = "", versionDownload = "", unit = "", gameFolder = "", majFile = "MAJ.info", path = "", folder = "", httpsPrefix = "https:", maj = "", currentVersion = "", logPath = "log.txt";
+vector<string> filesToDownload;
 map<string, vector<string>> changeFilesVersion;
 deque<string> changeLogTmp, changeLog;
 thread updateThread, updaterThread;
@@ -31,46 +34,21 @@ double progress = 0, amountDownloaded = 0, amountToDownload = 0, unitDiv = 0;
 void eventManager(), renderScreen(), updateManager(), free(), size(), launch(bool), downloadFileInternet(string, string), updateScreen();
 int windowWidth = 0, windowHeight = 0, posY = 0, rendered = 0;
 GLuint background = 0, loadTexture(const char*);
-long getFileSize(string);
-bool rendering = false, title = true, firstLaunch = false, needUpdate(), textInit = false, downloadInit = false, isEnd = false;
-
-/*void openConsole()
-{
-    // TODO: console or not, every piece of information goes too in a file
-    // TODO: select txt in the console
-    int hConHandle;
-    long lStdHandle;
-    CONSOLE_SCREEN_BUFFER_INFO coninfo;
-    FILE *fp;
-    AllocConsole();
-    SetConsoleTitle("");
-    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &coninfo);
-    SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), coninfo.dwSize);
-    lStdHandle = (long)GetStdHandle(STD_OUTPUT_HANDLE);
-    hConHandle = _open_osfhandle(lStdHandle, _O_TEXT);
-    fp = _fdopen(hConHandle, "w");
-    *stdout = *fp;
-    setvbuf(stdout, NULL, _IONBF, 0);
-    lStdHandle = (long)GetStdHandle(STD_INPUT_HANDLE);
-    hConHandle = _open_osfhandle(lStdHandle, _O_TEXT);
-    fp = _fdopen(hConHandle, "r");
-    *stdin = *fp;
-    setvbuf(stdin, NULL, _IONBF, 0);
-    lStdHandle = (long)GetStdHandle(STD_ERROR_HANDLE);
-    hConHandle = _open_osfhandle(lStdHandle, _O_TEXT);
-    fp = _fdopen(hConHandle, "w");
-    *stderr = *fp;
-    setvbuf(stderr, NULL, _IONBF, 0);
-    ios::sync_with_stdio();
-    // TODO: colors ?
-    // TODO: tab auto-completion http://www.cplusplus.com/forum/windows/58206/ https://msdn.microsoft.com/en-us/library/windows/desktop/ms682073(v=vs.85).aspx
-}*/
+unsigned long getFileSize(/*string*/vector<string>);
+bool rendering = false, title = true, firstLaunch = false, needUpdate(), textInit = false, downloadInit = false, isEnd = false, removeFile(string filePath);
+unsigned short latestVersionNumber, currentVersionNumber;
 
 // TODO: update this updater and add future updates
+// TODO: make possibility to choose language for changelogs
+// updater of the updater ?
+/// TODO: upload all components (Updater, Shortcut...) as 64 bits for the 64 bits version likewise 32-bits users would be told directly
+/// TODO: is the updater at the bottom working for various versions ?
+/// TODO: scrool doesn't work well
 
-int main(int argc, char** argv) /// TODO: remove useless console
+// warnin 32/64 bits and where the exe is generated for installer, updater and shortcut codeblocks projects
+int main(int argc, char** argv) // downloading zip and unzip may be (at least use less bandwidth, 75 instead of 115 for example) what about speed ?
 {
-    // openConsole();
+    //cout << "main" << endl;
     pathSeparator =
     #ifdef _WIN32
         '\\';
@@ -80,22 +58,27 @@ int main(int argc, char** argv) /// TODO: remove useless console
     gameFolder = string("..") + pathSeparator + "Game" + pathSeparator;
     char psBuffer[128];
     FILE *pPipe;
-    if((pPipe = _popen("cd", "rt")) == NULL)
+    if((pPipe = _popen("cd", "rt")) == NULL) // what does this do ?
         exit(1);
     fgets(psBuffer, 128, pPipe);
-    for(int i = 0; i < 128; i++)
+    for(unsigned short i = 0; i < 128; i++)
         if(psBuffer[i] == '\n')
             psBuffer[i] = '\0';
     _pclose(pPipe);
     path = psBuffer;
+    //removeFile(logPath);
+    /// TODO: add date in print
     if(!needUpdate())
+    {
+        //cout << "no update needed !";
         launch(true);
+    }
     SDL_Init(SDL_INIT_VIDEO);
     SDL_DisplayMode DM;
     SDL_GetDesktopDisplayMode(0, &DM);
     windowWidth = 1365;
     windowHeight = 704;
-    screen = SDL_CreateWindow(name.c_str(), 100, 100, windowWidth, windowHeight, SDL_WINDOW_MAXIMIZED | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+    screen = SDL_CreateWindow(name.c_str(), 100, 100, windowWidth, windowHeight, SDL_WINDOW_MAXIMIZED | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL); // could do without opengl lol
     size();
     TTF_Init();
     updateManager();
@@ -114,11 +97,11 @@ void split(const string &s, const char *delim, Out result)
     stringstream ss;
     ss.str(s);
     string item;
-    while (getline(ss, item, *delim))
+    while(getline(ss, item, *delim))
         *(result++) = item;
 }
 
-vector<string> split(const string &s, const char *delim)
+vector<string> split(const string &s, const char *delim = " ")
 {
     vector<string> elems;
     split(s, delim, back_inserter(elems));
@@ -128,26 +111,17 @@ vector<string> split(const string &s, const char *delim)
 string replace(string subject, const string& search, const string& replace)
 {
     unsigned int pos = subject.find(search);
-    if(pos > subject.length())
-        return subject;
-    return subject.replace(pos, search.length(), replace);
+    return pos > subject.length() ? subject : subject.replace(pos, search.length(), replace);
 }
 
-string convertDoubleToStr(double number)
+string convertNbToStr(double number)
 {
     ostringstream convert;
     convert << number;
     return convert.str();
 }
 
-string convertIntToStr(int number)
-{
-    ostringstream convert;
-    convert << number;
-    return convert.str();
-}
-
-long convertStrToLong(string str)
+long convertStrToLong(string str) // really necessary file size ? yes because otherwise only around 1 Gb
 {
     return atol(str.c_str());
 }
@@ -162,7 +136,7 @@ int convertStrToInt(string str)
 void chgGameFolder()
 {
     folder = replace(gameFolder, "..", "");
-    folder = folder.substr(0, folder.length());
+    folder = folder.substr(0, folder.length()); // does it really change something ?
     path = path.substr(0, path.find_last_of(pathSeparator)) + folder;
 }
 
@@ -180,9 +154,11 @@ void startup(LPCTSTR lpApplicationName)
 
 void launch(bool start)
 {
-    if(start)
+    //if(start)
         chgGameFolder();
-    startup(string(path + "LemnosLife.exe").c_str());
+    string game = string(path + "CrashReporter.exe");
+    //cout << "!" << game << "!" << path << "CrashReporter.exe" << "!" << endl;
+    startup(game.c_str());
     if(!start)
     {
         isEnd = true;
@@ -192,37 +168,44 @@ void launch(bool start)
         exit(0);
 }
 
+string getFileContentString(string path)
+{
+    ifstream infile(path.c_str());
+    string line, res = "";
+    while(getline(infile, line))
+        res += line;
+    return res;
+}
+
+string replaceAll(string str, const string& from, const string& to = "")
+{
+    size_t start_pos = 0;
+    while((start_pos = str.find(from, start_pos)) != string::npos)
+    {
+        str.replace(start_pos, from.length(), to);
+        start_pos += to.length(); // Handles case where 'to' is a substring of 'from'
+    }
+    return str;
+}
+
+unsigned short cleanVersion(unsigned short x)
+{
+    if(x < 1000)
+        x *= 10;
+    if(x < 1000)
+        x *= 10;
+    return x;
+}
+
 bool needUpdate()
 {
     // TODO: crypt content without homemade (compare local and server crypted version) /// THINK AGAIN AT THE SYSTEM (user knows version not crypted and can crypt himself or ask friends)
-    maj = split(getInternet("https://lemnoslife.com/MAJ.txt"), "\n");
-    FILE *majInfo = 0;
-    short lengthActualDate = 17;
-    char actualDate[lengthActualDate] = "";
-    majInfo = fopen(majFile.c_str(), "r");
-    if(majInfo == 0)
-    {
-        majInfo = fopen(majFile.c_str(), "w");
-        string actualVersionTmp = "NeedUpdate", actualDateTmp = "00-00-0000#00-00";
-        fputs(string(actualDateTmp + "\n" + actualVersionTmp).c_str(), majInfo);
-        fclose(majInfo);
-        for(unsigned int i = 0; i < actualVersionTmp.length(); i++)
-            actualVersion[i] = actualVersionTmp[i];
-        for(int i = 0; i < lengthActualDate; i++)
-            actualDate[i] = actualDateTmp[i];
-        firstLaunch = true;
-        return true;
-    }
-    else
-    {
-        fgets(actualDate, lengthActualDate, majInfo);
-        while(fgets(actualVersion, lengthActualVersion, majInfo) != NULL);
-        fclose(majInfo);
-        if(maj[0] != actualDate)
-            return true;
-        else
-            return false;
-    }
+    maj = getInternet("http://lemnoslife.com/MAJLatest.txt");
+    currentVersion = getFileContentString(majFile); // does it work fine even if file doesn't exist ?
+    currentVersionNumber = cleanVersion(currentVersion == "" ? 0 : convertStrToInt(currentVersion));
+    latestVersionNumber = cleanVersion(convertStrToInt(replaceAll(maj, ".")));
+    //cout << latestVersionNumber << " " << currentVersionNumber << " (" << currentVersion << ")" << endl;
+    return latestVersionNumber > currentVersionNumber;
 }
 
 bool startsWith(string subject, string test)
@@ -230,122 +213,128 @@ bool startsWith(string subject, string test)
     return !subject.compare(0, test.size(), test);
 }
 
+bool writeFile(string filePath, string option, string toWrite)
+{
+    FILE* file = fopen(filePath.c_str(), option.c_str());
+    if(file != NULL)
+    {
+        fputs(toWrite.c_str(), file);
+        fclose(file);
+        return true;
+    }
+    return false;
+}
+
+bool removeFile(string filePath)
+{
+    return remove(filePath.c_str());
+}
+// is there on a frame a console before launching updater etc ? see Installer and Shortcut programs
+
+void print(string s)
+{
+    //cout << s << endl;
+    writeFile(logPath, "a", s + "\n");
+}
+
 void updater()
 {
+    //cout << "hey" << endl;
+    updateLine = "Chargement des méta-données de la mise à jour...";
+    if(currentVersion == "")
+    {
+        currentVersion = maj;
+        print("Installing from scratch");
+    }
+    string majFolder = "http://lemnoslife.com/MAJ/" + currentVersion + "/", url = majFolder + "changelogs.txt", changelogs = getInternet(url);
+    vector<string> lines = split(changelogs, "\n");
+    //cout << "!" << changelogs << "!" << url << "!" << majFolder << "!" << endl;
+    print("Downloading: " + url);
+    if(lines[0] == "WithZIP")
+    {
+        print("WithZIP");
+        if(currentVersionNumber == 0)
+            CreateDirectory(gameFolder.c_str(), NULL);
+        //downloadFileHttp(majFolder + "changes.zip");
+        /// TODO: progress = 0; 50 % download and 50 % deflating
+        updateLine = "Téléchargement de la mise à jour...";
+        string urlZIP = "lemnoslife.com/MAJ/" + currentVersion + "/changes.zip";
+        print("Downloading: " + urlZIP);
+        downloadFileInternet(urlZIP, "../Game/changes.zip");
+        updateLine = "Décompression de l'archive...";
+        ///system("cd ../Game/ && unzip.exe -o -q changes.zip && del changes.zip"); // this suddenly display a console
+        //chgGameFolder();
+        print("Extracting...");
+        SHELLEXECUTEINFO ShExecInfo = {0};
+        ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
+        ShExecInfo.fMask = SEE_MASK_NOCLOSEPROCESS;
+        ShExecInfo.hwnd = NULL;
+        ShExecInfo.lpVerb = NULL;
+        ShExecInfo.lpFile = "unzip.exe"; // no '/' :'( // ..\\Updater\\ doesn't seem to work O_o
+        ShExecInfo.lpParameters = "-o -q ..\\Game\\changes.zip -d ..\\Game\\";
+        ShExecInfo.lpDirectory = NULL;
+        ShExecInfo.nShow = SW_HIDE;
+        ShExecInfo.hInstApp = NULL;
+        ShellExecuteEx(&ShExecInfo);
+        WaitForSingleObject(ShExecInfo.hProcess, INFINITE);
+        CloseHandle(ShExecInfo.hProcess);
+        print("Extracted !");
+        removeFile("..\\Game\\changes.zip");
+
+        // add parameter to force unzip (if someone stop updater while proceding) - done
+        // using libraries would be cleaner
+        /*Unzipper unzipper("changes.zip");
+        unzipper.extract();
+        unzipper.close();*/
+    }
+    updateLine = "Suppression d'anciens fichiers...";
+    unsigned int linesSize = lines.size();
+    for(unsigned int linesIndex = 1; linesIndex < linesSize; linesIndex++)
+    {
+        string line = gameFolder + lines[linesIndex];
+        if(line[line.length() - 1] == '/')
+        {
+            RemoveDirectory(line.c_str());
+            //removeFolder(line);
+        }
+        else
+        {
+            removeFile(line);
+        }
+    }
+    print("Update done !");
+    updateLine = "Mise à jour terminée !";
+    writeFile(majFile, "w", maj);
     // TODO: if friends send files, find files like steam
     // TODO: delete system - instead of +
-    map<unsigned int, string> versions;
-    unsigned int version = 0;
-    for(int i = 3; i < (int)maj.size(); i++)
-        if(isAlphabetic(maj[i][0]))
-        {
-            if(startsWith(maj[i], actualVersion))
-                break;
-            changeFilesVersion[maj[i]] = split(replace(maj[i + 1], "+ ", ""), "&");
-            for(int j = 0; j < (int)changeFilesVersion[maj[i]].size(); j++)
-            {
-                bool already = false;
-                string doesFileNeedToBeDownload = changeFilesVersion[maj[i]][j];
-                for(int k = 0; k < (int)filesToDownload.size(); k++)
-                    if(doesFileNeedToBeDownload == filesToDownload[k])
-                    {
-                        already = true;
-                        break;
-                    }
-                if(!already)
-                {
-                    filesToDownload.push_back(doesFileNeedToBeDownload);
-                    versions[version] = convertIntToStr((int)changeFilesVersion[maj[i]].size()) + "@" + split(maj[i], " ")[0];
-                    version++;
-                }
-            }
-        }
-    for(int i = 0; i < (int)filesToDownload.size(); i++)
-       amountToDownload += getFileSize(filesToDownload[i]); // optimize multiples files (in php file)
-    amountToDownload /= 1000; // converted in Ko (before in bytes)
-    unit = "Ko";
-    unitDiv = 1000;
-    if(amountToDownload >= 1000)
-    {
-        amountToDownload /= 1000;
-        unit = "Mo";
-        unitDiv = 1000000;
-    }
-    if(amountToDownload >= 1000)
-    {
-        amountToDownload /= 1000;
-        unit = "Go";
-        unitDiv = 1000000000;
-    }
-    chgGameFolder();
-    if(firstLaunch)
-        CreateDirectory(gameFolder.c_str(), NULL);
-    textInit = true;
-    downloadInit = true;
-    string url = "https://lemnoslife.com/MAJ/";
-    char fileSeparator = 'A';
-    unsigned int versionTmp = versions.size() - 1;
-    int files = 0;
-    versionDownload = split(versions[versionTmp], "@")[1];
-    for(int i = (int)filesToDownload.size() - 1; i >= 0; i--) // TODO: unit downloaded adapted to the amount
-    { // TODO: not right version displays each time (ex: AltisCraft.fr : first version)
-        vector<string> elements = split(versions[versionTmp], "@");
-        if(convertStrToInt(elements[0]) == files)
-        {
-            versionTmp--;
-            versionDownload = elements[1];
-            files = 0;
-        }
-        files++;
-        unsigned int pos = filesToDownload[i].find_last_of(pathSeparator);
-        if(pos > filesToDownload[i].length())
-            pos = 0;
-        fileDownload = filesToDownload[i].substr(pos, filesToDownload[i].length());
-        renderScreen();
-        string fileTmp = filesToDownload[i];
-        if(filesToDownload[i].find('/') <= filesToDownload[i].length())
-            fileSeparator = '/';
-        else if(filesToDownload[i].find('\\') <= filesToDownload[i].length())
-            fileSeparator = '\\';
-        if(fileSeparator != 'A')
-        {
-            for(unsigned int j = 0; j < filesToDownload[i].length(); j++)
-                if(filesToDownload[i][j] == fileSeparator)
-                    filesToDownload[i][j] = pathSeparator;
-            vector<string> folders = split(filesToDownload[i], string({pathSeparator, pathSeparator, '\0'}).c_str());
-            unsigned int size = folders.size();
-            string directory = folders[folders.size() - 1];
-            if(directory.find(".") < directory.length())
-                size--;
-            folder = "";
-            for(unsigned int i = 0; i < size; i++)
-            {
-                folder += folders[i] + pathSeparator;
-                CreateDirectory(string(path + folder + pathSeparator).c_str(), NULL);
-            }
-        }
-        downloadFileInternet(url + fileTmp, path + filesToDownload[i]);
-    }
-    FILE* update = 0;
-    update = fopen(majFile.c_str(), "w+");
-    fputs(string(maj[0] + "\n" + maj[1]).c_str(), update);
-    fclose(update);
     launch(false);
 }
 
+bool first = true;
+
 void updateScreen()
 {
-    SDL_Event patch;
+    if(first)
+    {
+        vector<string> news = split(getInternet("http://lemnoslife.com/MAJ.txt"), "\n");
+        for(unsigned int i = 0; i < news.size(); i++)
+        {
+            changeLog.push_back(news[i]);
+        }
+        changeLogTmp = changeLog;
+        first = false;
+    }
+    SDL_Event patch; // why this ?
     patch.type = SDL_MOUSEBUTTONDOWN;
     SDL_PushEvent(&patch);
 }
 
 void update()
 {
-    while(1)
+    while(true)
     {
         updateScreen();
-        SDL_Delay(1000);
+        SDL_Delay(/*15*/100); // used to be 30
     }
 }
 
@@ -354,12 +343,6 @@ void updateManager()
     font24 = TTF_OpenFont("arial.ttf", 24);
     font35 = TTF_OpenFont("arial.ttf", 35);
 
-    for(int i = 3; i < (int)maj.size(); i++)
-        if(maj[i][0] != '+')
-            changeLog.push_back(maj[i] + "\n");
-        else
-            changeLog.push_back("\n");
-    changeLogTmp = changeLog;
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
@@ -403,24 +386,23 @@ void up()
 
 void down()
 {
-    posY--;
-    if(rendered - posY + 1 > (int)changeLogTmp.size())
+    if(rendered != 0)
     {
-        posY++;
-        return;
+        posY--;
+        //cout << -posY << " " << changeLogTmp.size() - rendered - 1 << " " << changeLogTmp.size() << endl;
+        if(-posY >= changeLogTmp.size() - rendered - 1)
+        {
+            posY++;
+            return;
+        }
+        changeLog.pop_front();
+        changeLog.push_back(changeLogTmp[-posY]);
     }
-    changeLog.pop_front();
-    changeLog.push_back(changeLogTmp[changeLog.size()]);
     renderScreen();
 }
 
 void manageUpdateLine()
 {
-    if(textInit)
-    {
-        progress = amountDownloaded * 100 / unitDiv / amountToDownload;
-        updateLine = "Téléchargement en cours de " + fileDownload + " (" + versionDownload + ") : " + replace(convertDoubleToStr(progress), ".", ",").substr(0, 5) + " % (" + replace(convertDoubleToStr(amountDownloaded / unitDiv), ".", ",").substr(0, 5) + " " + unit + " / " + replace(convertDoubleToStr(amountToDownload), ".", ",").substr(0, 5) + " " + unit + ")";
-    }
     SDL_Surface *text = TTF_RenderText_Blended(font35, updateLine.c_str(), {255, 0, 0});
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -472,8 +454,8 @@ void eventManager()
                 {
                     size();
                     renderScreen();
-                    break;
                 }
+                break;
             case SDL_MOUSEWHEEL:
                 {
                     int y = event.wheel.y;
@@ -481,8 +463,8 @@ void eventManager()
                         up();
                     else if(y == -1)
                         down();
-                    break;
                 }
+                break;
             case SDL_KEYDOWN:
                 switch(event.key.keysym.sym)
                 {
@@ -493,17 +475,18 @@ void eventManager()
                         down();
                         break;
                 }
-                    case SDL_MOUSEBUTTONDOWN: //patch
-                        if(isEnd)
-                            free();
-                        renderScreen();
-                        break;
+            case SDL_MOUSEBUTTONDOWN: //patch
+                if(isEnd)
+                    free();
+                renderScreen();
+                break;
         }
     }
 }
 
 bool drawText(string str, bool title, int& a)
 {
+    if(str == "") return true;
     SDL_Color color = {100, 100, 100};
     if(title)
     {
@@ -572,7 +555,7 @@ void renderScreen()
     glEnd();
     glPopAttrib();
 
-    for(int i = 1; i < (int)changeLog.size(); i++)
+    for(int i = 1; i < changeLog.size() + 1; i++) // no unsigned
     {
         int first = (int)changeLog[i - 1][0];
         if(isAlphabetic(first))
@@ -595,7 +578,6 @@ void renderScreen()
 
 void free()
 {
-    // FreeConsole();
     updaterThread.detach();
     updateThread.detach();
     TTF_Quit();
@@ -605,12 +587,12 @@ void free()
 
 SDL_Surface *flipSurface(SDL_Surface *surface)
 {
-    int current_line,pitch;
+    int pitch; // unsigned ?
     SDL_Surface *fliped_surface = SDL_CreateRGBSurface(SDL_SWSURFACE, surface->w,surface->h, surface->format->BitsPerPixel, surface->format->Rmask, surface->format->Gmask, surface->format->Bmask, surface->format->Amask);
     SDL_LockSurface(surface);
     SDL_LockSurface(fliped_surface);
     pitch = surface->pitch;
-    for (current_line = 0; current_line < surface->h; current_line ++)
+    for(unsigned int current_line = 0; current_line < surface->h; current_line++)
         memcpy(&((unsigned char*)fliped_surface->pixels)[current_line*pitch], &((unsigned char*)surface->pixels)[(surface->h - 1  - current_line)*pitch], pitch);
     SDL_UnlockSurface(fliped_surface);
     SDL_UnlockSurface(surface);
@@ -643,7 +625,7 @@ GLuint loadTexture(const char *filename)
     format.Gmask = gmask;
     format.Bmask = bmask;
     format.Amask = amask;
-    gl_surface = SDL_ConvertSurface(picture_surface,&format,SDL_SWSURFACE);
+    gl_surface = SDL_ConvertSurface(picture_surface, &format, SDL_SWSURFACE);
     gl_fliped_surface = flipSurface(gl_surface);
     glGenTextures(1, &glID);
     glBindTexture(GL_TEXTURE_2D, glID);
@@ -669,84 +651,68 @@ size_t writeData(void *ptr, size_t size, size_t nmemb, FILE *stream)
     return fwrite(ptr, size, nmemb, stream);
 }
 
-void downloadFileHttp(string url, string name)
+string httpUrl(string url)
+{
+    return replaceAll(replaceAll(replaceAll(url, "%", "%25"), " ", "%20"), "`", "%60");
+}
+
+void downloadFileHttp(string url, string name, bool https) // could remove https as an argument and initialized it by calling a function
 {
     CURL *curl = curl_easy_init();
-    FILE *fp = fopen(name.c_str(), "wb");
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+    if(https)
+    {
+        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
+    }
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeData);
+    FILE *fp = fopen(name.c_str(), "wb");
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
     curl_easy_perform(curl);
     curl_easy_cleanup(curl);
     fclose(fp);
 }
 
-void downloadFileHttps(string url, string name)
+void downloadFileInternet(string url, string name) /// TODO: replace ' ' with "%20"
+{
+    url = httpUrl(url);
+    return downloadFileHttp(url, name, startsWith(url, httpsPrefix));
+}
+
+string getHttp(string url, bool https = false)
 {
     CURL *curl = curl_easy_init();
-    FILE *fp = fopen(name.c_str(), "wb");
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeData);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
-    curl_easy_perform(curl);
-    curl_easy_cleanup(curl);
-    fclose(fp);
-}
-
-void downloadFileInternet(string url, string name)
-{
-    string prefix = "https:";
-    if(!url.compare(0, prefix.size(), prefix))
-        return downloadFileHttps(url, name);
-    else
-        return downloadFileHttp(url, name);
-}
-
-long getFileSize(string url)
-{
-    CURL *curl = curl_easy_init();
-    string got;
-    curl_easy_setopt(curl, CURLOPT_URL, string("http://altiscraft.fr/size.php?f=MAJ/" + url).c_str());
+    if(https)
+    {
+        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
+    }
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &got);
-    curl_easy_perform(curl);
-    curl_easy_cleanup(curl);
-    return convertStrToLong(got);
-}
-
-string getHttp(string url)
-{
-    CURL *curl = curl_easy_init();
     string got;
-    curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &got);
     curl_easy_perform(curl);
     curl_easy_cleanup(curl);
     return got;
 }
 
-string getHttps(string url)
+string toString(vector<string> vec, string delimiter)
 {
-    CURL *curl = curl_easy_init();
-    string got;
-    curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &got);
-    curl_easy_perform(curl);
-    curl_easy_cleanup(curl);
-    return got;
+    string res = "";
+    unsigned int vecSize = vec.size();
+    for(unsigned int vecIndex = 0; vecIndex < vecSize; vecIndex++)
+    {
+        res += vec[vecIndex];
+        if(vecIndex < vecSize - 1)
+        {
+            res += delimiter;
+        }
+    }
+    return res;
 }
 
 string getInternet(string url)
 {
-    string prefix = "https:";
-    if(!url.compare(0, prefix.size(), prefix))
-        return getHttps(url);
-    else
-        return getHttp(url);
+    url = httpUrl(url);
+    return getHttp(url, startsWith(url, httpsPrefix));
 }
