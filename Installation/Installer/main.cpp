@@ -1,8 +1,10 @@
 #include <string>
 #include "shlobj.h"
+#include <iostream>
+#include <fcntl.h>
 using namespace std;
 
-string name = "LemnosLife", resources[] = {"LemnosLife.exe", "libcurl.dll", "libfreetype-6.dll", "libjpeg-9.dll", "SDL2.dll", "SDL2_image.dll", "SDL2_ttf.dll", "smpeg2.dll", "zlib1.dll", "libcrypto-1_1.dll", "libssl-1_1.dll", "msvcr120.dll", "arial.ttf", "background.jpg", "LemnosLife - MAJ.exe"};
+string name = "TerraCraft", resources[] = {"LemnosLife - MAJ.exe", "libcurl-x64.dll", "libfreetype-6.dll", "libjpeg-9.dll", "SDL2.dll", "SDL2_image.dll", "SDL2_ttf.dll", "libgcc_s_seh-1.dll", "zlib1.dll", "libcrypto-1_1-x64.dll", "libssl-1_1-x64.dll", "arial.ttf", "background.jpg", "libwinpthread-1.dll", "msvcr120.dll", "LemnosLife.exe", "unzip.exe", "unzip32.dll", "libstdc++-6.dll"};
 
 // TODO: faster
 
@@ -22,6 +24,8 @@ bool extractResource(DWORD resId, LPCTSTR fileName)
     }
     return dwWrite == dwSize;
 }
+
+/// need to unlink/link when update LemnosLife - MAJ for instance
 
 int main()
 {
@@ -55,14 +59,14 @@ int main()
     #else
         '/';
     #endif
-    TCHAR szPath[MAX_PATH];
-    SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, 0, szPath);
-    string tc = string(szPath) + pathSeparator + name + pathSeparator, game = tc + "Games" + pathSeparator, ac = game + "LemnosLife" + pathSeparator, path = ac + "Updater" + pathSeparator;
-    CreateDirectory(tc.c_str(), NULL);
+    //TCHAR szPath[MAX_PATH];
+    //SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, 0, szPath);
+    string tc = string(getenv("APPDATA")) + pathSeparator + name + pathSeparator, game = tc + "Games" + pathSeparator, ac = game + "LemnosLife" + pathSeparator, path = ac + "Updater" + pathSeparator;
+    cout << tc;    CreateDirectory(tc.c_str(), NULL);
     CreateDirectory(game.c_str(), NULL);
     CreateDirectory(ac.c_str(), NULL);
     CreateDirectory(path.c_str(), NULL);
-    for(int i = 0; i < 15; i++)
+    for(unsigned short i = 0; i < 19; i++) // should make a cleaner way not to "rewrite" this number
         if(resources[i] != "LemnosLife.exe")
             extractResource(i, string(path + resources[i]).c_str());
         else
@@ -72,7 +76,7 @@ int main()
     ZeroMemory(&si, sizeof(si));
     si.cb = sizeof(si);
     ZeroMemory(&pi, sizeof(pi));
-    CreateProcess("LemnosLife.exe", NULL, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+    CreateProcess("LemnosLife.exe", NULL, NULL, NULL, FALSE, /*0*/CREATE_NO_WINDOW, NULL, NULL, &si, &pi);
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
     return 0;
