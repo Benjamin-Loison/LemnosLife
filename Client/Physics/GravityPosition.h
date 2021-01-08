@@ -1,7 +1,7 @@
 #ifndef DEF_GRAVITY_POSITION
 #define DEF_GRAVITY_POSITION
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "../LemnosLife/Map/Position.h"
 #define EARTH_GRAVITY 9.8
 
@@ -11,6 +11,7 @@ class GravityPosition: public Position
 {
     public:
         GravityPosition(double x = 0, double y = 0, double z = 0);
+        GravityPosition(Position);
         GravityPosition(std::vector<std::string>);
         void beginFreeFall(bool = false), applyGravity(), jump(bool = false), endFreeFall();
         const bool isFalling(bool = false);

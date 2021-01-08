@@ -3,10 +3,11 @@
 
 #include <map>
 #include <string>
-#include <gl.h>
+#include <GL/gl.h>
 
-void initializeTextureManager(), freeTextureManager(), addTexture(std::string, std::string);
-GLuint addGetTexture(std::string, std::string), getTexture(std::string);
-bool isLoaded(std::string);
+void initializeTextureManager(), freeTextureManager();
+GLuint addGetTexture(std::string, std::string, bool = false), getTexture(std::string);
+bool isLoaded(std::string), addTexture(std::string, std::string, std::string = ""), finishedLoadingEverything();
+extern std::map<std::string, GLuint> textures; // optimization purpose (not very OOP like)
 
 #endif

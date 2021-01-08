@@ -2,8 +2,8 @@
 #define DEF_MAP_GL_OBJECT
 
 #define GLEW_STATIC
-#include <glew.h>
-#include <gl.h>
+#include <GL/glew.h>
+#include <GL/gl.h>
 #include <string>
 #include <vector>
 #include <glm.hpp>
@@ -21,14 +21,12 @@ class MapGlObject
         void initializeTexture(), initializeRender(), render(glm::vec3 translation = glm::vec3(0, 0, 0));
     private:
         double m_tex[4][2], m_vertex[4][3];
-        int m_id;
+        int m_id, m_vertices, m_size;
         std::string m_type, m_texturePath;
         GLuint m_texture;
         bool m_sky;
         Shader shader;
         unsigned int m_VBO, m_VAO;
-        int m_vertices;
-        int m_size;
 };
 
 #endif

@@ -1,20 +1,22 @@
-#ifndef _PARTITIONING_H_INCLUDED
-#define _PARTITIONING_H_INCLUDED
+#ifndef PARTITIONING_H_INCLUDED
+#define PARTITIONING_H_INCLUDED
 
 #include <vector>
+//#include "../../2D/vector2d.h"
 
 struct Point
 {
     Point();
     Point(double, double);
-    double x,y;
+    //Point(Vector2D);
+    double x, y;
 };
 
 struct Point3D
 {
     Point3D();
     Point3D(double, double, double);
-    double x,y,z;
+    double x, y, z;
 };
 
 struct Vector
@@ -37,18 +39,19 @@ struct Carre  // un carre contient une liste (ou tableau) de segments
 
 struct OBB
 {
-    Point A,B,C,D;
+    Point A, B, C, D;
     Segment AB, BC, CD, DA;
     std::vector<Segment> segments;
 };
 
-void initializePartition(int, int);
-bool addObject(double, double, double, double);
+#include "../Render/Engine/vector3d.h"
+
+void initializePartition(int, int), getMultipleOBBIntersections(Segment, int, int), getMultipleIntersections(Segment, int, int), computeSegments(OBB*);
+bool addObject(double, double, double, double), isCollided(OBB, OBB);
 std::vector<std::vector<Carre>> getMap();
-void getMultipleIntersections(Segment, int, int);
 int getMiddleX(), getMiddleY();
 std::vector<std::pair<int, int>> getGrid();
 OBB getOBBpartition();
-void getMultipleOBBIntersections(Segment, int, int);
+std::string toString(Segment);
 
-#endif // PARTITIONING_H_INCLUDED
+#endif

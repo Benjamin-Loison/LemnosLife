@@ -1,0 +1,8 @@
+#ifndef OPTIONS_H_INCLUDED
+#define OPTIONS_H_INCLUDED
+
+#define LOG_LAUNCH_TIME
+#define LOG_LAUNCH_MODULES
+//#define OTHER_OPTION_DISABLED
+
+#endif

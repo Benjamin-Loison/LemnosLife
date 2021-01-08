@@ -3,18 +3,27 @@
 
 #include "../../../LemnosLife/Render/Engine/engine.h"
 #include "../../../LemnosLife/Render/Shader.h"
+#include <float.h> // why is it here ?
+#include "../../Collision/partitioning.h"
+
+#define HEIGHT_LINE_3D 1000
 
 class Line3D // can be coded with one VAO ... ? (if so is better ?)
 {
     public:
         Line3D();
-        Line3D(double, double, glm::vec4 = glm::vec4(1, 0, 0, 1));
+        Line3D(double, double, glm::vec4 = glm::vec4(1, 0, 0, 1), double = -HEIGHT_LINE_3D, double = DBL_MAX, double = 0, double = HEIGHT_LINE_3D);
         Line3D(std::vector<double>, glm::vec4 = glm::vec4(1, 0, 0, 1));
         void render();
+        float m_verticesCoo[6];
     private:
         glm::vec4 m_color;
         unsigned int m_VBO, m_VAO, m_vertices;
         Shader m_shader; // can be used for multiple instances ?
 };
+
+#include "../../../LemnosLife/Map/Position.h"
+#include "../../../2D/vector2d.h"
+Line3D getLine3D(Point, glm::vec4), getLine3D(Position, glm::vec4 = glm::vec4(1, 0, 0, 1)), getLine3D(Vector2D, glm::vec4 = glm::vec4(1, 0, 0, 1));
 
 #endif
