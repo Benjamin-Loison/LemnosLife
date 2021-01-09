@@ -3,7 +3,7 @@ import os
 path0 = "C:\\Users\\Benjamin\\Desktop\\roads\\toLemnos\\"
 path1 = "C:\\Users\\Benjamin\\Desktop\\BensFolder\\DEV\\C and co\\C++\\Projects\\LemnosLife\\Client\\Client\\ExecuteArea\\test\\CodeBlocks\\Extensions\\LemnosLife\\Map\\Lemnos\\Roads"
 
-os.chdir(path0)
+os.chdir(path1)
 
 f = open("roads.txt", 'r')
 lines = f.readlines()
