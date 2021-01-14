@@ -1,6 +1,6 @@
 # LemnosLife
 
-<!-- Si vous avez un token d'accès au code source complet, utilisez-le ainsi dans un terminal équipé de git: git clone https://di:TOKEN@gitlab.com/Benjamin_Loison/LemnosLife.git (66.2 MB) -->
+Si vous avez un token d'accès au code source complet, utilisez-le ainsi dans un terminal équipé de git: git clone https://di:TOKEN@gitlab.com/Benjamin_Loison/LemnosLife.git (144 MB)
 
 Site web du jeu: https://lemnoslife.com/
 
