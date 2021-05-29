@@ -22,7 +22,7 @@ class GroundGl_object
              initializeTexture(std::string additionnalOption = "", bool force = false),
              initializeRender(bool callInitializeTexture = true, bool forceInitializeTexture = false),
              updateRender(),
-             render(bool isRoad = false),
+             render(bool isRoad = false, bool currentGLDebug = 0),
              changeBoolFirst(bool);
         std::string m_texturePath;
 
@@ -38,5 +38,8 @@ class GroundGl_object
         unsigned int m_VBO, m_VAO, m_IBO;
         int m_vertice, m_tex, m_indice;
 };
+
+extern unsigned long long totalIndices;
+void addChatMessageGlError(std::string identifier = ""); // could change this function location
 
 #endif

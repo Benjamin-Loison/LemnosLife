@@ -15,10 +15,10 @@ class GuiChat : public Gui
         double m_windowHeightDiv31;
 };
 
-extern std::vector<std::string> messageList;
+extern std::vector<std::string> messageList, messageSentList;
 extern std::vector<double> timeList;
 extern std::string writingText, lastMessage;
 extern int messageIndex;
-void addChatMessage(std::string), previousMessage(), nextMessage(), addChatMessageOnce(std::string);
+void addChatMessage(std::string), previousMessage(), nextMessage(), addChatMessageOnce(std::string), clearChat(), addChatMessageIfDifferentFromPreviousOne(std::string);
 
 #endif

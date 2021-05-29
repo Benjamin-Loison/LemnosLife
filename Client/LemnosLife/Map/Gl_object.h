@@ -29,6 +29,7 @@ class Gl_object
             //removeTranslationRotation(glm::vec3 trans, glm::vec3 rot),
             //removeTranslationRotation(Vector3D trans, unsigned short rot);
         //std::vector<std::vector<glm::vec3>> m_p_tmpQuickLaunchVertices;
+        std::vector<glm::vec4>* getVerticesPtr();
         std::vector<std::string> m_texturePaths;
         std::vector<glm::vec4> m_vertices;
     private:

@@ -11,7 +11,7 @@ extern std::string name, nameLg, nameUp, version, versionFull, ext, dir, assets,
                    animationsStaticFolder, animationsDynamicFolder;
 extern char pathSeparator;
 extern bool DEBUG;
-void free();
+void free(bool skipEngine = false);
 
 #define THREAD_MAIN 1
 #define THREAD_REAL_SHOOT 2

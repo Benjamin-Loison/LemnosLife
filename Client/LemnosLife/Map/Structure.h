@@ -33,7 +33,7 @@ class Structure
 };
 
 Gl_object loadFileStruc(std::string, bool sky = false);
-DynamicGl_object loadFileStrucDynamic(std::string structureFile, bool sky = false, std::string camouflage = "");
+DynamicGl_object loadFileStrucDynamic(std::string structureFile, bool sky = false, std::string camouflage = "", bool isMap = false);
 bool isATexture(std::string);
 
 // could for palm structure use a kind of skleton in order to curve leaves ? PhotoShop ?

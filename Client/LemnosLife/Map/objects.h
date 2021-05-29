@@ -24,5 +24,6 @@ bool isAnATM(unsigned short), lookingAnATM(unsigned short, unsigned short);
 double getMaxRadius(std::vector<glm::vec3> vertices), getMaxRadius(std::vector<glm::vec4> vertices);
 
 extern unsigned int itemsOnGroundAlready3D;
+extern unsigned long long checked, checkedDescending, checkedDescendingFromFoot, realChecked;
 
 #endif

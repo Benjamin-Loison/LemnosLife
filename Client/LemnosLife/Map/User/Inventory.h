@@ -24,6 +24,7 @@
 #define DEFAULT_HOTBAR_SELECTION 1
 
 #include "../Structure.h"
+#include "../../../MathPlus/math_plus.h"
 
 ///#define LOG_DEBUG_3D_ITEMS
 
@@ -43,7 +44,7 @@ class Item
         virtual ~Item() = default;
         bool needDisplayStack();
         foodAbility getFoodAbility();
-    protected:
+    protected: // well maybe not everything as protected ?
         unsigned int m_id, m_maxStack;
         std::string m_name, m_ammo, m_texture;
         unsigned short m_width, m_height;
@@ -58,11 +59,11 @@ class Slot
         Slot();
         Item* getItemPtr();
         unsigned int getStack();
-        void use(), stopUsing(), removeStack(unsigned int);
+        void use(), stopUsing(), removeStack(unsigned int), clear();
         bool isEmpty(), setItem(unsigned int = DEFAULT_ITEM, unsigned int = DEFAULT_STACK);
     private:
         Item m_item;
-        Item* m_itemPtr;
+        Item* m_itemPtr; /// should add a destructor to delete this at the end of use of slot
         unsigned int m_stack;
 };
 
@@ -72,11 +73,11 @@ class Backpack : public Item
         Backpack(); // seems to be required for non-initialize constructor which has one Backpack as an instance variable
         Backpack(std::string, std::string texture, unsigned int, unsigned short width, unsigned short height), Backpack(Backpack const&), Backpack(std::string, std::string, unsigned int, Backpack*), Backpack(std::string name, std::string texture, unsigned int maxStack, std::string content);
         unsigned short getStorageWidth(), getStorageHeight();
-        bool setItemInSlot(Slot*, unsigned short, unsigned short), isSlotAvailable(unsigned short, unsigned short), setItemInSlot(unsigned int itemId, unsigned int stack, unsigned short x, unsigned short y),
-             setItemInSlot(Slot*, std::pair<unsigned short, unsigned short>), isSlotAvailable(std::pair<unsigned short, unsigned short>);
-        Slot* getSlotPtr(unsigned short, unsigned short), *getSlotPtr(std::pair<unsigned short, unsigned short>);
-        std::pair<unsigned short, unsigned short> getSlotBackpack(unsigned short, unsigned short);
-        unsigned int getSlotItem(unsigned short x, unsigned short y);
+        bool setItemInSlotExcept(Slot*, unsigned short, unsigned short, unsigned short = UNSIGNED_SHORT_MAX, unsigned short = UNSIGNED_SHORT_MAX), setItemInSlot(Slot*, unsigned short, unsigned short), isSlotAvailable(unsigned short, unsigned short, unsigned short xExcept = UNSIGNED_SHORT_MAX, unsigned short yExcept = UNSIGNED_SHORT_MAX),
+             setItemInSlot(unsigned int itemId, unsigned int stack, unsigned short x, unsigned short y), setItemInSlot(Slot*, std::pair<unsigned short, unsigned short>, std::pair<unsigned short, unsigned short> = /*make_pair(*/{UNSIGNED_SHORT_MAX, UNSIGNED_SHORT_MAX}/*)*/), isSlotAvailable(std::pair<unsigned short, unsigned short>), addItem(/*Item**/Slot*, unsigned short*, unsigned short*);
+        Slot* getSlotPtr(unsigned short, unsigned short), *getSlotPtr(std::pair<unsigned short, unsigned short>), *getSlotPtrRoughly(unsigned short x, unsigned short y, unsigned short xExcept = UNSIGNED_SHORT_MAX, unsigned short yExcept = UNSIGNED_SHORT_MAX), *getSlotPtrRoughly(std::pair<unsigned short, unsigned short>);
+        std::pair<unsigned short, unsigned short> getSlotBackpack(unsigned short, unsigned short), getSlotBackpack(std::pair<unsigned short, unsigned short>), getCoordinatesForSlot(Slot* slotNeedle);
+        unsigned int getSlotItem(unsigned short x, unsigned short y, unsigned short xExcept = UNSIGNED_SHORT_MAX, unsigned short yExcept = UNSIGNED_SHORT_MAX);
         void clear(), setStorageSize(unsigned short, unsigned short), setStorageSize(Backpack*), setContent(std::string contentStr);//, fillWith(Backpack*);
         std::vector<Slot*> getNonNullSlots();
     private:
@@ -105,23 +106,25 @@ class Inventory
         Inventory(std::string username = "");
         Hotbar* getHotbarPtr();
         Slot* getHandPtr(), *getBackpackPtr();
-        void setItemInHand(Slot*), setBackpack(unsigned int = DEFAULT_ITEM), setBackpack(Slot*), doHandRender(/*double phi = 360, double theta = 91*/);
-        bool containsItem(unsigned int) /* not used for the moment as public */, containsItem(std::string), setItemInHand(unsigned int = DEFAULT_ITEM, unsigned int = DEFAULT_STACK), consumeAmmo(std::string, bool removeAmmo = false);
+        void setItemInHand(Slot*), setBackpack(unsigned int = DEFAULT_ITEM/*, bool forceRemoveRender = false*/), setBackpack(Slot*), doHandRender(/*double phi = 360, double theta = 91*/), doBackpackRender(), clear();
+        bool containsItem(unsigned int) /* not used for the moment as public */, containsItem(std::string), setItemInHand(unsigned int = DEFAULT_ITEM, unsigned int = DEFAULT_STACK), consumeAmmo(std::string, bool removeAmmo = false), isHoldingASniper(), isHoldingBinoculars();
     private:
+        void setBackpackCommon(/*bool forceRemoveRender = false*/);
         Hotbar m_hotbar;
         Slot m_hand, m_backpack;
         std::string m_username;
 };
 
 void initializeInventory(),
-     addElement(std::map<unsigned int, std::tuple<View, unsigned int, unsigned int>>*, std::tuple<View, unsigned int, unsigned int>),
+     addElement(std::map<unsigned int, std::tuple<View, unsigned int, unsigned int>>*, std::tuple<View, unsigned int, unsigned int>, unsigned int = UNSIGNED_INT_MAX),
      freeInventory(),
      clearGround();
-std::string getItemName(unsigned int), getItemNameLg(unsigned int);
+std::string getItemName(unsigned int), getItemNameLg(unsigned int), itemsOnGroundToString();
 //extern std::map<unsigned int, Gl_object> items3DDbg1;
 //extern std::map<unsigned int, Structure> items3DDbg0;
 extern std::map<unsigned int, DynamicGl_object> items3D;
-extern unsigned int itemInHandRenderId;
+//extern unsigned int itemInHandRenderId; // used to achieve to compile even if the variable wasn't declared --'
+//unsigned int getItemInHandRenderId();
 //extern bool stuffInHands, justRemoved;
 bool isABackpack(unsigned int itemId), isAGun(Slot*), isAGun(unsigned int itemId);
 extern std::map<unsigned int, std::tuple<double, double, double>> itemSizes;

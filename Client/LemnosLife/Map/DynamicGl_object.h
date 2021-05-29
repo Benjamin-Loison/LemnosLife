@@ -28,7 +28,7 @@ class DynamicGl_object
             initializeTranslations(std::vector<glm::vec3>*, std::vector<glm::vec3>*, bool updating = false),
             initializeTranslations(std::map<unsigned int, glm::vec3>, std::map<unsigned int, glm::vec3>),
             updateTranslations(std::vector<glm::vec3>, std::vector<glm::vec3>),
-            render(),
+            render(bool isHelicopter = false),
             changeBoolFirst(bool),
             initialize(bool updating = false), /// <- useless comment: "///"
             deleteFromId(unsigned int),  // not gpu one
@@ -63,9 +63,11 @@ class DynamicGl_object
         bool m_sky, m_transparency, m_first;
         Shader m_shader0, m_shader1;
         unsigned int m_VBO, m_VAO, m_translationVBO, m_angleVBO, m_IBO, m_realSize, m_maxId;
+        glm::mat4 modelview;
 };
 
 bool isOneNull(std::vector<GLuint>*);
 DynamicGl_object getDynamicGl_object(std::string texture, bool download = true);
+extern glm::vec3 currentRotation, currentPosition;
 
 #endif

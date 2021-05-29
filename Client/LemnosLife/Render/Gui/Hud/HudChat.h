@@ -16,5 +16,6 @@ class HudChat : public Gui
 };
 
 extern bool displayChat;
+extern int chatOffset;
 
 #endif

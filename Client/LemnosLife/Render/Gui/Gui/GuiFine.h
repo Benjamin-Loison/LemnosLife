@@ -12,9 +12,12 @@ class GuiFine : public Gui
         std::vector<Button> m_buttons;
         std::vector<Textfield> m_textfields;
         std::string targetUsername;
+        bool button0Clicked = false, button1Clicked = false, button2Clicked;
     private:
-        bool button0Clicked = false, button1Clicked = false;
-        void onButton0Clicked(), onButton1Clicked();
+        void onButton0Clicked(), onButton1Clicked(), onButton2Clicked();
 };
+
+extern unsigned long long amountFine;
+extern std::string reasonFine, targetUsernameFine;
 
 #endif

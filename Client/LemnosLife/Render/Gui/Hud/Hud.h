@@ -29,8 +29,8 @@
 
 extern bool hudActivated[HUD_NUMBER];
 
-void initializeHud(), addHud(std::string), removeHud(std::string), renderHud(), switchHud(std::string hud), checkHudItems();
-bool switchHudIfHasItem(std::string hud, std::string itemName = "", bool noItemWarning = false);
+void initializeHud(), addHud(std::string), removeHud(std::string), renderHud(), switchHud(std::string hud), checkHudItems(), disableAllHud();
+bool switchHudIfHasItem(std::string hud, std::string itemName = "", bool noItemWarning = false), isHudActivated(std::string hud);
 extern HudF3 *hudF3Ptr;
 extern HudHealth *hudHealthPtr;
 extern HudChat *hudChatPtr;

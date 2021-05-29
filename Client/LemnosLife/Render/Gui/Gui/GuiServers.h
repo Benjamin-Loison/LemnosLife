@@ -1,5 +1,5 @@
-#ifndef DEF_GUIMAINMENU
-#define DEF_GUIMAINMENU
+#ifndef DEF_GUISERVERS
+#define DEF_GUISERVERS
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -8,7 +8,7 @@
 #include "Gui.h"
 #include "Button.h"
 
-class GuiMainMenu : public Gui
+class GuiServers : public Gui
 {
     public:
         void initGui(), renderGui(), resizeGui();
@@ -18,8 +18,5 @@ class GuiMainMenu : public Gui
         double m_titleCenterY, m_titleWidthDiv2, m_titleWidthDiv4, m_titleWidthDiv8, m_titleHeightDiv2, m_titleHeightDiv4, windowWidthDiv4, m_titleCenterYError;
         void onButton0Clicked(), onButton1Clicked(), onButton2Clicked(), onButton3Clicked(), onButton4Clicked(), onButton5Clicked();
 };
-
-extern bool launchingGame, connectingToServer;
-extern std::string errorMessageGuiMainMenu, errorMessageGuiMainMenuTmp;
 
 #endif

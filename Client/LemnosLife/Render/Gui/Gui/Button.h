@@ -7,6 +7,7 @@
 #include <GL/glu.h>
 #include <SDL2/SDL.h>
 #include <string>
+//#include "Gui.h"
 
 //#define BOUTON_CLIQUE SDL_USEREVENT
 
@@ -15,7 +16,7 @@ class Button
     public:
         Button(std::string, std::string, double, double, double, double, /*int, *//*void (*) ()*/bool*, unsigned short = 0, bool = false);
         void resize(double, double, double, double), loadTxt(std::string);
-        bool render();
+        bool render(SDL_Color color = /*black*/{0, 0, 0, 255});
         std::string m_text;
         double m_middleY, m_height;
     private:
@@ -27,7 +28,7 @@ class Button
         unsigned short m_maxChars;
         //SDL_Event events;
         //void (*m_callBack) ();
-        bool* m_click, m_reversed;
+        bool* m_click, m_reversed; /// should add a destructor to manage this variable at the end of use of buttons
 };
 
 void initializeButtons();

@@ -12,7 +12,7 @@ class HudInteraction : public Gui
         bool isDynamic(), isEmpty(), needScrollDown = false, needScrollUp = false;
     private:
         unsigned int getOptionIndex(std::string);
-        void addOptionIfNotIn(std::string, void (*)(unsigned int), unsigned int), removeOptionsBeginningBy(std::string translated);
+        void addOptionIfNotIn(std::string, void (*)(unsigned int), unsigned int), removeOptionsBeginningBy(std::string needleStart, std::string needleEnd = "");
 };
 
 void loadStructuresDoors();

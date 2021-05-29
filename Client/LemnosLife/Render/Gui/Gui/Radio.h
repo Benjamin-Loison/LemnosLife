@@ -22,4 +22,6 @@ class Radio
         unsigned short m_lines, m_index, m_maxChars;
 };
 
+bool isDifferentData(std::vector<std::string> data, Radio* radio);
+
 #endif

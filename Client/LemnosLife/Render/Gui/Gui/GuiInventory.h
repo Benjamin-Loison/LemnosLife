@@ -12,7 +12,7 @@ class GuiInventory : public Gui
     public:
         void initGui(), resizeGui(), renderGui(), drawSlot(double, double), drawSlots(unsigned short height, unsigned short width, unsigned short xMin, unsigned short xMax, unsigned short y, bool isShop = false/*, bool boolFunction = nullptr*/), drawHands(double = 0), drawBackpackContent(Backpack*, double, double, double, unsigned short, bool = false), drawItemOnFly(Slot*), drawHandsBackground(double), select(unsigned short), resetSelection(),
             refreshMouseCoordinates(), refreshSelection(unsigned short, double = 0, Backpack* = nullptr), addToDrawItemOnFly(Slot* slot), drawItemsOnFly();
-        bool isMouseInHands(double = 0), isMouseInBackpackSlot(), isMouseInBackpackSlots(Backpack*), isMouseInVicinity(), isShop, isVehicle, isMouseInShop();
+        bool isMouseInHands(double = 0), isMouseInBackpackSlot(), isMouseInBackpackSlots(Backpack*), isMouseInVicinity(), isShop, isVehicle, isPlayer, isMouseInShop();
         std::pair<unsigned short, unsigned short> getSlotSelectByMouseInBackpack(Backpack*, double, double);
     private:
         double m_slotSize, m_middleLeft, m_middleRight, m_middleBetween, m_middleTop0, m_middleHand, m_middleHands, m_middleTop1, m_leftLeft, m_leftRight, m_sideTop, m_sideBottom0, m_sideBottom1, m_leftMiddleHori, m_sideMiddleVerti0, m_sideMiddleVerti1, m_rightLeft,
@@ -20,7 +20,7 @@ class GuiInventory : public Gui
 };
 
 extern Backpack* shopBackpack;
-void setShopBackpack(std::string shopName, bool forceSize = false);
+void setShopBackpack(std::string shopName, bool forceSize = false), setPlayerBackpack(std::string content);
 extern std::string shopName;
 extern Vehicle* shopVehiclePtr;
 

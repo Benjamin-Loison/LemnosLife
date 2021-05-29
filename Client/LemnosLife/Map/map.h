@@ -17,16 +17,18 @@
 // when map will be clean should change to DEVELOPER maybe should add a grade Mapper/Architecte ? or a permission like building.perm
 
 void initializeMap(), loadMap(std::string, bool = false, bool = false), loadCachedMap(std::string), renderMap(), initializeMapRender(), checkChunkChange(/*double, double*/bool force = false);
-bool getFirstBool();
+bool getFirstBool(), isCurrentChunkLoading();
 extern std::string currentMapFolderPath, structuresFolder, biomesFolder, roadsFolder, farmsFolder;
 extern std::map<std::string, Chunk> chunksLoaded; // works with subchunk of 100m
 extern std::tuple<std::map<std::string, bool>, std::map<std::string, double>, std::map<std::string, long long>, std::map<std::string, std::string>> mapData;
 extern double groundAltitudeValue;
-extern bool isMapLoaded, testMapBool;
+extern bool isMapLoaded, testMapBool, mapLoading;
 
 extern std::vector<Line3D> debugLines;
 
 extern double defaultSpawnX, defaultSpawnY, defaultSpawnZ;
+// maybe could unify all these sections ?
+
 // for sea
 extern int mapSize;
 extern std::string currentChunk;

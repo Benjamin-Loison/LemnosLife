@@ -17,7 +17,9 @@ class GuiLemnosInventory : public Gui
         std::vector<Radio> m_radios;
         std::vector<Button> m_buttons;
         std::vector<TextBox> m_textboxes;
-        void onButton0Clicked(), onButton1Clicked(), onButton2Clicked(), onButton3Clicked(), onButton4Clicked(), resetUsernames();
+        void onButton0Clicked(), onButton1Clicked(), onButton2Clicked(), onButton3Clicked(), onButton4Clicked(), resetUsernames(), updateUsernames();
 };
+
+//extern bool needUpdateUsernames;
 
 #endif
