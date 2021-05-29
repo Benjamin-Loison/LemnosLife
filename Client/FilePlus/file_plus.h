@@ -4,7 +4,10 @@
 #include <vector>
 #include <string>
 
-#define Gfu6jAQs 94
+//#define OBFUSCATE_KEY
+#ifdef OBFUSCATE_KEY
+    #define Gfu6jAQs 94
+#endif
 
 bool createDirectory(std::string), directoryExists(std::string), doesFileExist(std::string), writeFile(std::string, std::string, std::string), writeFile(std::string, std::string, std::vector<std::string>), removeFile(std::string);
 std::vector<std::string> getFileContent(std::string path, bool live = false, bool readComments = true, bool encrypted = false);

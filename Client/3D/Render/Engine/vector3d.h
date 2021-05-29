@@ -11,7 +11,7 @@
 class Vector3D
 {
     public:
-        double X, Y, Z, length() const;
+        double X, Y, Z, length() const, quickLength() const;
         Vector3D();
         Vector3D(std::string, std::string delimiter = ";");
         Vector3D(double, double = 0, double = 0);
@@ -40,7 +40,7 @@ class Vector3D
 
 Vector3D moduloVector(Vector3D, double)/*, getVec3(Point point, double z)*/; // if in class bug of one in the other
 //#include "../../../2D/vector2d.h"
-double distance(Vector3D, Vector3D);//, distance(Vector2D, Vector2D);
+double distance(Vector3D, Vector3D), quickDistance(Vector3D, Vector3D);//, distance(Vector2D, Vector2D);
 
 /*#include "../../../LemnosLife/Map/User/ViewGravity.h"
 

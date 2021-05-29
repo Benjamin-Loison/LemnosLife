@@ -48,13 +48,13 @@ point getIntersection(line, line), rotate(point, double = PI_DIVIDED_BY_2), rota
 bool isInteger(double), isLine(double, double), isIntersection(line, line);
 line getLine(double, double, double, double), getLine(point, point);
 int absolute(int);
-double remainderEuclidianDivision(double, double), remainderEuclidianDivisionStrict(double, double), distance(double, double, double, double), distance(double, double, double, double, double, double), distance(point, point), min(double, double),
-       min(double, double, double, double), max(double, double), max(double, double, double, double), getRadians(double), cosDeg(double), sinDeg(double), compute(std::string str), getDegrees(double radians), epsilon(double),
+double remainderEuclidianDivision(double, double), remainderEuclidianDivisionStrict(double, double), distance(double, double), distance(double, double, double, double), distance(double, double, double, double, double, double), distance(point, point), getMin(double, double),
+       getMin(double, double, double, double), getMax(double, double), getMax(double, double, double, double), getRadians(double), cosDeg(double), sinDeg(double), tanDeg(double), compute(std::string str), getDegrees(double radians), epsilon(double),
        roundDecimals(double x, unsigned short n = 1), ceilDecimals(double x, unsigned short n = 1), distance(Vector2D, Vector2D);
 long long timeIn(double, double), integerDivision(double, double), integerIn(double, double), timeInStrict(double, double);
 Vector2D getVector2D(point), rotate(Vector2D vec, double angle), rotate(Vector2D vec, Vector2D rotationPoint, double angle); // why point and Vector2D both exist ?
 std::pair<double, double> solveSystem2Equations2Unknowns(Vector2D, Vector2D, Vector2D);
-Vector3D rotate(Vector3D, double), rotate(Vector3D, double theta, double phi, double roll), rotate(Position, ViewAngle), rotate(Position, ViewAngle*), rotate(Vector3D, ViewAngle*);
+Vector3D rotate(Vector3D, double), rotate(Vector3D, Vector3D, double theta, double phi, double roll, bool GLSLmethod = false), rotate(Position, ViewAngle), rotate(Position, ViewAngle*), rotate(Vector3D, ViewAngle*);
 std::string computeStr(std::string);
 unsigned int sum(std::map<std::string, unsigned int>);
 

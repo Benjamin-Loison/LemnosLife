@@ -12,6 +12,7 @@ std::vector<std::string> lgd(std::vector<std::string> ids);
 
 extern std::string languageFolder;
 
+/// could make an external algorithm to get max size ?
 #define lg(format, args...) \
     ({ \
         string a;\

@@ -61,7 +61,7 @@ class Vehicle
         Vehicle(unsigned int, std::string, std::string, ViewGravity, bool isLocked, Backpack* container/* = nullptr*//*otherwise doesn't initialize and could involve crash because of NPE*/);
         void initializeRender(), render(), initializeVehicle(), initializeTexture(), initializeVehicles(), setUserSeat(unsigned short, User* = nullptr), increaseThrottle(double), decreaseThrottle(double), getOutUser(User*), addTurn(double), changeSirenBool(),
              /*, turnOnEngine(), turnOffEngine()*/removeFuelDistance(double distance), gasStationFillVehicle(), repair(), setView(Position, ViewAngle = ViewAngle()), updateGraphics(), computeOBB(Position = Position()), setSpeed(double = 0), setContainer(std::string containerStr),
-             movePassengers(), initializeGraphic(), onVehicleMoved(/*bool justMovePassengers = false*/); // onVehicleMoved used to be private before repairman job
+             movePassengers(), initializeGraphic(), onVehicleMoved(/*bool justMovePassengers = false*/bool preciseVehicleId = false), setSirenBool(bool siren); // onVehicleMoved used to be private before repairman job
         std::pair<unsigned short, double> isPlayerInRange(User*);
         bool isSeatEmpty(unsigned short), isOnGround(), isEngineRunning(), setEngineState(bool = false), addFuel(double fuelQuantity), isEmpty(), haveAWheelInWater(), isLocked(), switchLock(), hasSpaceContainer();
         Position getPosition(), getContainerPosition(), getContainerPositionRotated();
@@ -86,17 +86,18 @@ class Vehicle
         Position m_lastPosition, m_containerPosition; // may have multiple containers ?
         std::vector<Seat> m_seats;
         std::vector<std::string> m_keys;
-        double m_phi, m_theta, m_roll, m_turn, m_seatDistance, m_top, m_F5Distance, m_tankCapacity, m_fuelConsumption, m_fuel, m_engineHeight, m_speed;//, m_lastAngle; - I believe roll is the reason why we don't use ViewGravity (maybe we should add roll parameter to ViewAngle ?)
+        double m_phi, m_theta, m_roll, m_turn, m_seatDistance, m_top, m_F5Distance, m_tankCapacity, m_fuelConsumption, m_fuel, m_engineHeight, m_speed, m_maxSpeed, m_lastVehicleAngle;//, m_lastAngle; - I believe roll is the reason why we don't use ViewGravity (maybe we should add roll parameter to ViewAngle ?)
         // fuel: https://fr.wikipedia.org/wiki/Volkswagen_Polo_VI#Essence
         unsigned int m_id, m_idGPU;
         void removeFuel(double);
         VehicleType m_vehicleType;
         Force m_throttle;
-        Backpack* m_container; // should rename backpack to container ?
+        Backpack* m_container; // should rename backpack to container ? - should also make a destructor to remove this from memory at the end of use of vehicle
         OBB m_box;
 };
 
-#define MAXIMAL_VEHICLE_DISTANCE 4
+//#define MAXIMAL_VEHICLE_DISTANCE 4
+#define MAXIMAL_VEHICLE_DISTANCE 10
 
 extern std::vector<DynamicGl_object> vehicleModels;
 void addVehicle(unsigned int vehicleId, std::string vehicleName, std::string camouflageId, bool isLocked, ViewGravity viewGravity), addVehicle(unsigned int vehicleId, std::string vehicleName, std::string camouflageId, View view, bool isLocked, std::string containerStr),
@@ -107,11 +108,18 @@ extern std::map<unsigned int, Vehicle*> vehicles; /// using pointers in vector o
 extern std::map<std::string, unsigned int> vehicleIndexes;
 Seat* getRidingVehicleSeat(User*);
 Vehicle* getRidingVehicle(User*), *getTargetingVehicle(double maxDistance = MAXIMAL_VEHICLE_DISTANCE);
-double distance(User*, Vehicle*);
+double distance(User*, Vehicle*), distancePlayerToPlayer(User*, User*);
 extern bool vehicleCollisionsDebug, vehiclesInitialized;
 bool isVehiclesToAddEmpty(); // likewise no extern access
 extern std::atomic<bool> vehiclesToAddEmpty;
-std::string toString(VehicleType);
+std::string toString(VehicleType), vehiclesToString();
+
+// cosSinTables
+
+extern float* cosTable, *sinTable;
+extern unsigned int cosSinTableSize;
+extern double cosSinTableUpperBound;
+
 
 // not using VEHICLES_SAVE here because problem with include in DynamicGl_Object header otherwise
 

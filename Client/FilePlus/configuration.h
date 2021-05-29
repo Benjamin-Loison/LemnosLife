@@ -23,6 +23,9 @@ std::map<std::string, std::string> loadConfigurationString(std::string);
 std::tuple<std::map<std::string, bool>, std::map<std::string, double>, std::map<std::string, long long>, std::map<std::string, std::string>> loadConfiguration(std::string);
 SDL_Keycode getSDLKey(std::string);
 double getDoubleConfig(std::string key);
+bool getBoolConfig(std::string key);
+extern std::string configurationFolder;
 //extern std::vector<std::string> in;
+//extern double DEBUG_SIZE;
 
 #endif

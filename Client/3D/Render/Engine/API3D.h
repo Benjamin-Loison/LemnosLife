@@ -11,10 +11,11 @@
 class Line3D // can be coded with one VAO ... ? (if so is better ?)
 {
     public:
+        /// add a destructor to manage GPU variables
         Line3D();
         Line3D(double, double, glm::vec4 = glm::vec4(1, 0, 0, 1), double = -HEIGHT_LINE_3D, double = DBL_MAX, double = 0, double = HEIGHT_LINE_3D);
         Line3D(std::vector<double>, glm::vec4 = glm::vec4(1, 0, 0, 1));
-        void render();
+        void render(), free();
         float m_verticesCoo[6];
     private:
         glm::vec4 m_color;

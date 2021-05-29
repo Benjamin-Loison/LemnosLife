@@ -4,5 +4,6 @@
 #include <string>
 
 void executeCommand(std::string);
+std::string exec(std::string), getHardwareConfiguration();
 
 #endif

@@ -3,7 +3,7 @@
 
 #include "../LemnosLife/Map/User/User.h"
 
-void initializeAnimations(), setStatic(User* user, std::string staticName), setStaticNotGraphicThread(User* user, std::string staticName), manageAnimations(), loadAnimation(std::string);
+void initializeAnimations(), setStatic(User* user, std::string staticName), setStaticNotGraphicThread(User* user, std::string staticName), setStaticNotGraphicThread(std::string username, std::string staticName), manageAnimations(), loadAnimation(std::string);
 extern unsigned int transSize;
 bool isAnAnimationName(std::string animationName);
 
