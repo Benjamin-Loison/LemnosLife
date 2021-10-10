@@ -6,11 +6,16 @@ if(configurationData["gameplay"] == GAMEPLAY_CITERP)
         {
             vector<Vector3D> vecs = {Vector3D(0, 0, 0), Vector3D(100, 100, 0)};
             unsigned short vecsSize = vecs.size();
+            vector<string> messages;
             for(unsigned short vecsIndex = 0; vecsIndex < vecsSize; vecsIndex++)
             {
+                // could also send for every user the nearest vec sound
                 Vector3D vec = vecs[vecsIndex];
-                sendAllUsers("Sound wall " + toString(vec, ","));
+                string message = "Sound wall " + toString(vec, ",");
+                //sendAllUsers(message);
+                messages.push_back(message);
             }
+            sendAllUsers(joinNetworkMessages(messages));
         }
         else
         {
