@@ -50,48 +50,48 @@ Vector2D angle(Vector2D PI, Vector2D PJ, vector<Vector2D> l, short sens)
     // détermine le point le plus proche de PI PJ dans le sens trigo (sens = 1) ou non un point est candidat si le sinus de l'angle a le signe de sens l'algo renvoie PI s'il n'en trouve pas parmi les candidats, l'angle est maximal si le cos est minimal
     double xk = PI.X, yk = PI.Y,
            sck = 2;
-	unsigned int lSize = l.size();
+    unsigned int lSize = l.size();
     for(unsigned int lIndex = 0; lIndex < lSize; lIndex++)
-	{
-		Vector2D z = l[lIndex];
-		double xz = z.X, yz = z.Y,
+    {
+        Vector2D z = l[lIndex];
+        double xz = z.X, yz = z.Y,
                a = PI.X - xz, b = PI.Y - yz, c = PK.X - xz, d = PJ.Y - yz;
         if(sens * det(a, b, c, d) > 0) // on compare des entiers ici!
-		{
-			// is sc really a double ? not just an integer ?
+        {
+            // is sc really a double ? not just an integer ?
             double sc = (a * c + b * d) / (((a ** 2 + b ** 2) * (c ** 2 + d ** 2)) ** (1 / 2));
             if(sc < sck)
-			{
+            {
                 xk = z.X;
-				yk = z.Y;
+                yk = z.Y;
                 sck = sc;
-			}
-		}
-	}
+            }
+        }
+    }
     return Vector2D(xk, yk);
 }
 
 /*vector<Vector2D> sorted(vector<Vector2D> abc) // should make a general function likewise could also be used by inserec function
 {
-	Vector2D a = abc[0], b = abc[1], c = abc[2];
-	vector<Vector2D> res; // how to return in one line a new vector ?
-	if(a < b)
-	{
-		if(b < c)
-		{
-			res.push_back();
-		}
-	}
-	else
-	{
-		
-	}
-	return res;
+    Vector2D a = abc[0], b = abc[1], c = abc[2];
+    vector<Vector2D> res; // how to return in one line a new vector ?
+    if(a < b)
+    {
+        if(b < c)
+        {
+            res.push_back();
+        }
+    }
+    else
+    {
+        
+    }
+    return res;
 }*/
 
 vector<Vector2D> sorted(vector<Vector2D> toSort) // TODO: should optimize
 {
-	
+    
 }
 
 void insere(vector<vector<Vector2D>> l, Vector2D a, Vector2D b, Vector2D c)
@@ -115,67 +115,67 @@ Vector2D proche(PI, l)
 {
     // on détermine le point de l le plus proche de PI (d minimal)
     double d = -1;
-	// could initialize to the maximum or first distance and remove the check statement in the following if
+    // could initialize to the maximum or first distance and remove the check statement in the following if
     Vector2D PJ; // warning not initialized ?
-	
-	unsigned int lSize = l.size();
-	for(unsigned int lIndex = 0; lIndex < lSize; lIndex++)
+    
+    unsigned int lSize = l.size();
+    for(unsigned int lIndex = 0; lIndex < lSize; lIndex++)
     {
-		Vector2D x = l[lIndex];
+        Vector2D x = l[lIndex];
         double nd = (x.X - PI.X) ** 2 + (x.Y - PI.Y) ** 2;
         if(x != PI and (d < 0 or nd < d)) // != operator doesn't seem to be coded
-		{
+        {
             d = nd;
             PJ = x;
-		}
+        }
     }
-	return PJ;
+    return PJ;
 }
     
 pair<vector<vector<Vector2D>>, vector<vector<Vector2D>>> delaunay(vector<Vector2D> l)
 {
-	unsigned int lSize = l.size();
+    unsigned int lSize = l.size();
     if(lSize < 3) // is impossible by code ?
-	{
+    {
         print("Il faut au moins 3 points !");
     }
     vector<vector<Vector2D>> triangle, // liste de triangulation sans redondance
-							 enveloppe; // enveloppe convexe en prime (better algorithms to compute it faster ?)
+                             enveloppe; // enveloppe convexe en prime (better algorithms to compute it faster ?)
     for(unsigned int lIndex = 0; lIndex < lSize; lIndex++):
     {
-		Vector2D PI = l[lIndex], PJ = proche(PI, l),PH = PJ;
-		// on passe donc en revue tous les points de la liste
+        Vector2D PI = l[lIndex], PJ = proche(PI, l),PH = PJ;
+        // on passe donc en revue tous les points de la liste
         //PJ est donc le point le plus proche de PI trouvé 
         bool pasFini = true; // passera à false quand on aura fini le traitement de PI
         short sens = 1;  // on commence par le sens trigo
         while(pasFini)
-		{
+        {
             PK = angle(PI, PH, l, sens);
             if(PK == PJ) // need to code == operator for Vector2D // on tombe sur PJ donc on a fait un tour complet
             {
-				insere(triangle, PI, PH, PJ);
+                insere(triangle, PI, PH, PJ);
                 pasFini = false;
             }
-			else if(PK == PI)  // on ne trouve pas de points: on est sur le bord
+            else if(PK == PI)  // on ne trouve pas de points: on est sur le bord
             {
-				inserec(enveloppe, PI, PH);
+                inserec(enveloppe, PI, PH);
                 if(sens == -1) // si on n'est pas dans le sens trigo c'est fini
-				{
+                {
                     pasFini = false;
-				}
+                }
                 else //sinon on inverse le sens et on repart de PJ
-				{
+                {
                     sens = -1;
                     PH = PJ;
-				}
+                }
             }
-			else // cas général: on a trouvé un triangle à ajouter
+            else // cas général: on a trouvé un triangle à ajouter
             {
-				insere(triangle, PI, PH, PK);
+                insere(triangle, PI, PH, PK);
                 PH = PK;
-			}
-		}
-	}
+            }
+        }
+    }
     return make_pair(triangle, enveloppe);
 }
 
