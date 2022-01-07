@@ -5,7 +5,7 @@ If you have a full source code access token, use it in a terminal with git: git 
 
 Video game website: https://lemnoslife.com
 
-Development videos available [here](https://www.youtube.com/playlist?list=PLiJOYdwXbxtZqneWzvr21YzEiTG-QiPKZ).
+Development videos available [here](https://www.youtube.com/playlist?list=PLKAl8tt2R8Oeg5qoeuomTXmPNjVvGKCxt).
 
 You can find here some stuff about the game called "LemnosLife".<br/><br/>
 Please quote me if you use my code.
