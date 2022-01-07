@@ -1,7 +1,7 @@
 # LemnosLife
 
-If you have a full source code access token, use it in a terminal with git: git clone https://cs:TOKEN@gitlab.com/Benjamin_Loison/LemnosLife.git (144 MB)
-<!--Si vous avez un token d'accès au code source complet, utilisez-le ainsi dans un terminal équipé de git: git clone https://ia:TOKEN@gitlab.com/Benjamin_Loison/LemnosLife.git (144 MB)-->
+If you have a full source code access token, use it in a terminal with git: git clone https://git:TOKEN@gitlab.com/Benjamin_Loison/LemnosLife.git (144 MB)
+<!--Si vous avez un token d'accès au code source complet, utilisez-le ainsi dans un terminal équipé de git: git clone https://git:TOKEN@gitlab.com/Benjamin_Loison/LemnosLife.git (144 MB)-->
 
 Video game website: https://lemnoslife.com
 
