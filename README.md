@@ -20,4 +20,5 @@ Following code counting is done without third party or libraries:
 | Website and panel                                 | 32    | 3    | 75    |
 | Total                                             | 443   | 83   | 3 719 |
 
-![alt text](https://github.com/Benjamin-Loison/LemnosLife/raw/master/website/Website/Media/Pictures/1.png)
+<!--![alt text](https://github.com/Benjamin-Loison/LemnosLife/raw/master/website/Website/Media/Pictures/1.png)-->
+![alt text](https://github.com/Benjamin-Loison/LemnosLife/raw/master/gallery/Altis%20from%20sky.png)
