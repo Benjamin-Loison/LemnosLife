@@ -11,6 +11,8 @@ Video game website: https://lemnoslife.com
 Development videos available [here](https://www.youtube.com/playlist?list=PLKAl8tt2R8Oeg5qoeuomTXmPNjVvGKCxt).
 
 You can find here some stuff about the game called "LemnosLife".<br/><br/>
+Note that LemnosLife is the standalone adaptation of [AltisCraft.fr](https://github.com/Benjamin-Loison/AltisCraft.fr) on Minecraft.
+
 Any copy paste from these sources [is currently forbidden](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository#choosing-the-right-license).
 
 Following code counting is done without third party or libraries:
