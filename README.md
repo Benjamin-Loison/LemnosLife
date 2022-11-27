@@ -1,10 +1,27 @@
 # LemnosLife
 
-If you have a full source code (144 MB) access token, use it in a terminal with git:
+## If you have full source code access tokens:
+
+To access the C++ client source code (1.1 MB), use in a terminal with [`git`](https://git-scm.com):
 
 ```
-git clone https://git:TOKEN@gitlab.com/Benjamin_Loison/LemnosLife.git
+git clone https://git:CPP_CLIENT_TOKEN@github.com/Benjamin-Loison/LemnosLife-Client.git
 ```
+
+You can also list and consult the issues by using respectively in a terminal with [`gh`](https://cli.github.com):
+
+```
+gh issue list
+gh issue view issueId
+```
+
+To access other source code (weights 47.1 MB, includes: server, installer, website...), use in a terminal with `git`:
+
+```
+git clone https://git:OTHER_SOURCE_CODE_TOKEN@gitlab.com/Benjamin_Loison/LemnosLife.git
+```
+
+## About:
 
 Video game website: https://lemnoslife.com
 
