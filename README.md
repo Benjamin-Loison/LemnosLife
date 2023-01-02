@@ -10,6 +10,13 @@ git clone https://git:CPP_CLIENT_TOKEN@github.com/Benjamin-Loison/LemnosLife-Cli
 
 You can also list and consult the issues by using respectively in a terminal with [`gh`](https://cli.github.com):
 
+> **_NOTE_**: To authenticate using `gh`:
+> - Run `gh auth login`
+> - Choose `GitHub.com`
+> - Choose either (`HTTPS` and `No`) or (`SSH` and `Skip`)
+> - Choose `Paste an authentication token`
+> - Provide the `CPP_CLIENT_TOKEN` as above
+
 ```
 gh issue list
 gh issue view issueId
