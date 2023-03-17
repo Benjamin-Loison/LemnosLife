@@ -30,14 +30,14 @@ char actualVersion[lengthActualVersion], pathSeparator;
 SDL_Window* screen;
 TTF_Font* font24, *font35;
 // on pourrait rajouter un système pour reprendre une mise à jour arrêté au niveau du téléchargement (et uniquement à ce niveau)
-string getInternet(string), name = "LemnosLife - Système de mises à jour (Mise à jour en cours)"/*devons nous vraiment préciser mise à jour en cours ?*/, updateLine = "Chargement en cours...", fileDownload = "",
+string getHttps(string), name = "LemnosLife - Système de mises à jour (Mise à jour en cours)"/*devons nous vraiment préciser mise à jour en cours ?*/, updateLine = "Chargement en cours...", fileDownload = "",
        versionDownload = "", unit = "", gameFolder = "", majFile = "MAJ.info", path = "", folder = "", httpsPrefix = "https:", maj = "", currentVersion = "", logPath = "log.txt", urlZIP = "";
 vector<string> filesToDownload;
 map<string, vector<string>> changeFilesVersion;
 deque<string> changeLogTmp, changeLog;
 thread updateThread, updaterThread;
 double progress = 0, amountDownloaded = 0, amountToDownload = 0, unitDiv = 0;
-void eventManager(), renderScreen(), updateManager(), free(), size(), launch(bool), downloadFileInternet(string, string), updateScreen(), print(string s);
+void eventManager(), renderScreen(), updateManager(), free(), size(), launch(bool), downloadFileHttps(string, string), updateScreen(), print(string s);
 int windowWidth = 0, windowHeight = 0, posY = 0, rendered = 0;
 GLuint background = 0, loadTexture(const char*);
 unsigned long getFileSize(/*string*/vector<string>);
@@ -255,7 +255,7 @@ void print(string s)
 bool needUpdate()
 {
     // TODO: crypt content without homemade (compare local and server crypted version) /// THINK AGAIN AT THE SYSTEM (user knows version not crypted and can crypt himself or ask friends)
-    maj = getInternet("http://lemnoslife.com/MAJLatest.txt");
+    maj = getHttps("https://lemnoslife.com/MAJLatest.txt");
     currentVersion = getFileContentString(majFile); // does it work fine even if file doesn't exist ?
     currentVersionNumber = cleanVersion(currentVersion == "" ? 0 : convertStrToInt(replaceAll(currentVersion, "."))); // doesn't used to have the replace ^^
     latestVersionNumber = cleanVersion(convertStrToInt(replaceAll(maj, ".")));
@@ -336,7 +336,7 @@ void downloadAndUnzip(string url, string archiveName)
     updateUnit(&amountToDownload, &unit, &unitDiv, "Go");
     downloadInit = true;
     textInit = true;
-    downloadFileInternet(urlZIP, "../Game/" + archiveName);
+    downloadFileHttps(urlZIP, "../Game/" + archiveName);
     textInit = false;
     ///updateLine = "Décompression de l'archive...";
     ///system("cd ../Game/ && unzip.exe -o -q changes.zip && del changes.zip"); // this suddenly display a console
@@ -386,7 +386,7 @@ void updater()
         currentVersion = maj;
         print("Installing from scratch");
     }
-    string majFolder = "http://lemnoslife.com/MAJ/" + currentVersion + "/", url = majFolder + "changelogs.txt", changelogs = getInternet(url);
+    string majFolder = "https://lemnoslife.com/MAJ/" + currentVersion + "/", url = majFolder + "changelogs.txt", changelogs = getHttps(url);
     vector<string> lines = split(changelogs, "\n");
     //cout << "!" << changelogs << "!" << url << "!" << majFolder << "!" << endl;
     print("Downloading: " + url);
@@ -435,7 +435,7 @@ void updateScreen()
 {
     if(first)
     {
-        vector<string> news = split(getInternet("http://lemnoslife.com/MAJ.txt"), "\n");
+        vector<string> news = split(getHttps("https://lemnoslife.com/MAJ.txt"), "\n");
         for(unsigned int i = 0; i < news.size(); i++)
         {
             changeLog.push_back(news[i]);
@@ -807,20 +807,15 @@ size_t writeData(void *ptr, size_t size, size_t nmemb, FILE *stream)
     return fwrite(ptr, size, nmemb, stream);
 }
 
-string httpUrl(string url)
+string escapeUrl(string url)
 {
     return replaceAll(replaceAll(replaceAll(url, "%", "%25"), " ", "%20"), "`", "%60");
 }
 
-void downloadFileHttp(string url, string name, bool https) // could remove https as an argument and initialized it by calling a function
+void downloadFileHttps(string url, string name)
 {
     CURL *curl = curl_easy_init();
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    if(https)
-    {
-        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
-        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
-    }
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeData);
     FILE *fp = fopen(name.c_str(), "wb");
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
@@ -829,21 +824,10 @@ void downloadFileHttp(string url, string name, bool https) // could remove https
     fclose(fp);
 }
 
-void downloadFileInternet(string url, string name) /// TODO: replace ' ' with "%20"
-{
-    url = httpUrl(url);
-    return downloadFileHttp(url, name, startsWith(url, httpsPrefix));
-}
-
-string getHttp(string url, bool https = false)
+string getHttps(string url)
 {
     CURL *curl = curl_easy_init();
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    if(https)
-    {
-        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
-        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
-    }
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
     string got;
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &got);
@@ -865,10 +849,4 @@ string toString(vector<string> vec, string delimiter)
         }
     }
     return res;
-}
-
-string getInternet(string url)
-{
-    url = httpUrl(url);
-    return getHttp(url, startsWith(url, httpsPrefix));
 }
