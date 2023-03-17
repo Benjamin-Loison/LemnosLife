@@ -1,10 +1,16 @@
 #include <string>
 #include "shlobj.h"
-#include <iostream>
-#include <fcntl.h>
+//#include <iostream>
+//#include <fcntl.h>
+
+#include <sys/stat.h>
+
+#define RESOURCES_NB 17
 using namespace std;
 
-string name = "TerraCraft", resources[] = {"LemnosLife - MAJ.exe", "libcurl-x64.dll", "libfreetype-6.dll", "libjpeg-9.dll", "SDL2.dll", "SDL2_image.dll", "SDL2_ttf.dll", "libgcc_s_seh-1.dll", "zlib1.dll", "libcrypto-1_1-x64.dll", "libssl-1_1-x64.dll", "arial.ttf", "background.jpg", "libwinpthread-1.dll", "msvcr120.dll", "LemnosLife.exe", "unzip.exe", "unzip32.dll", "libstdc++-6.dll"};
+string name = "TerraCraft", resources[] = {"LemnosLife - MAJ.exe", "libcurl-x64.dll", "libfreetype-6.dll", "libjpeg-9.dll", "SDL2.dll", "SDL2_image.dll", "SDL2_ttf.dll",
+                                           "libgcc_s_seh-1.dll", "zlib1.dll", "libcrypto-1_1-x64.dll", "libssl-1_1-x64.dll", "arial.ttf", "background.jpg", "libwinpthread-1.dll",
+                                           "msvcr120.dll"/*, "LemnosLife.exe"*//*, "unzip.exe", "unzip32.dll"*/, "libstdc++-6.dll"};
 
 // TODO: faster
 
@@ -25,7 +31,20 @@ bool extractResource(DWORD resId, LPCTSTR fileName)
     return dwWrite == dwSize;
 }
 
-/// need to unlink/link when update LemnosLife - MAJ for instance
+/// need to unlink/link when update LemnosLife - MAJ for instance - ?
+
+bool doesFileExist(string name)
+{
+    struct stat buffer;
+    return stat(name.c_str(), &buffer) == 0;
+}
+
+char pathSeparator =
+#ifdef _WIN32
+    '\\';
+#else
+    '/';
+#endif
 
 int main()
 {
@@ -53,31 +72,38 @@ int main()
     *stderr = *fp;
     setvbuf(stderr, NULL, _IONBF, 0);
     ios::sync_with_stdio();*/
-    char pathSeparator =
-    #ifdef _WIN32
-        '\\';
-    #else
-        '/';
-    #endif
     //TCHAR szPath[MAX_PATH];
     //SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, 0, szPath);
-    string tc = string(getenv("APPDATA")) + pathSeparator + name + pathSeparator, game = tc + "Games" + pathSeparator, ac = game + "LemnosLife" + pathSeparator, path = ac + "Updater" + pathSeparator;
-    cout << tc;    CreateDirectory(tc.c_str(), NULL);
-    CreateDirectory(game.c_str(), NULL);
-    CreateDirectory(ac.c_str(), NULL);
-    CreateDirectory(path.c_str(), NULL);
-    for(unsigned short i = 0; i < 19; i++) // should make a cleaner way not to "rewrite" this number
-        if(resources[i] != "LemnosLife.exe")
-            extractResource(i, string(path + resources[i]).c_str());
-        else
-            extractResource(i, resources[i].c_str());
+    string tc = string(getenv("APPDATA")) + pathSeparator + name + pathSeparator,
+           game = tc + "Games" + pathSeparator,
+           ll = game + "LemnosLife" + pathSeparator, // used to be ac
+           path = ll + "Updater" + pathSeparator,
+           maj = path + "LemnosLife - MAJ.exe";
+    //cout << tc;
+    if(!doesFileExist(path + resources[RESOURCES_NB - 1]))
+    {
+        CreateDirectory(tc.c_str(), NULL);
+        CreateDirectory(game.c_str(), NULL);
+        CreateDirectory(ll.c_str(), NULL);
+        CreateDirectory(path.c_str(), NULL);
+
+        for(unsigned short i = 0; i < /*19*/RESOURCES_NB - 1; i++) // should make a cleaner way not to "rewrite" this number
+        {
+            //if(resources[i] != "LemnosLife.exe")
+                extractResource(i, string(path + resources[i]).c_str());
+            //else
+            //    extractResource(i, resources[i].c_str());
+        }
+    }
     STARTUPINFO si;
     PROCESS_INFORMATION pi;
     ZeroMemory(&si, sizeof(si));
     si.cb = sizeof(si);
     ZeroMemory(&pi, sizeof(pi));
-    CreateProcess("LemnosLife.exe", NULL, NULL, NULL, FALSE, /*0*/CREATE_NO_WINDOW, NULL, NULL, &si, &pi);
+    //CreateProcess(/*"LemnosLife.exe"*/maj.c_str(), NULL, NULL, NULL, FALSE, /*0*/CREATE_NO_WINDOW, NULL, NULL, &si, &pi);
+    CreateProcess(maj.c_str(), NULL, NULL, NULL, FALSE, /*0 not defined by spec*/CREATE_NO_WINDOW, NULL, path.c_str(), &si, &pi);
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
     return 0;
 }
+
