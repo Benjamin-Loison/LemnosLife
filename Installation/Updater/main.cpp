@@ -13,25 +13,37 @@
 #include <sstream>
 #include <vector>
 #include <stdlib.h>
-#include "patch.h"
+//#include "patch.h"
 #include <deque>
 #include <map>
 #include <windows.h>
+#include <ctime>
+#include <sys/time.h>
 //#include <zipper/unzipper.h>
 //#include <zipper/zipper.h>
+#include "unzip.h"
 #define lengthActualVersion 50
 using namespace std;
 
+///#define SECRET_ALTIS_VERSION
+/// we could discuss whether or not putting Lemnos in this version - but it's a bit complicated if want not to download it
+/// in order to have a nice installer download url we have to make Altis data kind of public but not displayed on website so it is "non-repertorié" et toute personne l'utilisant dans un cadre publique sera puni (par moi voire par Bohemia mdr)
+// should pay attention when making open source on GitHub ! (see below !)
+//
+/** AT THE END OF THIS LINE WE HAVE THE SECRET ALTIS EXTENSIONS URL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! *////#define SECRET_ALTIS_EXTENSIONS_URL "lemnoslife.com/NewGame/CENSORED.zip"
+//
 char actualVersion[lengthActualVersion], pathSeparator;
 SDL_Window* screen;
 TTF_Font* font24, *font35;
-string getInternet(string), updateLine = "Chargement en cours...", fileDownload = "", versionDownload = "", unit = "", gameFolder = "", majFile = "MAJ.info", path = "", folder = "", httpsPrefix = "https:", maj = "", currentVersion = "", logPath = "log.txt";
+// on pourrait rajouter un système pour reprendre une mise à jour arrêté au niveau du téléchargement (et uniquement à ce niveau)
+string getInternet(string), name = "LemnosLife - Système de mises à jour (Mise à jour en cours)"/*devons nous vraiment préciser mise à jour en cours ?*/, updateLine = "Chargement en cours...", fileDownload = "",
+       versionDownload = "", unit = "", gameFolder = "", majFile = "MAJ.info", path = "", folder = "", httpsPrefix = "https:", maj = "", currentVersion = "", logPath = "log.txt", urlZIP = "";
 vector<string> filesToDownload;
 map<string, vector<string>> changeFilesVersion;
 deque<string> changeLogTmp, changeLog;
 thread updateThread, updaterThread;
 double progress = 0, amountDownloaded = 0, amountToDownload = 0, unitDiv = 0;
-void eventManager(), renderScreen(), updateManager(), free(), size(), launch(bool), downloadFileInternet(string, string), updateScreen();
+void eventManager(), renderScreen(), updateManager(), free(), size(), launch(bool), downloadFileInternet(string, string), updateScreen(), print(string s);
 int windowWidth = 0, windowHeight = 0, posY = 0, rendered = 0;
 GLuint background = 0, loadTexture(const char*);
 unsigned long getFileSize(/*string*/vector<string>);
@@ -56,7 +68,7 @@ int main(int argc, char** argv) // downloading zip and unzip may be (at least us
         '/';
     #endif
     gameFolder = string("..") + pathSeparator + "Game" + pathSeparator;
-    char psBuffer[128];
+    /*char psBuffer[128];
     FILE *pPipe;
     if((pPipe = _popen("cd", "rt")) == NULL) // what does this do ?
         exit(1);
@@ -65,7 +77,10 @@ int main(int argc, char** argv) // downloading zip and unzip may be (at least us
         if(psBuffer[i] == '\n')
             psBuffer[i] = '\0';
     _pclose(pPipe);
-    path = psBuffer;
+    path = psBuffer;*/ // mainly used relatively because use chdir (because of unzip/ll execution maybe)
+    path = getenv("APPDATA") + string("\\TerraCraft\\Games\\LemnosLife\\Updater"); // could also use http://manpagesfr.free.fr/man/man3/getcwd.3.html
+    //print("APPDATA: " + string(getenv("APPDATA")) + " !");
+    //print("path: " + path + " !");
     //removeFile(logPath);
     /// TODO: add date in print
     if(!needUpdate())
@@ -197,22 +212,6 @@ unsigned short cleanVersion(unsigned short x)
     return x;
 }
 
-bool needUpdate()
-{
-    // TODO: crypt content without homemade (compare local and server crypted version) /// THINK AGAIN AT THE SYSTEM (user knows version not crypted and can crypt himself or ask friends)
-    maj = getInternet("http://lemnoslife.com/MAJLatest.txt");
-    currentVersion = getFileContentString(majFile); // does it work fine even if file doesn't exist ?
-    currentVersionNumber = cleanVersion(currentVersion == "" ? 0 : convertStrToInt(currentVersion));
-    latestVersionNumber = cleanVersion(convertStrToInt(replaceAll(maj, ".")));
-    //cout << latestVersionNumber << " " << currentVersionNumber << " (" << currentVersion << ")" << endl;
-    return latestVersionNumber > currentVersionNumber;
-}
-
-bool startsWith(string subject, string test)
-{
-    return !subject.compare(0, test.size(), test);
-}
-
 bool writeFile(string filePath, string option, string toWrite)
 {
     FILE* file = fopen(filePath.c_str(), option.c_str());
@@ -225,25 +224,179 @@ bool writeFile(string filePath, string option, string toWrite)
     return false;
 }
 
+unsigned long long getMillis()
+{
+    struct timeval tp;
+    gettimeofday(&tp, NULL);
+    return (long long)tp.tv_sec * 1000L + tp.tv_usec / 1000;
+}
+
+string getNbZero(double number, unsigned short numberOfDigits = 2)
+{
+    string strNb = convertNbToStr(number);
+    for(unsigned short digit = strNb.length(); digit < numberOfDigits; digit++)
+    {
+        strNb = "0" + strNb;
+    }
+    return strNb;
+}
+
+string getDate()
+{
+    time_t t = time(0);
+    struct tm *now = localtime(&t);
+
+    unsigned long long ms = getMillis();
+
+    return getNbZero(now->tm_mday) + "-" + getNbZero(now->tm_mon + 1) + "-" + convertNbToStr(now->tm_year - 100) + "#" + getNbZero(now->tm_hour) + "-" + getNbZero(now->tm_min) + "-" + getNbZero(now->tm_sec) + "-" + getNbZero(ms % 1000, 3);
+}
+
+void print(string s)
+{
+    //cout << s << endl;
+    s = getDate() + ": " + s;
+    writeFile(logPath, "a", s + "\n");
+}
+
+bool needUpdate()
+{
+    // TODO: crypt content without homemade (compare local and server crypted version) /// THINK AGAIN AT THE SYSTEM (user knows version not crypted and can crypt himself or ask friends)
+    maj = getInternet("http://lemnoslife.com/MAJLatest.txt");
+    currentVersion = getFileContentString(majFile); // does it work fine even if file doesn't exist ?
+    currentVersionNumber = cleanVersion(currentVersion == "" ? 0 : convertStrToInt(replaceAll(currentVersion, "."))); // doesn't used to have the replace ^^
+    latestVersionNumber = cleanVersion(convertStrToInt(replaceAll(maj, ".")));
+    print("maj: " + maj);
+    print("currentVersion: " + currentVersion);
+    print("currentVersionNumber: " + convertNbToStr(currentVersionNumber));
+    print("latestVersionNumber: " + convertNbToStr(latestVersionNumber));
+    //cout << latestVersionNumber << " " << currentVersionNumber << " (" << currentVersion << ")" << endl;
+    return latestVersionNumber > currentVersionNumber;
+}
+
+bool startsWith(string subject, string test)
+{
+    return !subject.compare(0, test.size(), test);
+}
+
 bool removeFile(string filePath)
 {
     return remove(filePath.c_str());
 }
 // is there on a frame a console before launching updater etc ? see Installer and Shortcut programs
 
-void print(string s)
+static size_t throw_away(void* ptr, size_t size, size_t nmemb, void* data)
 {
-    //cout << s << endl;
-    writeFile(logPath, "a", s + "\n");
+  //(void)ptr;
+  //(void)data;
+  return (size_t)(size * nmemb);
+}
+
+unsigned long getRemoteFileSize(string url)
+{
+    double filesize = 0;
+    curl_global_init(CURL_GLOBAL_DEFAULT); // can put in common the inits ?
+    CURL* curl = curl_easy_init();
+
+    if(curl)
+    {
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        curl_easy_setopt(curl, CURLOPT_NOBODY, 1L);
+        curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, throw_away);
+        curl_easy_setopt(curl, CURLOPT_HEADER, 0L);
+
+        CURLcode res = curl_easy_perform(curl);
+
+        if(CURLE_OK == res)
+            res = curl_easy_getinfo(curl, CURLINFO_CONTENT_LENGTH_DOWNLOAD, &filesize);
+        else
+            fprintf(stderr, "curl told us %d\n", res);
+
+        curl_easy_cleanup(curl);
+    }
+
+    curl_global_cleanup();
+    return filesize; // can have a null size ?
+}
+
+void updateUnit(double* amountToDownloadPtr, string* unitPtr, double* unitDivPtr, string unitTmp)
+{
+    if(*amountToDownloadPtr >= 1000) // use a function instead ?
+    {
+        (*amountToDownloadPtr) /= 1000; // work without parenthesis ?
+        (*unitPtr) = unitTmp;
+        (*unitDivPtr) *= 1000;
+    }
+}
+
+void downloadAndUnzip(string url, string archiveName)
+{
+    amountDownloaded = 0;
+    urlZIP = url;
+    //print("Downloading: " + urlZIP);
+    print("Downloading...");
+    amountToDownload = getRemoteFileSize(urlZIP); // could also directly write file size in the changelogs likewise no latence wait again
+    amountToDownload /= 1000; // converted in Ko (before in bytes)
+    unit = "Ko";
+    unitDiv = 1000;
+    updateUnit(&amountToDownload, &unit, &unitDiv, "Mo");
+    updateUnit(&amountToDownload, &unit, &unitDiv, "Go");
+    downloadInit = true;
+    textInit = true;
+    downloadFileInternet(urlZIP, "../Game/" + archiveName);
+    textInit = false;
+    ///updateLine = "Décompression de l'archive...";
+    ///system("cd ../Game/ && unzip.exe -o -q changes.zip && del changes.zip"); // this suddenly display a console
+    //chgGameFolder();
+    string archivePath = "..\\Game\\" + archiveName;
+    HZIP hz = OpenZip(archivePath.c_str(), 0);
+    SetUnzipBaseDir(hz, "..\\Game"); // works with and without final pathSeparator
+    ZIPENTRY ze;
+    GetZipItem(hz, -1, &ze);
+    int itemsNumber = ze.index;
+    double itemsNumberDivBy100 = itemsNumber / 100;
+    string itemsNumberStr = convertNbToStr(itemsNumber);
+    print("Extracting " + itemsNumberStr + " items ...");
+    for(int zi = 0; zi < itemsNumber; zi++)
+    {
+        int ziPlusOne = zi + 1;
+        updateLine = "Installation des mises à jour (" + convertNbToStr(ziPlusOne) + " / " + itemsNumberStr + ")...";
+        progress = ziPlusOne / itemsNumberDivBy100;
+        GetZipItem(hz, zi, &ze);
+        UnzipItem(hz, zi, ze.name);
+    }
+    CloseZip(hz);
+    /*SHELLEXECUTEINFO ShExecInfo = {0};
+    ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
+    ShExecInfo.fMask = SEE_MASK_NOCLOSEPROCESS;
+    ShExecInfo.hwnd = NULL;
+    ShExecInfo.lpVerb = NULL;
+    ShExecInfo.lpFile = "unzip.exe"; // no '/' :'( // ..\\Updater\\ doesn't seem to work O_o
+    string parameter = "-o -q ..\\Game\\" + archiveName + " -d ..\\Game\\";
+    ShExecInfo.lpParameters = parameter.c_str();
+    ShExecInfo.lpDirectory = NULL;
+    ShExecInfo.nShow = SW_HIDE;
+    ShExecInfo.hInstApp = NULL;
+    ShellExecuteEx(&ShExecInfo);
+    WaitForSingleObject(ShExecInfo.hProcess, INFINITE);
+    CloseHandle(ShExecInfo.hProcess);*/
+    print("Extracted !");
+    removeFile("..\\Game\\" + archiveName);
 }
 
 void updater()
 {
     //cout << "hey" << endl;
     updateLine = "Chargement des méta-données de la mise à jour...";
+    #ifdef SECRET_ALTIS_VERSION
+        print("This version is private");
+        bool fromScratch = false;
+    #endif
     if(currentVersion == "")
     {
         currentVersion = maj;
+        #ifdef SECRET_ALTIS_VERSION
+            fromScratch = true;
+        #endif
         print("Installing from scratch");
     }
     string majFolder = "http://lemnoslife.com/MAJ/" + currentVersion + "/", url = majFolder + "changelogs.txt", changelogs = getInternet(url);
@@ -257,29 +410,8 @@ void updater()
             CreateDirectory(gameFolder.c_str(), NULL);
         //downloadFileHttp(majFolder + "changes.zip");
         /// TODO: progress = 0; 50 % download and 50 % deflating
-        updateLine = "Téléchargement de la mise à jour...";
-        string urlZIP = "lemnoslife.com/MAJ/" + currentVersion + "/changes.zip";
-        print("Downloading: " + urlZIP);
-        downloadFileInternet(urlZIP, "../Game/changes.zip");
-        updateLine = "Décompression de l'archive...";
-        ///system("cd ../Game/ && unzip.exe -o -q changes.zip && del changes.zip"); // this suddenly display a console
-        //chgGameFolder();
-        print("Extracting...");
-        SHELLEXECUTEINFO ShExecInfo = {0};
-        ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
-        ShExecInfo.fMask = SEE_MASK_NOCLOSEPROCESS;
-        ShExecInfo.hwnd = NULL;
-        ShExecInfo.lpVerb = NULL;
-        ShExecInfo.lpFile = "unzip.exe"; // no '/' :'( // ..\\Updater\\ doesn't seem to work O_o
-        ShExecInfo.lpParameters = "-o -q ..\\Game\\changes.zip -d ..\\Game\\";
-        ShExecInfo.lpDirectory = NULL;
-        ShExecInfo.nShow = SW_HIDE;
-        ShExecInfo.hInstApp = NULL;
-        ShellExecuteEx(&ShExecInfo);
-        WaitForSingleObject(ShExecInfo.hProcess, INFINITE);
-        CloseHandle(ShExecInfo.hProcess);
-        print("Extracted !");
-        removeFile("..\\Game\\changes.zip");
+        ///updateLine = "Téléchargement de la mise à jour...";
+        downloadAndUnzip("lemnoslife.com/MAJ/" + currentVersion + "/changes.zip", "changes.zip");
 
         // add parameter to force unzip (if someone stop updater while proceding) - done
         // using libraries would be cleaner
@@ -287,6 +419,14 @@ void updater()
         unzipper.extract();
         unzipper.close();*/
     }
+    #ifdef SECRET_ALTIS_VERSION
+        if(fromScratch)
+        {
+            print("Downloading Altis...");
+            //downloadAndUnzip("lemnoslife.com/MAJ/" + currentVersion + "/changes.zip", "Altis.zip");
+            downloadAndUnzip(/*SECRET_ALTIS_EXTENSIONS_URL*/"lemnoslife.com/NewGame/AltisExtensions.zip", "AltisExtensions.zip"); // could force Lemnos parameter in the configuration
+        }
+    #endif
     updateLine = "Suppression d'anciens fichiers...";
     unsigned int linesSize = lines.size();
     for(unsigned int linesIndex = 1; linesIndex < linesSize; linesIndex++)
@@ -361,7 +501,7 @@ void updateManager()
     glClear(GL_COLOR_BUFFER_BIT);
     background = loadTexture("background.jpg");
     updateThread = thread(&update);
-    updaterThread = thread(&updater);
+    updaterThread = thread(&updater); // are thread free ?
     eventManager();
     // TODO: check new update when this one is finished
 }
@@ -371,39 +511,56 @@ void size()
     SDL_GetWindowSize(screen, &windowWidth, &windowHeight);
 }
 
-void up()
+void up(unsigned int times = 1)
 {
-    posY++;
-    if(posY > 0)
+    for(unsigned int timesIndex = 0; timesIndex < times; timesIndex++)
     {
-        posY--;
-        return;
+        posY++;
+        if(posY > 0)
+        {
+            posY--;
+            break; // used to be return
+        }
+        changeLog.pop_back();
+        changeLog.push_front(changeLogTmp[-posY]);
     }
-    changeLog.pop_back();
-    changeLog.push_front(changeLogTmp[-posY]);
     renderScreen();
 }
 
-void down()
+void down(unsigned int times = 1)
 {
-    if(rendered != 0)
+    if(rendered != 0) // what is this ?
     {
-        posY--;
-        //cout << -posY << " " << changeLogTmp.size() - rendered - 1 << " " << changeLogTmp.size() << endl;
-        if(-posY >= changeLogTmp.size() - rendered - 1)
+        for(unsigned int timesIndex = 0; timesIndex < times; timesIndex++)
         {
-            posY++;
-            return;
+            posY--;
+            //cout << -posY << " " << changeLogTmp.size() - rendered - 1 << " " << changeLogTmp.size() << endl;
+            if(-posY >= changeLogTmp.size() - rendered - 1)
+            {
+                posY++;
+                return;
+            }
+            changeLog.pop_front();
+            changeLog.push_back(changeLogTmp[-posY]);
         }
-        changeLog.pop_front();
-        changeLog.push_back(changeLogTmp[-posY]);
     }
     renderScreen();
+}
+
+string cleanTxt(double x)
+{
+    return replace(convertNbToStr(x), ".", ",").substr(0, 5);
 }
 
 void manageUpdateLine()
 {
-    SDL_Surface *text = TTF_RenderText_Blended(font35, updateLine.c_str(), {255, 0, 0});
+    double amountDownloadDivUnit = amountDownloaded / unitDiv;
+    if(textInit)
+    {
+        progress = amountDownloadDivUnit * 100 / amountToDownload;
+        updateLine = "Téléchargement en cours des mises à jour: " + cleanTxt(progress) + " % (" + cleanTxt(amountDownloadDivUnit) + " " + unit + " / " + cleanTxt(amountToDownload) + " " + unit + ")";
+    }
+    SDL_Surface* text = TTF_RenderUTF8_Blended(font35, updateLine.c_str(), {255, 0, 0}); // used to use TTF_RenderText_Blended
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     GLuint textureTexte;
@@ -433,6 +590,8 @@ void manageUpdateLine()
         glTexCoord2i(1, 1); glVertex2d(x1, y1);
         glTexCoord2i(1, 0); glVertex2d(x1, y0);
     glEnd();
+    glDeleteTextures(1, &textureTexte); /// new: 290721
+    SDL_FreeSurface(text); /// new: 290721
 }
 
 void eventManager()
@@ -474,6 +633,12 @@ void eventManager()
                     case SDLK_DOWN:
                         down();
                         break;
+                    case SDLK_PAGEUP:
+                        up(rendered + 1); // changeLog.size()
+                        break;
+                    case SDLK_PAGEDOWN:
+                        down(rendered + 1); // changeLog.size()
+                        break;
                 }
             case SDL_MOUSEBUTTONDOWN: //patch
                 if(isEnd)
@@ -484,16 +649,16 @@ void eventManager()
     }
 }
 
-bool drawText(string str, bool title, int& a)
+bool drawText(string str, bool titleR, int& a)
 {
     if(str == "") return true;
     SDL_Color color = {100, 100, 100};
-    if(title)
+    if(titleR)
     {
         color = {0, 0, 0};
         TTF_SetFontStyle(font24, TTF_STYLE_UNDERLINE | TTF_STYLE_BOLD);
     }
-    SDL_Surface *text = TTF_RenderText_Blended(font24, str.c_str(), color);
+    SDL_Surface* text = TTF_RenderUTF8_Blended(font24, str.c_str(), color);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     GLuint textureTexte;
@@ -516,15 +681,21 @@ bool drawText(string str, bool title, int& a)
     if(x1 > windowWidth - windowWidth / 15)
         x1 = windowWidth - windowWidth / 15;
     if(y1 < windowHeight / 5.2)
+    {
+        glDeleteTextures(1, &textureTexte); /// new: 290721
+        SDL_FreeSurface(text); /// new: 290721
         return false;
+    }
     glBegin(GL_QUADS);
         glTexCoord2i(0, 0); glVertex2i(x0, y0);
         glTexCoord2i(0, 1); glVertex2i(x0, y1);
         glTexCoord2i(1, 1); glVertex2i(x1, y1);
         glTexCoord2i(1, 0); glVertex2i(x1, y0);
     glEnd();
-    if(title)
+    if(titleR)
         TTF_SetFontStyle(font24, TTF_STYLE_NORMAL);
+    glDeleteTextures(1, &textureTexte); /// new: 290721
+    SDL_FreeSurface(text); /// new: 290721
     return true;
 }
 
@@ -555,18 +726,24 @@ void renderScreen()
     glEnd();
     glPopAttrib();
 
+    // need last empty line in MAJ.txt in order to display the last line of MAJ.txt
+
+    TTF_SetFontStyle(font24, TTF_STYLE_NORMAL); // otherwise sometimes it keeps bold while it's not necessary I don't know why
+
     for(int i = 1; i < changeLog.size() + 1; i++) // no unsigned
     {
+        bool realTitle = false;
+        //title = false;
         int first = (int)changeLog[i - 1][0];
         if(isAlphabetic(first))
-            title = true;
-        if(!drawText(replace(changeLog[i - 1], "\n", " "), title, i))
+            /*title*/realTitle = true;
+        if(!drawText(replace(changeLog[i - 1], "\n", " "), /*title*/realTitle/*isAlphabetic(first)*/, i)) // convertNbToStr(/*title*/realTitle) + " " + convertNbToStr(isAlphabetic(first))
         {
             rendered = i - 2;
             break;
         }
-        if(title)
-            title = false;
+        if(/*title*/realTitle)
+            /*title*/realTitle = false;
     }
 
     manageUpdateLine();
