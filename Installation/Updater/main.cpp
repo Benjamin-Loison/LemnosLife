@@ -25,13 +25,7 @@
 #define lengthActualVersion 50
 using namespace std;
 
-///#define SECRET_ALTIS_VERSION
 /// we could discuss whether or not putting Lemnos in this version - but it's a bit complicated if want not to download it
-/// in order to have a nice installer download url we have to make Altis data kind of public but not displayed on website so it is "non-repertorié" et toute personne l'utilisant dans un cadre publique sera puni (par moi voire par Bohemia mdr)
-// should pay attention when making open source on GitHub ! (see below !)
-//
-/** AT THE END OF THIS LINE WE HAVE THE SECRET ALTIS EXTENSIONS URL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! *////#define SECRET_ALTIS_EXTENSIONS_URL "lemnoslife.com/NewGame/CENSORED.zip"
-//
 char actualVersion[lengthActualVersion], pathSeparator;
 SDL_Window* screen;
 TTF_Font* font24, *font35;
@@ -387,16 +381,9 @@ void updater()
 {
     //cout << "hey" << endl;
     updateLine = "Chargement des méta-données de la mise à jour...";
-    #ifdef SECRET_ALTIS_VERSION
-        print("This version is private");
-        bool fromScratch = false;
-    #endif
     if(currentVersion == "")
     {
         currentVersion = maj;
-        #ifdef SECRET_ALTIS_VERSION
-            fromScratch = true;
-        #endif
         print("Installing from scratch");
     }
     string majFolder = "http://lemnoslife.com/MAJ/" + currentVersion + "/", url = majFolder + "changelogs.txt", changelogs = getInternet(url);
@@ -419,14 +406,6 @@ void updater()
         unzipper.extract();
         unzipper.close();*/
     }
-    #ifdef SECRET_ALTIS_VERSION
-        if(fromScratch)
-        {
-            print("Downloading Altis...");
-            //downloadAndUnzip("lemnoslife.com/MAJ/" + currentVersion + "/changes.zip", "Altis.zip");
-            downloadAndUnzip(/*SECRET_ALTIS_EXTENSIONS_URL*/"lemnoslife.com/NewGame/AltisExtensions.zip", "AltisExtensions.zip"); // could force Lemnos parameter in the configuration
-        }
-    #endif
     updateLine = "Suppression d'anciens fichiers...";
     unsigned int linesSize = lines.size();
     for(unsigned int linesIndex = 1; linesIndex < linesSize; linesIndex++)
