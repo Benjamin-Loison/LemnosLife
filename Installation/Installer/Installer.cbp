@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Installer" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="LemnosLife" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="LemnosLife" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="LemnosLife - MAJ.exe" />
+		<Unit filename="LemnosLife.exe" />
+		<Unit filename="SDL2.dll" />
+		<Unit filename="SDL2_image.dll" />
+		<Unit filename="SDL2_ttf.dll" />
+		<Unit filename="arial.ttf" />
+		<Unit filename="background.jpg" />
+		<Unit filename="libcrypto-1_1-x64.dll" />
+		<Unit filename="libcurl-x64.dll" />
+		<Unit filename="libfreetype-6.dll" />
+		<Unit filename="libgcc_s_seh-1.dll" />
+		<Unit filename="libjpeg-9.dll" />
+		<Unit filename="libssl-1_1-x64.dll" />
+		<Unit filename="libwinpthread-1.dll" />
+		<Unit filename="main.cpp" />
+		<Unit filename="msvcr120.dll" />
+		<Unit filename="ressources.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="zlib1.dll" />
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>
