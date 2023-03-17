@@ -87,7 +87,7 @@ int main(int argc, char** argv) // downloading zip and unzip may be (at least us
     SDL_GetDesktopDisplayMode(0, &DM);
     windowWidth = 1365;
     windowHeight = 704;
-    screen = SDL_CreateWindow(name.c_str(), 100, 100, windowWidth, windowHeight, SDL_WINDOW_MAXIMIZED | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL); // could do without opengl lol
+    screen = SDL_CreateWindow(name.c_str(), 100, 100, windowWidth, windowHeight, SDL_WINDOW_MAXIMIZED | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL); // could do without opengl
     size();
     TTF_Init();
     updateManager();
@@ -259,7 +259,7 @@ bool needUpdate()
     currentVersion = getFileContentString(majFile); // does it work fine even if file doesn't exist ?
     currentVersionNumber = cleanVersion(currentVersion == "" ? 0 : convertStrToInt(replaceAll(currentVersion, "."))); // doesn't used to have the replace ^^
     latestVersionNumber = cleanVersion(convertStrToInt(replaceAll(maj, ".")));
-    print("maj: " + maj);
+    print("maj: " + maj + "!");
     print("currentVersion: " + currentVersion);
     print("currentVersionNumber: " + convertNbToStr(currentVersionNumber));
     print("latestVersionNumber: " + convertNbToStr(latestVersionNumber));
@@ -294,6 +294,9 @@ unsigned long getRemoteFileSize(string url)
     if(curl)
     {
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        #ifdef _WIN32
+            curl_easy_setopt(curl, CURLOPT_SSL_OPTIONS, CURLSSLOPT_NATIVE_CA);
+        #endif
         curl_easy_setopt(curl, CURLOPT_NOBODY, 1L);
         curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, throw_away);
         curl_easy_setopt(curl, CURLOPT_HEADER, 0L);
@@ -816,6 +819,9 @@ void downloadFileHttps(string url, string name)
 {
     CURL *curl = curl_easy_init();
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+    #ifdef _WIN32
+        curl_easy_setopt(curl, CURLOPT_SSL_OPTIONS, CURLSSLOPT_NATIVE_CA);
+    #endif
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeData);
     FILE *fp = fopen(name.c_str(), "wb");
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
@@ -827,12 +833,27 @@ void downloadFileHttps(string url, string name)
 string getHttps(string url)
 {
     CURL *curl = curl_easy_init();
-    curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
     string got;
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &got);
-    curl_easy_perform(curl);
-    curl_easy_cleanup(curl);
+    if(curl)
+    {
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        #ifdef _WIN32
+            curl_easy_setopt(curl, CURLOPT_SSL_OPTIONS, CURLSSLOPT_NATIVE_CA);
+        #endif
+
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &got);
+        CURLcode res = curl_easy_perform(curl);
+        if(res != CURLE_OK)
+        {
+            print("curl_easy_perform error: " + string(curl_easy_strerror(res)) + "!");
+        }
+        curl_easy_cleanup(curl);
+    }
+    else
+    {
+        print("curl_easy_init error");
+    }
     return got;
 }
 
