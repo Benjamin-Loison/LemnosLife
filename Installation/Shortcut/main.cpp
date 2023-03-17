@@ -30,13 +30,13 @@ int main() /// TODO: remove useless console(installer works well without it) com
     *stderr = *fp;
     setvbuf(stderr, NULL, _IONBF, 0);
     ios::sync_with_stdio();*/
-    string name = "LemnosLife - Installeur.exe";
+    /*string name = "LemnosLife - Installeur.exe";
     ifstream installer(name.c_str());
     if(installer.good())
     {
         installer.close();
         while(remove(name.c_str()) == -1);
-    }
+    }*/
     char pathSeparator =
     #ifdef _WIN32
         '\\';
@@ -45,7 +45,8 @@ int main() /// TODO: remove useless console(installer works well without it) com
     #endif
     //TCHAR szPath[MAX_PATH];
     //SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, 0, szPath);
-    string tmp = string(getenv("APPDATA")) + pathSeparator + "TerraCraft" + pathSeparator + "Games" + pathSeparator + "LemnosLife" + pathSeparator + "Updater" + pathSeparator, path = tmp + "LemnosLife - MAJ.exe";
+    string tmp = string(getenv("APPDATA")) + pathSeparator + "TerraCraft" + pathSeparator + "Games" + pathSeparator + "LemnosLife" + pathSeparator + "Updater" + pathSeparator,
+           path = tmp + "LemnosLife - MAJ.exe";
     STARTUPINFO si;
     PROCESS_INFORMATION pi;
     ZeroMemory(&si, sizeof(si));
