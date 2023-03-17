@@ -12,10 +12,27 @@
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Option projectCompilerOptionsRelation="-1" />
-				<Option projectLinkerOptionsRelation="-1" />
-				<Option projectIncludeDirsRelation="-1" />
-				<Option projectResourceIncludeDirsRelation="-1" />
-				<Option projectLibDirsRelation="-1" />
+				<Compiler>
+					<Add directory="LIBS/SDL2-2.26.4/x86_64-w64-mingw32/include" />
+					<Add directory="LIBS/SDL2_image-2.6.3/x86_64-w64-mingw32/include" />
+					<Add directory="LIBS/SDL2-2.26.4/x86_64-w64-mingw32/include/SDL2" />
+					<Add directory="LIBS/SDL2_ttf-2.0.15/x86_64-w64-mingw32/include" />
+					<Add directory="LIBS/curl-7.88.1-win64-mingw/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-lmingw32" />
+					<Add option="-lSDL2main" />
+					<Add option="-lSDL2" />
+					<Add option="-lSDL2_ttf" />
+					<Add option="-lSDL2_image" />
+					<Add option="-lcurl" />
+					<Add option="-lopengl32" />
+					<Add option="-lglu32" />
+					<Add directory="LIBS/SDL2-2.26.4/x86_64-w64-mingw32/lib" />
+					<Add directory="LIBS/SDL2_ttf-2.0.15/x86_64-w64-mingw32/lib" />
+					<Add directory="LIBS/curl-7.88.1-win64-mingw/lib" />
+					<Add directory="LIBS/SDL2_image-2.6.3/x86_64-w64-mingw32/lib" />
+				</Linker>
 				<MakeCommands>
 					<Build command="" />
 					<CompileFile command="" />
@@ -29,7 +46,7 @@
 				<Option output="LemnosLife - MAJ" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="0" />
-				<Option compiler="gnu_gcc_64" />
+				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-U__STRICT_ANSI__" />

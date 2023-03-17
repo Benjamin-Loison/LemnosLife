@@ -49,9 +49,9 @@ unsigned short latestVersionNumber, currentVersionNumber;
 // updater of the updater ?
 /// TODO: upload all components (Updater, Shortcut...) as 64 bits for the 64 bits version likewise 32-bits users would be told directly
 /// TODO: is the updater at the bottom working for various versions ?
-/// TODO: scrool doesn't work well
+/// TODO: scroll doesn't work well
 
-// warnin 32/64 bits and where the exe is generated for installer, updater and shortcut codeblocks projects
+// warning 32/64 bits and where the exe is generated for installer, updater and shortcut codeblocks projects
 int main(int argc, char** argv) // downloading zip and unzip may be (at least use less bandwidth, 75 instead of 115 for example) what about speed ?
 {
     //cout << "main" << endl;
