@@ -73,7 +73,7 @@ int main()
         string fileContent = getFileContentString(lastLog);
         writeFile(crashFile, "a", "\nLogs:\n" + fileContent); // may also think about sending crash logs in case didn't work fine in the past - but let say no
         log("Latest log found, now uploading...");
-        uploadFile("http://lemnoslife.com/crash-report.php", "crash-report", crashFile);
+        uploadFile("https://lemnoslife.com/crash-report.php", "crash-report", crashFile);
         log("Crash uploaded !");
     }
     else
@@ -254,7 +254,6 @@ string uploadFile(string url, string fieldName, string filePath)
         chunk.memory = (char*)malloc(1);
         chunk.size = 0;
 
-        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeMemoryCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&chunk);
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "LemnosLifeCrashReporter");
@@ -264,6 +263,10 @@ string uploadFile(string url, string fieldName, string filePath)
         headerlist = curl_slist_append(headerlist, buf);
 
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        #ifdef _WIN32
+            curl_easy_setopt(curl, CURLOPT_SSL_OPTIONS, CURLSSLOPT_NATIVE_CA);
+        #endif
+
         curl_easy_setopt(curl, CURLOPT_HTTPPOST, formpost);
         //curl_easy_setopt(curl, CURLOPT_TIMEOUT, 0); // used to be 1 - 0 is infinite (default) (was about to put 10)
 
