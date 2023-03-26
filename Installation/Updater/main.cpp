@@ -3,46 +3,35 @@
 #include <SDL2/SDL_ttf.h>
 // Unclear why the compiler complains with a warning if there isn't the following `include`.
 #include <winsock2.h>
-#include <GL/gl.h>
 #include <GL/glu.h>
-#include <string>
 #include <thread>
 #include <iostream>
-#include <stdio.h>
-#include <fcntl.h>
 #include <fstream>
 #include <curl/curl.h>
 #include <sstream>
 #include <vector>
-#include <stdlib.h>
 #include <deque>
-#include <map>
 #include <windows.h>
-#include <ctime>
 #include <sys/time.h>
 //#include <zipper/unzipper.h>
 //#include <zipper/zipper.h>
 #include "unzip.h"
-#define lengthActualVersion 50
 using namespace std;
 
 /// we could discuss whether or not putting Lemnos in this version - but it's a bit complicated if want not to download it
-char actualVersion[lengthActualVersion], pathSeparator;
+char pathSeparator;
 SDL_Window* screen;
 TTF_Font* font24, *font35;
 // on pourrait rajouter un système pour reprendre une mise à jour arrêté au niveau du téléchargement (et uniquement à ce niveau)
-string getHttps(string), name = "LemnosLife - Système de mises à jour (Mise à jour en cours)"/*devons nous vraiment préciser mise à jour en cours ?*/, updateLine = "Chargement en cours...", fileDownload = "",
-       versionDownload = "", unit = "", gameFolder = "", majFile = "MAJ.info", path = "", folder = "", maj = "", currentVersion = "", logPath = "log.txt", urlZIP = "";
-vector<string> filesToDownload;
-map<string, vector<string>> changeFilesVersion;
+string getHttps(string), name = "LemnosLife - Système de mises à jour (Mise à jour en cours)"/*devons nous vraiment préciser mise à jour en cours ?*/, updateLine = "Chargement en cours...",
+       unit = "", gameFolder = "", majFile = "MAJ.info", path = "", folder = "", maj = "", currentVersion = "", logPath = "log.txt", urlZIP = "";
 deque<string> changeLogTmp, changeLog;
 thread updateThread, updaterThread;
 double progress = 0, amountDownloaded = 0, amountToDownload = 0, unitDiv = 0;
 void eventManager(), renderScreen(), updateManager(), free(), size(), launch(bool), downloadFileHttps(string, string), updateScreen(), print(string s);
 int windowWidth = 0, windowHeight = 0, posY = 0, rendered = 0;
 GLuint background = 0, loadTexture(const char*);
-unsigned long getFileSize(/*string*/vector<string>);
-bool rendering = false, title = true, firstLaunch = false, needUpdate(), textInit = false, downloadInit = false, isEnd = false, removeFile(string filePath);
+bool rendering = false, needUpdate(), textInit = false, downloadInit = false, isEnd = false, removeFile(string filePath);
 unsigned short latestVersionNumber, currentVersionNumber;
 
 // TODO: update this updater and add future updates
@@ -52,7 +41,6 @@ unsigned short latestVersionNumber, currentVersionNumber;
 /// TODO: is the updater at the bottom working for various versions ?
 /// TODO: scroll doesn't work well
 
-// warning 32/64 bits and where the exe is generated for installer, updater and shortcut codeblocks projects
 int main(int argc, char** argv) // downloading zip and unzip may be (at least use less bandwidth, 75 instead of 115 for example) what about speed ?
 {
     print("main");
@@ -77,7 +65,6 @@ int main(int argc, char** argv) // downloading zip and unzip may be (at least us
     //print("APPDATA: " + string(getenv("APPDATA")) + " !");
     //print("path: " + path + " !");
     //removeFile(logPath);
-    /// TODO: add date in print
     if(!needUpdate())
     {
         print("no update needed !");
@@ -568,8 +555,8 @@ void manageUpdateLine()
         glTexCoord2i(1, 1); glVertex2d(x1, y1);
         glTexCoord2i(1, 0); glVertex2d(x1, y0);
     glEnd();
-    glDeleteTextures(1, &textureTexte); /// new: 290721
-    SDL_FreeSurface(text); /// new: 290721
+    glDeleteTextures(1, &textureTexte);
+    SDL_FreeSurface(text);
 }
 
 void eventManager()
@@ -618,7 +605,7 @@ void eventManager()
                         down(rendered + 1); // changeLog.size()
                         break;
                 }
-            case SDL_MOUSEBUTTONDOWN: //patch
+            case SDL_MOUSEBUTTONDOWN:
                 if(isEnd)
                     free();
                 renderScreen();
@@ -660,8 +647,8 @@ bool drawText(string str, bool titleR, int& a)
         x1 = windowWidth - windowWidth / 15;
     if(y1 < windowHeight / 5.2)
     {
-        glDeleteTextures(1, &textureTexte); /// new: 290721
-        SDL_FreeSurface(text); /// new: 290721
+        glDeleteTextures(1, &textureTexte);
+        SDL_FreeSurface(text);
         return false;
     }
     glBegin(GL_QUADS);
@@ -672,8 +659,8 @@ bool drawText(string str, bool titleR, int& a)
     glEnd();
     if(titleR)
         TTF_SetFontStyle(font24, TTF_STYLE_NORMAL);
-    glDeleteTextures(1, &textureTexte); /// new: 290721
-    SDL_FreeSurface(text); /// new: 290721
+    glDeleteTextures(1, &textureTexte);
+    SDL_FreeSurface(text);
     return true;
 }
 
@@ -711,17 +698,14 @@ void renderScreen()
     for(int i = 1; i < changeLog.size() + 1; i++) // no unsigned
     {
         bool realTitle = false;
-        //title = false;
         int first = (int)changeLog[i - 1][0];
         if(isAlphabetic(first))
-            /*title*/realTitle = true;
-        if(!drawText(replace(changeLog[i - 1], "\n", " "), /*title*/realTitle/*isAlphabetic(first)*/, i)) // convertNbToStr(/*title*/realTitle) + " " + convertNbToStr(isAlphabetic(first))
+            realTitle = true;
+        if(!drawText(replace(changeLog[i - 1], "\n", " "), realTitle/*isAlphabetic(first)*/, i)) // convertNbToStr(realTitle) + " " + convertNbToStr(isAlphabetic(first))
         {
             rendered = i - 2;
             break;
         }
-        if(/*title*/realTitle)
-            /*title*/realTitle = false;
     }
 
     manageUpdateLine();
