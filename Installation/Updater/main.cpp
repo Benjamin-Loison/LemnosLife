@@ -55,7 +55,7 @@ unsigned short latestVersionNumber, currentVersionNumber;
 // warning 32/64 bits and where the exe is generated for installer, updater and shortcut codeblocks projects
 int main(int argc, char** argv) // downloading zip and unzip may be (at least use less bandwidth, 75 instead of 115 for example) what about speed ?
 {
-    //cout << "main" << endl;
+    print("main");
     pathSeparator =
     #ifdef _WIN32
         '\\';
@@ -80,7 +80,7 @@ int main(int argc, char** argv) // downloading zip and unzip may be (at least us
     /// TODO: add date in print
     if(!needUpdate())
     {
-        //cout << "no update needed !";
+        print("no update needed !");
         launch(true);
     }
     SDL_Init(SDL_INIT_VIDEO);
@@ -168,7 +168,7 @@ void launch(bool start)
     //if(start)
         chgGameFolder();
     string game = string(path + "CrashReporter.exe");
-    //cout << "!" << game << "!" << path << "CrashReporter.exe" << "!" << endl;
+    print("!" + game + "!" + path + "CrashReporter.exe" + "!");
     startup(game.c_str());
     if(!start)
     {
@@ -378,7 +378,7 @@ void downloadAndUnzip(string url, string archiveName)
 
 void updater()
 {
-    //cout << "updater" << endl;
+    print("updater");
     updateLine = "Chargement des méta-données de la mise à jour...";
     if(currentVersion == "")
     {
@@ -387,7 +387,7 @@ void updater()
     }
     string majFolder = "https://lemnoslife.com/MAJ/" + currentVersion + "/", url = majFolder + "changelogs.txt", changelogs = getHttps(url);
     vector<string> lines = split(changelogs, "\n");
-    //cout << "!" << changelogs << "!" << url << "!" << majFolder << "!" << endl;
+    print("!" + changelogs + "!" + url + "!" + majFolder + "!");
     print("Downloading: " + url);
     if(lines[0] == "WithZIP")
     {
@@ -507,12 +507,12 @@ void up(unsigned int times = 1)
 
 void down(unsigned int times = 1)
 {
-    if(rendered != 0) // what is this ?
+    if(rendered != 0) // what is this?
     {
         for(unsigned int timesIndex = 0; timesIndex < times; timesIndex++)
         {
             posY--;
-            //cout << -posY << " " << changeLogTmp.size() - rendered - 1 << " " << changeLogTmp.size() << endl;
+            print(convertNbToStr(-posY) + " " + convertNbToStr(changeLogTmp.size() - rendered - 1) + " " + convertNbToStr(changeLogTmp.size()));
             if(-posY >= changeLogTmp.size() - rendered - 1)
             {
                 posY++;
