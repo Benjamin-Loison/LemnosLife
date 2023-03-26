@@ -51,17 +51,8 @@ int main(int argc, char** argv) // downloading zip and unzip may be (at least us
         '/';
     #endif
     gameFolder = string("..") + pathSeparator + "Game" + pathSeparator;
-    /*char psBuffer[128];
-    FILE *pPipe;
-    if((pPipe = _popen("cd", "rt")) == NULL) // what does this do ?
-        exit(1);
-    fgets(psBuffer, 128, pPipe);
-    for(unsigned short i = 0; i < 128; i++)
-        if(psBuffer[i] == '\n')
-            psBuffer[i] = '\0';
-    _pclose(pPipe);
-    path = psBuffer;*/ // mainly used relatively because use chdir (because of unzip/ll execution maybe)
-    path = getenv("APPDATA") + string("\\TerraCraft\\Games\\LemnosLife\\Updater"); // could also use http://manpagesfr.free.fr/man/man3/getcwd.3.html
+    // Could use current working directory to work relatively.
+    path = getenv("APPDATA") + string("\\TerraCraft\\Games\\LemnosLife\\Updater");
     //print("APPDATA: " + string(getenv("APPDATA")) + " !");
     //print("path: " + path + " !");
     //removeFile(logPath);
