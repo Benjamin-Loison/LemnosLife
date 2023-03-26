@@ -284,7 +284,7 @@ static size_t throw_away(void* ptr, size_t size, size_t nmemb, void* data)
 
 unsigned long getRemoteFileSize(string url)
 {
-    double filesize = 0;
+    curl_off_t filesize;
     curl_global_init(CURL_GLOBAL_DEFAULT); // can put in common the inits?
     CURL* curl = curl_easy_init();
 
