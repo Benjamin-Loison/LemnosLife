@@ -47,7 +47,7 @@ unsigned short latestVersionNumber, currentVersionNumber;
 // TODO: update this updater and add future updates
 // TODO: make possibility to choose language for changelogs
 // updater of the updater ?
-/// TODO: upload all components (Updater, Shortcut...) as 64 bits for the 64 bits version likewise 32-bits users would be told directly
+/// TODO: upload all components (Updater, Shortcut...) as 64 bits for the 64 bits version that way 32-bits users would be told directly
 /// TODO: is the updater at the bottom working for various versions ?
 /// TODO: scroll doesn't work well
 
@@ -331,7 +331,7 @@ void downloadAndUnzip(string url, string archiveName)
     urlZIP = url;
     //print("Downloading: " + urlZIP);
     print("Downloading...");
-    amountToDownload = getRemoteFileSize(urlZIP); // could also directly write file size in the changelogs likewise no latence wait again
+    amountToDownload = getRemoteFileSize(urlZIP); // could also directly write file size in the changelogs that way no latency wait again
     amountToDownload /= 1000; // converted in Ko (before in bytes)
     unit = "Ko";
     unitDiv = 1000;
