@@ -747,21 +747,21 @@ void free()
 SDL_Surface *flipSurface(SDL_Surface *surface)
 {
     int pitch; // unsigned ?
-    SDL_Surface *fliped_surface = SDL_CreateRGBSurface(SDL_SWSURFACE, surface->w,surface->h, surface->format->BitsPerPixel, surface->format->Rmask, surface->format->Gmask, surface->format->Bmask, surface->format->Amask);
+    SDL_Surface *flipped_surface = SDL_CreateRGBSurface(SDL_SWSURFACE, surface->w,surface->h, surface->format->BitsPerPixel, surface->format->Rmask, surface->format->Gmask, surface->format->Bmask, surface->format->Amask);
     SDL_LockSurface(surface);
-    SDL_LockSurface(fliped_surface);
+    SDL_LockSurface(flipped_surface);
     pitch = surface->pitch;
     for(unsigned int current_line = 0; current_line < surface->h; current_line++)
-        memcpy(&((unsigned char*)fliped_surface->pixels)[current_line*pitch], &((unsigned char*)surface->pixels)[(surface->h - 1  - current_line)*pitch], pitch);
-    SDL_UnlockSurface(fliped_surface);
+        memcpy(&((unsigned char*)flipped_surface->pixels)[current_line*pitch], &((unsigned char*)surface->pixels)[(surface->h - 1  - current_line)*pitch], pitch);
+    SDL_UnlockSurface(flipped_surface);
     SDL_UnlockSurface(surface);
-    return fliped_surface;
+    return flipped_surface;
 }
 
 GLuint loadTexture(const char *filename)
 {
     GLuint glID;
-    SDL_Surface *picture_surface, *gl_surface, *gl_fliped_surface;
+    SDL_Surface *picture_surface, *gl_surface, *gl_flipped_surface;
     Uint32 rmask, gmask, bmask, amask;
     picture_surface = IMG_Load(filename);
     if(picture_surface == NULL)
@@ -785,13 +785,13 @@ GLuint loadTexture(const char *filename)
     format.Bmask = bmask;
     format.Amask = amask;
     gl_surface = SDL_ConvertSurface(picture_surface, &format, SDL_SWSURFACE);
-    gl_fliped_surface = flipSurface(gl_surface);
+    gl_flipped_surface = flipSurface(gl_surface);
     glGenTextures(1, &glID);
     glBindTexture(GL_TEXTURE_2D, glID);
-    glTexImage2D(GL_TEXTURE_2D, 0, 4, gl_fliped_surface->w, gl_fliped_surface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, gl_fliped_surface->pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, 4, gl_flipped_surface->w, gl_flipped_surface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, gl_flipped_surface->pixels);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    SDL_FreeSurface(gl_fliped_surface);
+    SDL_FreeSurface(gl_flipped_surface);
     SDL_FreeSurface(gl_surface);
     SDL_FreeSurface(picture_surface);
     return glID;
