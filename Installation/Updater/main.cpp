@@ -1,6 +1,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+// Unclear why the compiler complains with a warning if there isn't the following `include`.
+#include <winsock2.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <string>
@@ -13,7 +15,6 @@
 #include <sstream>
 #include <vector>
 #include <stdlib.h>
-//#include "patch.h"
 #include <deque>
 #include <map>
 #include <windows.h>
@@ -31,7 +32,7 @@ SDL_Window* screen;
 TTF_Font* font24, *font35;
 // on pourrait rajouter un système pour reprendre une mise à jour arrêté au niveau du téléchargement (et uniquement à ce niveau)
 string getHttps(string), name = "LemnosLife - Système de mises à jour (Mise à jour en cours)"/*devons nous vraiment préciser mise à jour en cours ?*/, updateLine = "Chargement en cours...", fileDownload = "",
-       versionDownload = "", unit = "", gameFolder = "", majFile = "MAJ.info", path = "", folder = "", httpsPrefix = "https:", maj = "", currentVersion = "", logPath = "log.txt", urlZIP = "";
+       versionDownload = "", unit = "", gameFolder = "", majFile = "MAJ.info", path = "", folder = "", maj = "", currentVersion = "", logPath = "log.txt", urlZIP = "";
 vector<string> filesToDownload;
 map<string, vector<string>> changeFilesVersion;
 deque<string> changeLogTmp, changeLog;
@@ -300,7 +301,7 @@ unsigned long getRemoteFileSize(string url)
         CURLcode res = curl_easy_perform(curl);
 
         if(CURLE_OK == res)
-            res = curl_easy_getinfo(curl, CURLINFO_CONTENT_LENGTH_DOWNLOAD, &filesize);
+            res = curl_easy_getinfo(curl, CURLINFO_CONTENT_LENGTH_DOWNLOAD_T, &filesize);
         else
             fprintf(stderr, "curl told us %d\n", res);
 
