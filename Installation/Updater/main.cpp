@@ -85,6 +85,7 @@ int main(int argc, char** argv) // downloading zip and unzip may be (at least us
     SDL_Init(SDL_INIT_VIDEO);
     SDL_DisplayMode DM;
     SDL_GetDesktopDisplayMode(0, &DM);
+    // Why these values (current background dimensions are 2000x1350)?
     windowWidth = 1365;
     windowHeight = 704;
     screen = SDL_CreateWindow(name.c_str(), 100, 100, windowWidth, windowHeight, SDL_WINDOW_MAXIMIZED | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL); // could do without opengl
@@ -254,16 +255,14 @@ void print(string s)
 
 bool needUpdate()
 {
-    // TODO: crypt content without homemade (compare local and server crypted version) /// THINK AGAIN AT THE SYSTEM (user knows version not crypted and can crypt himself or ask friends)
     maj = getHttps("https://lemnoslife.com/MAJLatest.txt");
-    currentVersion = getFileContentString(majFile); // does it work fine even if file doesn't exist ?
-    currentVersionNumber = cleanVersion(currentVersion == "" ? 0 : convertStrToInt(replaceAll(currentVersion, "."))); // doesn't used to have the replace ^^
+    currentVersion = getFileContentString(majFile); // does it work fine even if file doesn't exist?
+    currentVersionNumber = cleanVersion(currentVersion == "" ? 0 : convertStrToInt(replaceAll(currentVersion, ".")));
     latestVersionNumber = cleanVersion(convertStrToInt(replaceAll(maj, ".")));
     print("maj: " + maj + "!");
     print("currentVersion: " + currentVersion);
     print("currentVersionNumber: " + convertNbToStr(currentVersionNumber));
     print("latestVersionNumber: " + convertNbToStr(latestVersionNumber));
-    //cout << latestVersionNumber << " " << currentVersionNumber << " (" << currentVersion << ")" << endl;
     return latestVersionNumber > currentVersionNumber;
 }
 
@@ -276,19 +275,16 @@ bool removeFile(string filePath)
 {
     return remove(filePath.c_str());
 }
-// is there on a frame a console before launching updater etc ? see Installer and Shortcut programs
 
 static size_t throw_away(void* ptr, size_t size, size_t nmemb, void* data)
 {
-  //(void)ptr;
-  //(void)data;
   return (size_t)(size * nmemb);
 }
 
 unsigned long getRemoteFileSize(string url)
 {
     double filesize = 0;
-    curl_global_init(CURL_GLOBAL_DEFAULT); // can put in common the inits ?
+    curl_global_init(CURL_GLOBAL_DEFAULT); // can put in common the inits?
     CURL* curl = curl_easy_init();
 
     if(curl)
@@ -317,9 +313,9 @@ unsigned long getRemoteFileSize(string url)
 
 void updateUnit(double* amountToDownloadPtr, string* unitPtr, double* unitDivPtr, string unitTmp)
 {
-    if(*amountToDownloadPtr >= 1000) // use a function instead ?
+    if(*amountToDownloadPtr >= 1000) // use a function instead?
     {
-        (*amountToDownloadPtr) /= 1000; // work without parenthesis ?
+        (*amountToDownloadPtr) /= 1000; // work without parenthesis?
         (*unitPtr) = unitTmp;
         (*unitDivPtr) *= 1000;
     }
@@ -329,8 +325,7 @@ void downloadAndUnzip(string url, string archiveName)
 {
     amountDownloaded = 0;
     urlZIP = url;
-    //print("Downloading: " + urlZIP);
-    print("Downloading...");
+    print("Downloading: " + urlZIP);
     amountToDownload = getRemoteFileSize(urlZIP); // could also directly write file size in the changelogs that way no latency wait again
     amountToDownload /= 1000; // converted in Ko (before in bytes)
     unit = "Ko";
@@ -376,13 +371,13 @@ void downloadAndUnzip(string url, string archiveName)
     ShellExecuteEx(&ShExecInfo);
     WaitForSingleObject(ShExecInfo.hProcess, INFINITE);
     CloseHandle(ShExecInfo.hProcess);*/
-    print("Extracted !");
+    print("Extracted!");
     removeFile("..\\Game\\" + archiveName);
 }
 
 void updater()
 {
-    //cout << "hey" << endl;
+    //cout << "updater" << endl;
     updateLine = "Chargement des méta-données de la mise à jour...";
     if(currentVersion == "")
     {
@@ -401,7 +396,7 @@ void updater()
         //downloadFileHttp(majFolder + "changes.zip");
         /// TODO: progress = 0; 50 % download and 50 % deflating
         ///updateLine = "Téléchargement de la mise à jour...";
-        downloadAndUnzip("lemnoslife.com/MAJ/" + currentVersion + "/changes.zip", "changes.zip");
+        downloadAndUnzip("https://lemnoslife.com/MAJ/" + currentVersion + "/changes.zip", "changes.zip");
 
         // add parameter to force unzip (if someone stop updater while proceding) - done
         // using libraries would be cleaner
