@@ -2,24 +2,13 @@ MAINICON ICON "icon.ico"
 0 RCDATA "LemnosLife - MAJ.exe"
 1 RCDATA "libcurl-x64.dll"
 2 RCDATA "libfreetype-6.dll"
-// Use only what I find useful and I'll add for people needing it and document it properly.
-// Is this one actually needed?
-3 RCDATA "libjpeg-9.dll"
-4 RCDATA "SDL2.dll"
-5 RCDATA "SDL2_image.dll"
-6 RCDATA "SDL2_ttf.dll"
-7 RCDATA "libgcc_s_seh-1.dll"
-8 RCDATA "zlib1.dll"
-// Both following don't seem useful
-9 RCDATA "libcrypto-1_1-x64.dll"
-10 RCDATA "libssl-1_1-x64.dll"
-11 RCDATA "arial.ttf"
-12 RCDATA "background.jpg"
-13 RCDATA "libwinpthread-1.dll"
-/*
-C:/Windows/System32/msvcr120.dll
-C:/Windows/SysWOW64/msvcr120.dll
-*/
-14 RCDATA "msvcr120.dll"
-15 RCDATA "libstdc++-6.dll"
+3 RCDATA "SDL2.dll"
+4 RCDATA "SDL2_image.dll"
+5 RCDATA "SDL2_ttf.dll"
+6 RCDATA "libgcc_s_seh-1.dll"
+7 RCDATA "zlib1.dll"
+8 RCDATA "arial.ttf"
+9 RCDATA "background.jpg"
+10 RCDATA "libwinpthread-1.dll"
+11 RCDATA "libstdc++-6.dll"
 
