@@ -17,7 +17,7 @@
 					<Add directory="LIBS/SDL2_image-2.6.3/x86_64-w64-mingw32/include" />
 					<Add directory="LIBS/SDL2-2.26.4/x86_64-w64-mingw32/include/SDL2" />
 					<Add directory="LIBS/SDL2_ttf-2.0.15/x86_64-w64-mingw32/include" />
-					<Add directory="LIBS/curl-7.88.1-win64-mingw/include" />
+					<Add directory="LIBS/curl-8.0.1_4-win64-mingw/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-lmingw32" />
@@ -30,7 +30,7 @@
 					<Add option="-lglu32" />
 					<Add directory="LIBS/SDL2-2.26.4/x86_64-w64-mingw32/lib" />
 					<Add directory="LIBS/SDL2_ttf-2.0.15/x86_64-w64-mingw32/lib" />
-					<Add directory="LIBS/curl-7.88.1-win64-mingw/lib" />
+					<Add directory="LIBS/curl-8.0.1_4-win64-mingw/lib" />
 					<Add directory="LIBS/SDL2_image-2.6.3/x86_64-w64-mingw32/lib" />
 				</Linker>
 				<MakeCommands>
