@@ -234,7 +234,7 @@ void print(string s)
 
 bool needUpdate()
 {
-    maj = getHttps("https://lemnoslife.com/MAJLatest.txt");
+    maj = getHttps("https://lemnoslife.com/MAJ/latest.txt");
     currentVersion = getFileContentString(majFile); // does it work fine even if file doesn't exist?
     currentVersionNumber = cleanVersion(currentVersion == "" ? 0 : convertStrToInt(replaceAll(currentVersion, ".")));
     latestVersionNumber = cleanVersion(convertStrToInt(replaceAll(maj, ".")));
@@ -412,7 +412,7 @@ void updateScreen()
 {
     if(first)
     {
-        vector<string> news = split(getHttps("https://lemnoslife.com/MAJ.txt"), "\n");
+        vector<string> news = split(getHttps("https://lemnoslife.com/MAJ/changelogs.txt"), "\n");
         for(unsigned int i = 0; i < news.size(); i++)
         {
             changeLog.push_back(news[i]);
@@ -682,7 +682,7 @@ void renderScreen()
     glEnd();
     glPopAttrib();
 
-    // need last empty line in MAJ.txt in order to display the last line of MAJ.txt
+    // need last empty line in changelogs.txt in order to display the last line of changelogs.txt
 
     TTF_SetFontStyle(font24, TTF_STYLE_NORMAL); // otherwise sometimes it keeps bold while it's not necessary I don't know why
 
