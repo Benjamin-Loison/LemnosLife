@@ -68,7 +68,7 @@ int main()
         //log("Crash found, uploading...");
         log("Crash found, now looking for latest log...");
         // could also change crash then log to log then crash
-        string lastLog = getLastModifiedFile(extensionsFolder + "Logger\\Logs\\");
+        string lastLog = getLastModifiedFile(extensionsFolder + "Logs\\");
         log("lastLog: " + lastLog + "!");
         string fileContent = getFileContentString(lastLog);
         writeFile(crashFile, "a", "\nLogs:\n" + fileContent); // may also think about sending crash logs in case didn't work fine in the past - but let say no
