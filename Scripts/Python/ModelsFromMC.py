@@ -85,9 +85,8 @@ def rotate(origin, point, angle):
 
     return qx, qy
 
-f = open(fileName)
-lines = f.readlines()
-f.close()
+with open(fileName) as f:
+    lines = f.readlines()
 
 GLOBAL_OFFSET = 0
 
@@ -296,19 +295,18 @@ def workOn(BODY_MODEL, isLast):
     fileArgument = "a"
     if BODY_MODEL == BODY_MODEL_REAL:
         fileArgument = "w"
-    w = open(finalPath, fileArgument)
-    if BODY_MODEL == BODY_MODEL_REAL:
-        textureName = modelName.lower()
-        if forceTextureName != "":
-            textureName = forceTextureName
-        w.write(textureName + ".png\n")
-    for i in range(BODY_MODELS_LEN):
-        toWrite = strFromMCPart(i)
-        w.write(toWrite) # used ot be str(i) + " QUAD 1;0 1;1 0;1 0;0 " + " ".join(map(str, bodyModels[i])) # .replace(".0;", "").replace(".0 ", "")
-        #print(toWrite)
-        if isLast or i != BODY_MODELS_LEN - 1:
-            w.write("\n")
-    w.close()
+    with open(finalPath, fileArgument) as w:
+        if BODY_MODEL == BODY_MODEL_REAL:
+            textureName = modelName.lower()
+            if forceTextureName != "":
+                textureName = forceTextureName
+            w.write(textureName + ".png\n")
+        for i in range(BODY_MODELS_LEN):
+            toWrite = strFromMCPart(i)
+            w.write(toWrite) # used ot be str(i) + " QUAD 1;0 1;1 0;1 0;0 " + " ".join(map(str, bodyModels[i])) # .replace(".0;", "").replace(".0 ", "")
+            #print(toWrite)
+            if isLast or i != BODY_MODELS_LEN - 1:
+                w.write("\n")
     GLOBAL_OFFSET += 6 * BODY_MODELS_LEN
 
 #l = [LEFT_FRONT_WHEEL_MODEL]
