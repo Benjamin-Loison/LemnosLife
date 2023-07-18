@@ -6,14 +6,16 @@ path = "C:\\Users\\Benjamin\\Desktop"
 chdir(path)
 
 fileName = "Zodiac.java"
+forceTextureName = "dayz_vehicle_chevroletsuburban2010_2"
 modelName = ""
 textureX, textureY = 0, 0
-idStr = "9"
+idStr = "24" # could make an auto-id found
 
 PREFIX_MODEL_NAME = "public class "
 
 ADD_BOX = "addBox"
 SET_ROTATION_POINT = "setRotationPoint"
+ADD_SHAPE_BOX = "addShapeBox"
 
 THIS = ""
 
@@ -50,7 +52,7 @@ PREFIX_ROTATION_X = "rotateAngleX"
 PREFIX_ROTATION_Y = "rotateAngleY"
 PREFIX_ROTATION_Z = "rotateAngleZ"
 
-isCompiled = True
+isCompiled = False
 
 if isCompiled:
     ADD_BOX = "func_78790_a"
@@ -89,7 +91,7 @@ f.close()
 
 GLOBAL_OFFSET = 0
 
-def workOn(BODY_MODEL):
+def workOn(BODY_MODEL, isLast):
     global GLOBAL_OFFSET
     # why required here ?
 
@@ -149,8 +151,11 @@ def workOn(BODY_MODEL):
                     bodyModels[index][9] = getRot(PREFIX_ROTATION_Y, line)
                 elif PREFIX_ROTATION_Z in line:
                     bodyModels[index][10] = getRot(PREFIX_ROTATION_Z, line)
+                elif ADD_SHAPE_BOX in line:
+                    print("Go: " + line)
+
                 else:
-                    print(line)
+                    print("Not treating: " + line)
 
     # make another format which use triangles or quadrilaterals to remove all quadrilaterals in common...
 
@@ -218,7 +223,7 @@ def workOn(BODY_MODEL):
         res = ""
         x, y, z = bodyModels[i][2], bodyModels[i][3], bodyModels[i][4]
         xS, yS, zS = str(x / MINECRAFT_BLOCK_SIZE), str(-y / MINECRAFT_BLOCK_SIZE), str(z / MINECRAFT_BLOCK_SIZE)
-        minTX, maxTX, minTY, maxTY = bodyModels[i][4], bodyModels[i][4] + bodyModels[i][2], bodyModels[i][4], bodyModels[i][4] + bodyModels[i][3]
+        minTX, maxTX, maxTY, minTY = bodyModels[i][4] + bodyModels[i][2] + bodyModels[i][4], bodyModels[i][4] + bodyModels[i][2] + bodyModels[i][2] + bodyModels[i][4], bodyModels[i][4], bodyModels[i][4] + bodyModels[i][3]
         minTX = tX(i, minTX)
         maxTX = tX(i, maxTX)
         minTY = tY(i, minTY)
@@ -228,7 +233,7 @@ def workOn(BODY_MODEL):
             + xS + ";0;-" + zS + " " \
             + xS + ";-" + yS + ";-" + zS + " " \
             + "0;-" + yS + ";-" + zS, i) + "\n"
-        minTX, maxTX, minTY, maxTY = bodyModels[i][4] + bodyModels[i][2] + bodyModels[i][4], bodyModels[i][4] + bodyModels[i][2] + bodyModels[i][2] + bodyModels[i][4], bodyModels[i][4], bodyModels[i][4] + bodyModels[i][3]
+        maxTX, minTX, maxTY, minTY = bodyModels[i][4], bodyModels[i][4] + bodyModels[i][2], bodyModels[i][4], bodyModels[i][4] + bodyModels[i][3]
         minTX = tX(i, minTX)
         maxTX = tX(i, maxTX)
         minTY = tY(i, minTY)
@@ -238,7 +243,8 @@ def workOn(BODY_MODEL):
             + xS + ";0;0" + " " \
             + xS + ";-" + yS + ";0" + " " \
             + "0;-" + yS + ";0", i) + "\n" # HERE (below)
-        minTX, maxTX, minTY, maxTY = bodyModels[i][4], bodyModels[i][4] + bodyModels[i][2], 0, bodyModels[i][4]
+        # used to be: minTX, maxTX, minTY, maxTY # new: maxTX, minTX, maxTY, minTY
+        maxTX, minTX, maxTY, minTY = bodyModels[i][4], bodyModels[i][4] + bodyModels[i][2], 0, bodyModels[i][4]
         #print(i, minTX, maxTX, minTY, maxTY)
         minTX = tX(i, minTX)
         maxTX = tX(i, maxTX)
@@ -261,7 +267,7 @@ def workOn(BODY_MODEL):
             + xS + ";-" + yS + ";-" + zS + " " \
             + xS + ";-" + yS + ";0" + " " \
             + "0;-" + yS + ";0", i) + "\n"
-        minTX, maxTX, minTY, maxTY = 0, bodyModels[i][4], bodyModels[i][4], bodyModels[i][4] + bodyModels[i][3]
+        maxTX, minTX, minTY, maxTY = 0, bodyModels[i][4], bodyModels[i][4], bodyModels[i][4] + bodyModels[i][3]
         minTX = tX(i, minTX)
         maxTX = tX(i, maxTX)
         minTY = tY(i, minTY)
@@ -285,36 +291,42 @@ def workOn(BODY_MODEL):
             + xS + ";0;0", i)
         return res
 
-    if directApply:
-        finalPath = additionnalPath + idStr
-    else:
-        finalPath = modelName
-    finalPath += ".struc"
+    finalPath = (additionnalPath + idStr if directApply else modelName) + ".struc"
 
     fileArgument = "a"
     if BODY_MODEL == BODY_MODEL_REAL:
         fileArgument = "w"
     w = open(finalPath, fileArgument)
     if BODY_MODEL == BODY_MODEL_REAL:
-        w.write(modelName.lower() + ".png\n")
+        textureName = modelName.lower()
+        if forceTextureName != "":
+            textureName = forceTextureName
+        w.write(textureName + ".png\n")
     for i in range(BODY_MODELS_LEN):
-        w.write(strFromMCPart(i)) # used ot be str(i) + " QUAD 1;0 1;1 0;1 0;0 " + " ".join(map(str, bodyModels[i])) # .replace(".0;", "").replace(".0 ", "")
-        if i != BODY_MODELS_LEN - 1:
+        toWrite = strFromMCPart(i)
+        w.write(toWrite) # used ot be str(i) + " QUAD 1;0 1;1 0;1 0;0 " + " ".join(map(str, bodyModels[i])) # .replace(".0;", "").replace(".0 ", "")
+        #print(toWrite)
+        if isLast or i != BODY_MODELS_LEN - 1:
             w.write("\n")
     w.close()
     GLOBAL_OFFSET += 6 * BODY_MODELS_LEN
 
+#l = [LEFT_FRONT_WHEEL_MODEL]
 l = [BODY_MODEL_REAL, DOOR_CLOSE_MODEL, DOOR_OPEN_MODEL, LEFT_FRONT_WHEEL_MODEL, RIGHT_FRONT_WHEEL_MODEL, LEFT_BACK_WHEEL_MODEL, RIGHT_BACK_WHEEL_MODEL, FRONT_WHEEL_MODEL, BACK_WHEEL_MODEL, LEFT_TRACK_WHEEL_MODEL, LEFT_TRACK_MODEL, RIGHT_TRACK_MODEL, TRAILER_MODEL, STEERING_WHEEL_MODEL]
+#
+#
 
-for model in l:
-    workOn(model)
+lLen = len(l)
+for modelIndex in range(lLen):
+    model = l[modelIndex]
+    workOn(model, modelIndex < lLen - 1)
 
 # TODO:
 
 """
 
-shape3D
-shapeBox
+addShape3D
+addShapeBox
 addTrapezoid
 addFlexBox
 addFlexTrapezoid
@@ -322,6 +334,8 @@ addFlexTrapezoid
 later: make a good format to store this kind of vehicles (cubes)
 
 could make stats about only vehicles which function is used in how many models
+
+and then work firstly on the less new function used ?
 
 """
 
@@ -343,6 +357,8 @@ steering wheel
 Could be useful: https://github.com/Demitto/Flan-s-Mod-Plus/blob/master/src/main/java/com/flansmod/client/tmt/ModelRendererTurbo.java
 
 Manus permission: https://pastebin.com/2ise9067
+
+/Structure 11 3691 13132 12 0
 
 rotX:
 
