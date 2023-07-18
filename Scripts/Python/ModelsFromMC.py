@@ -340,7 +340,7 @@ steering wheel
 
 """
 
-Could be usefull: https://github.com/Demitto/Flan-s-Mod-Plus/blob/master/src/main/java/com/flansmod/client/tmt/ModelRendererTurbo.java
+Could be useful: https://github.com/Demitto/Flan-s-Mod-Plus/blob/master/src/main/java/com/flansmod/client/tmt/ModelRendererTurbo.java
 
 Manus permission: https://pastebin.com/2ise9067
 
