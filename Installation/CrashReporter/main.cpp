@@ -46,7 +46,7 @@ int main()
     ShExecInfo.fMask = SEE_MASK_NOCLOSEPROCESS;
     ShExecInfo.hwnd = NULL;
     ShExecInfo.lpVerb = NULL;
-    ShExecInfo.lpFile = "gdb\\gdbAttach.bat";//"gdb.exe"; // yse gdbAttach otherwise vocal chat doesn't work (encoding to .wav doesn't work for instance)
+    ShExecInfo.lpFile = "gdb\\gdbAttach.bat";//"gdb.exe"; // use gdbAttach otherwise vocal chat doesn't work (encoding to .wav doesn't work for instance)
     ShExecInfo.lpParameters = gdbCmd.c_str();
     ShExecInfo.lpDirectory = NULL;
     ShExecInfo.nShow = SW_HIDE;
