@@ -10,17 +10,17 @@
 
 class Line3D // can be coded with one VAO ... ? (if so is better ?)
 {
-    public:
-        /// add a destructor to manage GPU variables
-        Line3D();
-        Line3D(double, double, glm::vec4 = glm::vec4(1, 0, 0, 1), double = -HEIGHT_LINE_3D, double = DBL_MAX, double = 0, double = HEIGHT_LINE_3D);
-        Line3D(std::vector<double>, glm::vec4 = glm::vec4(1, 0, 0, 1));
-        void render(), free();
-        float m_verticesCoo[6];
-    private:
-        glm::vec4 m_color;
-        unsigned int m_VBO, m_VAO, m_vertices;
-        Shader m_shader; // can be used for multiple instances ?
+public:
+    /// add a destructor to manage GPU variables
+    Line3D();
+    Line3D(float, float, glm::vec4 = glm::vec4(1, 0, 0, 1), float = -HEIGHT_LINE_3D, float = DBL_MAX, float = 0, float = HEIGHT_LINE_3D);
+    Line3D(std::vector<double>, glm::vec4 = glm::vec4(1, 0, 0, 1));
+    void render(), free();
+    float m_verticesCoo[6];
+private:
+    glm::vec4 m_color;
+    unsigned int m_VBO, m_VAO, m_vertices;
+    Shader m_shader; // can be used for multiple instances ?
 };
 
 #include "../../../LemnosLife/Map/Position.h"

@@ -9,7 +9,6 @@
 #define EPSILON 0.000000001
 // which precision is really required ?
 
-void initializeCollision();
 bool lineQuadrilateralIntersect(Vector3D, Vector3D, Vector3D, Vector3D, Vector3D, Vector3D, Vector3D*),
      semiLineQuadrilateralIntersect(Vector3D, Vector3D, Vector3D, Vector3D, Vector3D, Vector3D, Vector3D*),
      segmentQuadrilateralIntersect(Vector3D, Vector3D, Vector3D, Vector3D, Vector3D, Vector3D, Vector3D*),

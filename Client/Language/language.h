@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-void initializeLanguage();
+void initializeLanguage(), loadLanguage(), loadAdditionalLanguage();
 std::string lgd(std::string), lgServ(std::string), lgdForce(std::string id);
 std::vector<std::string> lgd(std::vector<std::string> ids);
 

@@ -29,21 +29,29 @@
 
 extern bool hudActivated[HUD_NUMBER];
 
-void initializeHud(), addHud(std::string), removeHud(std::string), renderHud(), switchHud(std::string hud), checkHudItems(), disableAllHud();
-bool switchHudIfHasItem(std::string hud, std::string itemName = "", bool noItemWarning = false), isHudActivated(std::string hud);
-extern HudF3 *hudF3Ptr;
-extern HudHealth *hudHealthPtr;
-extern HudChat *hudChatPtr;
-extern HudBroadcast *hudBroadcastPtr;
-extern HudHotbar *hudHotbarPtr;
-extern HudVehicle *hudVehiclePtr;
-extern HudNVG *hudNVGPtr;
-extern HudCompass *hudCompassPtr;
-extern HudWatch *hudWatchPtr;
-extern HudGPS *hudGPSPtr;
-extern HudBinoculars *hudBinocularsPtr;
-extern HudInteraction *hudInteractionPtr;
-extern HudLoading *hudLoadingPtr;
+void initializeHud(),
+     addHud(std::string),
+     removeHudByIndex(unsigned short hudIndex),
+     removeHud(std::string),
+     renderHud(),
+     switchHud(std::string hud),
+     checkHudItems(),
+     disableAllHud();
+bool switchHudIfHasItem(std::string hud, std::string itemName = "", bool itemWarning = false),
+     isHudActivated(std::string hud);
+extern HudF3* hudF3Ptr;
+extern HudHealth* hudHealthPtr;
+extern HudChat* hudChatPtr;
+extern HudBroadcast* hudBroadcastPtr;
+extern HudHotbar* hudHotbarPtr;
+extern HudVehicle* hudVehiclePtr;
+extern HudNVG* hudNVGPtr;
+extern HudCompass* hudCompassPtr;
+extern HudWatch* hudWatchPtr;
+extern HudGPS* hudGPSPtr;
+extern HudBinoculars* hudBinocularsPtr;
+extern HudInteraction* hudInteractionPtr;
+extern HudLoading* hudLoadingPtr;
 extern std::string picturesHudFolder;
 
 #endif

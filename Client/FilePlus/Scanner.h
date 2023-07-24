@@ -6,11 +6,11 @@
 
 class Scanner
 {
-    public:
-        Scanner(), Scanner(const Scanner &), Scanner(std::string);
-        std::string nextLine();
-    private:
-        std::ifstream m_fileStream;
+public:
+    Scanner(), Scanner(const Scanner &), Scanner(std::string);
+    std::string nextLine();
+private:
+    std::ifstream m_fileStream;
 };
 
 #endif

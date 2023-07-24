@@ -17,7 +17,7 @@ void initializeInput(), freeInput(), eventManager(), setClipboard(const std::str
 extern bool /*mouse[5], */clicked, opened, isLeftKeyPressed, isRightKeyPressed, isForwardKeyPressed, isBackwardKeyPressed, isRotatingRightKeyPressed, isRotatingLeftKeyPressed, isHelicopterIncreaseKeyPressed, isHelicopterDecreaseKeyPressed, debugDupli, debugMoveChunkLag; // should make a more general system (caution to return or continue like instructions)
 std::string getClipboard();
 extern std::string pingStr;
-extern unsigned long long pingTime;
+extern unsigned long long pingTime, lastMouseWheelTime;
 extern unsigned short requestPing;
 extern unsigned int debugMoveChunkLagNb;
 bool isPressed(long long), isTyping(), isANPCNear(double d = INTERACTION_RANGE_3D);

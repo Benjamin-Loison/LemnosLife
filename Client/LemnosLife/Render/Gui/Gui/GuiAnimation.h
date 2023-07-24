@@ -7,8 +7,8 @@
 
 class GuiAnimation : public Gui
 {
-    public:
-        void resizeGui(), renderGui();
+public:
+    void resizeGui(), renderGui();
 };
 
 #endif

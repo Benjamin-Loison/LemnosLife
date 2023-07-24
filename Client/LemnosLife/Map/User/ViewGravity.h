@@ -9,23 +9,23 @@
 
 class ViewGravity
 {
-    public:
-        ViewGravity(GravityPosition = GravityPosition(), ViewAngle = ViewAngle());
-        ViewGravity(std::vector<std::string>);
-        ViewGravity(View);
-        void updateViewGravity(ViewGravity), updateViewGravityWithoutGravity(ViewGravity);
-        ViewGravity updateGravityPosition(GravityPosition), updateViewAngle(ViewAngle), updateOrientation(Position), updatePosition(Position);//, updatePosition(User*);
-        GravityPosition getGravityPosition();
-        GravityPosition* getGravityPositionPtr();
-        Position getOrientation();
-        ViewAngle getViewAngle();
-        ViewAngle* getViewAnglePtr();
-        Vector3D getVector3D();
-        const std::string toString();
-    private:
-        GravityPosition m_gravityPos;
-        Position m_orientation;
-        ViewAngle m_viewAngle;
+public:
+    ViewGravity(GravityPosition = GravityPosition(), ViewAngle = ViewAngle());
+    ViewGravity(std::vector<std::string>);
+    ViewGravity(View);
+    void updateViewGravity(ViewGravity), updateViewGravityWithoutGravity(ViewGravity);
+    ViewGravity updateGravityPosition(GravityPosition), updateViewAngle(ViewAngle), updateOrientation(Position), updatePosition(Position);//, updatePosition(User*);
+    GravityPosition getGravityPosition();
+    GravityPosition* getGravityPositionPtr();
+    Position getOrientation();
+    ViewAngle getViewAngle();
+    ViewAngle* getViewAnglePtr();
+    Vector3D getVector3D();
+    const std::string toString();
+private:
+    GravityPosition m_gravityPos;
+    Position m_orientation;
+    ViewAngle m_viewAngle;
 };
 
 //#include "User.h"

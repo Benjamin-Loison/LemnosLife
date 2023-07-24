@@ -7,10 +7,10 @@
 
 class HudChat : public Gui
 {
-    public:
-        void renderGui(), resizeGui();
-        bool isDynamic();
-        double distanceXFromWindowEdge, distanceYFromWindowEdge;
+public:
+    void renderGui(), resizeGui();
+    bool isDynamic();
+    double distanceXFromWindowEdge, distanceYFromWindowEdge;
     /*private:
         double m_centerX;*/
 };

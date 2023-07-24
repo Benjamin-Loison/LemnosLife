@@ -6,8 +6,13 @@
 #include "../../2D/vector2d.h"
 #include <SDL2/SDL.h>
 
-void initializeRoads(), loadRoads(bool = false, bool encrypted = false, std::string middleCurrentChunk = ""), initRoadsRender(), renderRoads();
-bool isOnRoad(double, double), isOnRoadInt(int, int), isIn(point);
+void initializeRoads(),
+     loadRoads(bool = false, std::string middleCurrentChunk = ""),
+     initRoadsRender(),
+     renderRoads();
+bool isOnRoad(double, double),
+     isOnRoadInt(int, int),
+     isIn(point);
 unsigned short getRoad(double, double);
 extern SDL_Color roadsColor[ROADS_NUMBER];
 point getPointStr(std::string);

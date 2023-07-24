@@ -16,13 +16,13 @@
 #define ADM_FOR_MAPPING ADMINISTRATOR_ADM
 // when map will be clean should change to DEVELOPER maybe should add a grade Mapper/Architecte ? or a permission like building.perm
 
-void initializeMap(), loadMap(std::string, bool = false, bool = false), loadCachedMap(std::string), renderMap(), initializeMapRender(), checkChunkChange(/*double, double*/bool force = false);
+void initializeMap(), loadMap(std::string, bool = false), loadCachedMap(std::string), renderMap(), initializeMapRender(), checkChunkChange(/*double, double*/bool force = false);
 bool getFirstBool(), isCurrentChunkLoading();
 extern std::string currentMapFolderPath, structuresFolder, biomesFolder, roadsFolder, farmsFolder;
 extern std::map<std::string, Chunk> chunksLoaded; // works with subchunk of 100m
 extern std::tuple<std::map<std::string, bool>, std::map<std::string, double>, std::map<std::string, long long>, std::map<std::string, std::string>> mapData;
 extern double groundAltitudeValue;
-extern bool isMapLoaded, testMapBool, mapLoading;
+extern bool isMapLoaded, mapLoading;
 
 extern std::vector<Line3D> debugLines;
 
@@ -34,7 +34,7 @@ extern int mapSize;
 extern std::string currentChunk;
 
 // for mapUtils
-extern std::map<std::string, std::vector<std::vector<std::pair<std::vector<double>, char>>>> mapChunkHeights;
+extern std::map<std::string, std::tuple<std::vector<std::vector<float>>, std::vector<std::vector<char>>, std::pair<unsigned int, unsigned int>>> mapChunkHeights;
 
 // for ground
 extern unsigned short threadLaunched;
@@ -44,7 +44,7 @@ extern std::vector<std::string> groundToRender;
 extern std::mutex translationsLock, toInitLock;
 extern std::string strucIdDbFileName;
 
-extern std::map<std::string, GroundGl_object> groundLoaded[2];
+extern GroundGl_object groundLoaded[2];
 
 extern std::vector<std::string> filesLoaded;
 

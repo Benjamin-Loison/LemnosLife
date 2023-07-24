@@ -3,43 +3,48 @@
 
 #define GLEW_STATIC
 #include <GL/glew.h>
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 #include <string>
 #include <vector>
-#include <glm.hpp>
+#include <glm/glm.hpp>
 #include "../Render/Shader.h"
-#include "StructureMeta.h"
+
+///#define DEBUG_ROADS
 
 class GroundGl_object
 {
-    public:
-        GroundGl_object();
-        GroundGl_object(std::string, bool = true);
-        void addPart(double[4][2], std::string[4][3], bool isRoad = false),
-             addPart(double[4][2], double[4][3], bool isRoad = false),
-             addPart(double[4][2], std::vector<double>, bool isRoad = false),
-             deleteParts(),
-             initializeTexture(std::string additionnalOption = "", bool force = false),
-             initializeRender(bool callInitializeTexture = true, bool forceInitializeTexture = false),
-             updateRender(),
-             render(bool isRoad = false, bool currentGLDebug = 0),
-             changeBoolFirst(bool);
-        std::string m_texturePath;
+public:
+    GroundGl_object();
+    GroundGl_object(std::vector<std::string>, bool = true);
+    void addPart(float, unsigned int, std::pair<unsigned int, unsigned int>),
+         deleteParts(),
+         initializeTexture(std::string additionalOption = "", bool force = false),
+         initializeRender(bool callInitializeTexture = true, bool forceInitializeTexture = false),
+         updateRender(),
+         render(bool currentGLDebug = 0),
+         changeBoolFirst(bool),
+         updateVAO();
+    std::vector<std::string> m_texturePaths;
 
-        /// following public just for saving this data as binary file
-        std::vector<glm::vec4> m_vertices;
-        std::vector<glm::vec2> m_texCoord;
-        std::vector<unsigned int> m_indices;
-        int m_partNumber;
-    private:
-        GLuint m_texture;
-        bool m_first;
-        Shader m_shader0;
-        unsigned int m_VBO, m_VAO, m_IBO;
-        int m_vertice, m_tex, m_indice;
+    /// following public just for saving this data as binary file
+    std::vector<float> m_altitudes;
+    std::vector<unsigned int> m_biomes;
+    std::vector<glm::uvec2> m_chunks;
+    int m_partNumber, m_actualPartNumber;
+private:
+    std::vector<GLuint> m_textures;
+    bool m_first, m_textureLoadedOnce, m_needVAOUpdate;
+    Shader m_shader;
+    unsigned int m_VBO, m_VAO;
+    int m_altitude, m_biome, m_chunk;
 };
 
 extern unsigned long long totalIndices;
-void addChatMessageGlError(std::string identifier = ""); // could change this function location
+bool addChatMessageGlError(std::string identifier = ""); // could change these functions location
+void addChatMessageSDLError(std::string identifier = "");
 
 #endif

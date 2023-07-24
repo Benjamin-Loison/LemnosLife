@@ -2,20 +2,18 @@
 #define DEF_GUIGAME
 
 #include "Gui.h"
-//#include <windows.h>
-//#include <wingdi.h>
 #include <vector>
 #include "../../../../3D/Render/Engine/API3D.h"
 #include "../../../Map/User/View.h"
 #include "../../../../Vehicles/Vehicle.h"
 
-///#define DEBUG_GL_ERR
+#define DEBUG_GL_ERR
 
 //extern std::vector<std::vector<double>> debugLinesToInit;
 extern std::vector</*std::pair<double, double>*/std::vector<double>> lineDebugToAdd;
 extern std::vector<Line3D> lineDebug, markerLines;
 extern bool isInGame, crosshairEnabled, testGraphicThread, testGraphicThreadForce, isFirstSpawn, needResetMap2D, markerZCorrect/*, sirenSwitch*/, removeVehiclesWanted, groundClearWanted,
-            needVehicleGraphicUpdate, collisionRaytracing, needClearBulletImpacts, armRightChange, isProfiling/*, sitKeyPressed*/;//, needHandRender;
+       needVehicleGraphicUpdate, collisionRaytracing, needClearBulletImpacts, armRightChange, isProfiling/*, sitKeyPressed*/, clearGroundWanted;//, needHandRender;
 extern int reloadStructureId;
 void clearLineDebug(), reloadStruc(unsigned short id, bool force = false), addAnItems3DToRemove(unsigned int itemId, View);
 extern unsigned short wantToZoom;
@@ -31,11 +29,11 @@ extern std::pair<unsigned int, unsigned short> itemsToSetInHand;
 
 class GuiGame : public Gui
 {
-    public:
-        void initGui(), renderGui(), resizeGui();
-        bool isDynamic();
-    private:
-        unsigned short crosshairBottomLeftX, crosshairBottomLeftY, crosshairTopRightX, crosshairTopRightY;
+public:
+    void initGui(), renderGui(), resizeGui();
+    bool isDynamic();
+private:
+    unsigned short crosshairBottomLeftX, crosshairBottomLeftY, crosshairTopRightX, crosshairTopRightY;
 };
 
 #endif

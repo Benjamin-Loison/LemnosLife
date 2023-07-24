@@ -7,8 +7,8 @@
 
 class GuiInterpol : public Gui
 {
-    public:
-        void resizeGui(), renderGui();
+public:
+    void resizeGui(), renderGui();
 };
 
 #endif

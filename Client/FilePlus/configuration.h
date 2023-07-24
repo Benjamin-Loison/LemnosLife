@@ -18,14 +18,15 @@ extern std::map<std::string, bool> configurationDataBool;
 extern std::map<std::string, long long> configurationDataLong;
 extern std::map<std::string, double> configurationDataDouble;
 extern bool configurationChanged;
-void initializeConfiguration(), freeConfiguration(), saveConfigurationToFile();
+void initializeConfiguration(), freeConfiguration(), saveConfigurationToFile(), saveConfigToFile(std::string configFilePath, std::tuple<std::map<std::string, bool>, std::map<std::string, double>, std::map<std::string, long long>, std::map<std::string, std::string>> data);
 std::map<std::string, std::string> loadConfigurationString(std::string);
 std::tuple<std::map<std::string, bool>, std::map<std::string, double>, std::map<std::string, long long>, std::map<std::string, std::string>> loadConfiguration(std::string);
 SDL_Keycode getSDLKey(std::string);
 double getDoubleConfig(std::string key);
 bool getBoolConfig(std::string key);
+// Why the following line involves compilation issue?
+//std::string getStringConfig(std::string key):
 extern std::string configurationFolder;
-//extern std::vector<std::string> in;
 //extern double DEBUG_SIZE;
 
 #endif

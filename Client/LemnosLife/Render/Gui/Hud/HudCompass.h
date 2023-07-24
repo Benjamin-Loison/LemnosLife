@@ -5,12 +5,12 @@
 
 class HudCompass : public Gui
 {
-    public:
-        void renderGui(), resizeGui();
-        bool isDynamic();
+public:
+    void renderGui(), resizeGui();
+    bool isDynamic();
 };
 
-// add direciton arrow for item ? (could give the right one <3_<3)
+// add direciton arrow for item ? (could give the right one)
 // do the same for GPS and Watch ?
 
 #endif

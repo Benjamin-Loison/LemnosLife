@@ -7,9 +7,9 @@
 #include <atomic>
 
 extern std::thread soundThread;
-void initializeSound()/*, playSound(std::string, Position = Position()/*, Position = Position()*//*, double = 100), */,
+void initializeSound()/*, playSound(std::string, Position = Position()*//*, Position = Position()*//*, double = 100), */,
      playSound(std::string, Position = Position(), std::atomic<bool>* = nullptr, Position* = nullptr),
-     playSounde(std::string, Position, std::atomic<bool>*, Position* = nullptr), downloadAndPlay(std::string url, std::string filePath), freeSound();
+     playSoundInternal(std::string, Position, std::atomic<bool>*, Position* = nullptr), downloadAndPlay(std::string url, std::string filePath), freeSound(), loadAdditionalSounds();
 
 extern std::string soundsFolder;
 extern double PITCH;

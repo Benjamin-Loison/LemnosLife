@@ -5,8 +5,8 @@
 
 class GuiMapping : public Gui
 {
-    public:
-        void initGui(), resizeGui(), renderGui();
+public:
+    void initGui(), resizeGui(), renderGui();
 };
 
 #endif

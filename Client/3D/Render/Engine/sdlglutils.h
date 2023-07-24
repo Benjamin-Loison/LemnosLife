@@ -1,7 +1,11 @@
 #ifndef SDLGLUTILS_H
 #define SDLGLUTILS_H
 
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 #include <SDL2/SDL.h>
 #include <string>
 #include <vector>

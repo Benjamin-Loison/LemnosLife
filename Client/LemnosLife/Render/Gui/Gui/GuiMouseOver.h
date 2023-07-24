@@ -7,13 +7,13 @@
 
 class GuiMouseOver : public Gui
 {
-    public:
-        void initGui(), resizeGui(), renderGui();
-        std::vector<Button> m_buttons;
-        std::string targetUsername = "";
-    private:
-        bool button0Clicked = false, button1Clicked = false, button2Clicked = false, button3Clicked = false, button4Clicked = false;
-        void onButton0Clicked(), onButton1Clicked(), onButton2Clicked(), onButton3Clicked(), onButton4Clicked();
+public:
+    void initGui(), resizeGui(), renderGui();
+    std::vector<Button> m_buttons;
+    std::string targetUsername = "";
+private:
+    bool button0Clicked = false, button1Clicked = false, button2Clicked = false, button3Clicked = false, button4Clicked = false;
+    void onButton0Clicked(), onButton1Clicked(), onButton2Clicked(), onButton3Clicked(), onButton4Clicked();
 };
 
 #endif

@@ -4,12 +4,14 @@
 #include <vector>
 //#include "../../2D/vector2d.h"
 
+#define POINT_REAL float
+
 struct Point
 {
     Point();
-    Point(double, double);
+    Point(POINT_REAL, POINT_REAL);
     //Point(Vector2D);
-    double x, y;
+    POINT_REAL x, y;
 };
 
 struct Point3D
@@ -32,9 +34,9 @@ struct Segment
     Point A,B;
 };
 
-struct Carre  // un carre contient une liste (ou tableau) de segments
+struct Square // un carre contient une liste (ou tableau) de segments
 {
-  std::vector<Segment> tableau;
+    std::vector<Segment> tableau;
 };
 
 struct OBB
@@ -48,7 +50,7 @@ struct OBB
 
 void initializePartition(int, int), getMultipleOBBIntersections(Segment, int, int), getMultipleIntersections(Segment, int, int), computeSegments(OBB*);
 bool addObject(double, double, double, double), isCollided(OBB, OBB);
-std::vector<std::vector<Carre>> getMap();
+std::vector<std::vector<Square>> getMap();
 int getMiddleX(), getMiddleY();
 std::vector<std::pair<int, int>> getGrid();
 OBB getOBBpartition();

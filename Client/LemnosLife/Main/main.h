@@ -7,11 +7,11 @@
 
 #define HAS_INTERNET true
 
-extern std::string name, nameLg, nameUp, version, versionFull, ext, dir, assets, mipMapFile, styles, picturesFolder, downloads, skins, itemsFolder, mapFolder, commonMapFolder, picturesMapFolder, picturesMapGroundFolder, picturesMapRoadsFolder, pathSeparatorStr,
-                   animationsStaticFolder, animationsDynamicFolder;
+extern std::string name, nameUp, version, versionFull, ext, dir, assets, mipMapFile, styles, picturesFolder, downloads, skins, itemsFolder, mapFolder, commonMapFolder, picturesMapFolder, picturesMapGroundFolder, picturesMapRoadsFolder, pathSeparatorStr,
+       animationsStaticFolder, animationsDynamicFolder, serversFolder, serverFolder, serverName;
 extern char pathSeparator;
-extern bool DEBUG;
-void free(bool skipEngine = false);
+extern bool DEBUG, isAnotherServer, serverHasCustomAsset;
+void freeMain(bool skipEngine = false);
 
 #define THREAD_MAIN 1
 #define THREAD_REAL_SHOOT 2
@@ -29,6 +29,11 @@ void free(bool skipEngine = false);
 #define THREAD_INIT 14
 #define THREAD_MANAGE_MSGS 15
 #define THREAD_SOUND_MANAGER 16
+#define THREAD_DISCONNECT 17
+#define THREAD_AUTO_CONNECT 18
+#define THREAD_DIJKSTRA 19
+#define THREAD_LOAD_MAIN_MENU 20
+#define THREAD_PROCESS_SERVER_ASSET 21
 
 //#define DEBUG_THREAD_ID
 //#define DEBUG_THREAD_ID_END

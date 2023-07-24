@@ -7,12 +7,12 @@
 
 class HudInteraction : public Gui
 {
-    public:
-        void renderGui(), resizeGui(), scrollDown(), scrollUp(), select(), addOption(std::string, void (*)(unsigned int), unsigned int = 0), removeOption(std::string);
-        bool isDynamic(), isEmpty(), needScrollDown = false, needScrollUp = false;
-    private:
-        unsigned int getOptionIndex(std::string);
-        void addOptionIfNotIn(std::string, void (*)(unsigned int), unsigned int), removeOptionsBeginningBy(std::string needleStart, std::string needleEnd = "");
+public:
+    void renderGui(), resizeGui(), scrollDown(), scrollUp(), select(), addOption(std::string, void (*)(unsigned int), unsigned int = 0), removeOption(std::string);
+    bool isDynamic(), isEmpty(), needScrollDown = false, needScrollUp = false;
+private:
+    unsigned int getOptionIndex(std::string);
+    void addOptionIfNotIn(std::string, void (*)(unsigned int), unsigned int), removeOptionsBeginningBy(std::string needleStart, std::string needleEnd = "");
 };
 
 void loadStructuresDoors();

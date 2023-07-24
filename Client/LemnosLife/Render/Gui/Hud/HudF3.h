@@ -6,11 +6,11 @@
 
 class HudF3 : public Gui
 {
-    public:
-        void renderGui(), resizeGui();
-        bool isDynamic();
-    private:
-        double m_widthDiv2, m_centerX, m_centerY[CENTER_COUNT], m_lineHeightDiv2;
+public:
+    void renderGui(), resizeGui();
+    bool isDynamic();
+private:
+    double m_widthDiv2, m_centerX, m_centerY[CENTER_COUNT], m_lineHeightDiv2;
 };
 
 #endif

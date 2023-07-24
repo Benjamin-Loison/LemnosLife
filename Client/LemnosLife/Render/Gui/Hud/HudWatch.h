@@ -5,9 +5,9 @@
 
 class HudWatch : public Gui
 {
-    public:
-        void renderGui(), resizeGui();
-        bool isDynamic();
+public:
+    void renderGui(), resizeGui();
+    bool isDynamic();
 };
 
 #endif
