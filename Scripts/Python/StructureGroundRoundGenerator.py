@@ -61,6 +61,6 @@ for facesIndex in range(faces):
     oldZ = newZ
     newZ += radius
     if facesIndex != faces - 1:
-        lines += "\n"
+        lines += '\n'
 
 print(lines)

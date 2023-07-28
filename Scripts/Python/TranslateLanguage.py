@@ -25,7 +25,7 @@ with open('DE_de.lang', 'w') as f:
         f.write(newLine)
         print(newLine)
         if linesIndex < linesLen - 1:
-            f.write("\n")
+            f.write('\n')
 
     # should translate even if <>
     # what do with //comments ?

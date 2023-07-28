@@ -38,13 +38,13 @@ for r, d, files in os.walk(path1):
                         toWrite += fLine
                         if fLine == header:
                             found = True
-                            if line[-1] != "\n":
-                                line += "\n"
+                            if line[-1] != '\n':
+                                line += '\n'
                             toWrite += line
                     if not found:
-                        if line[-1] == "\n":
+                        if line[-1] == '\n':
                             line = line[:-1]
-                        toWrite += "\n" + header + line
+                        toWrite += '\n' + header + line
                     f = open(path0 + file, 'w')
                     f.write(toWrite)
                     f.close()

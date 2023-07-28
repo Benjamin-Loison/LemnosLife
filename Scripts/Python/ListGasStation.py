@@ -27,7 +27,7 @@ for r, d, files in os.walk(path):
                 if linePartsSize == 2:
                     subChkX, subChkY = int(lineParts[0]), int(lineParts[1])
                 elif lineParts[0] == "448": # GAS STATION FEED ID
-                    toWrite += toCoo(lineParts[1], chkX, subChkX) + " " + toCoo(lineParts[2], chkY, subChkY) + " " + lineParts[3] + "\n"
+                    toWrite += toCoo(lineParts[1], chkX, subChkX) + " " + toCoo(lineParts[2], chkY, subChkY) + " " + lineParts[3] + '\n'
             f.close()
 
 toWrite = toWrite [:-1]

@@ -51,7 +51,7 @@ def rotateArray(array, orient):
     r = R.from_rotvec(orient) # convert degrees to rad - done in initialization of orient
     return r.apply(array)
 
-lines = input().split("\n") # or do file input
+lines = input().split('\n') # or do file input
 print()
 linesLen = len(lines)
 for linesIndex in range(linesLen):

@@ -14,7 +14,7 @@ for linesIndex in range(linesLen):
     line = lines[linesIndex]
     f.write(line.split("rot: ")[1])
     #if linesIndex < linesLen - 1:
-    #    f.write("\n")
+    #    f.write('\n')
 f.close()
 
 # same code for server
@@ -29,5 +29,5 @@ for linesIndex in range(linesLen):
     line = lines[linesIndex]
     f.write(line.split("rot: ")[1])
     #if linesIndex < linesLen - 1:
-    #    f.write("\n")
+    #    f.write('\n')
 f.close()

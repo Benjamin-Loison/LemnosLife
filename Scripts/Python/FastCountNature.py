@@ -12,7 +12,7 @@ total = 0
 natureCount = 0
 
 for line in lines:
-    line = line.replace("\n", "")
+    line = line.replace('\n', "")
     if len(line) == 0 or line[0] == '#':
         continue
     lineParts = line.split()

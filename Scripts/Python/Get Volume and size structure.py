@@ -112,7 +112,7 @@ for file in files:
         realSize = [abs(ma - mi) for mi, ma in zip(mins, maxs)]
         #print("Real size", realSize)
         if not first:
-            fW.write("\n")
+            fW.write('\n')
         first = False
         id = file.split(".struc")[0].replace(" ", "_")
         realSizesStr = [str(round(s, 3)) for s in realSize]

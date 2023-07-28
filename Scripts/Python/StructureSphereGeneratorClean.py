@@ -79,11 +79,11 @@ for topDownIndex in range(0, topDownNb):
         c = s(xNext, yNext, zNext)
         d = s(xTopBetween, yTopBetween, zTopBetween)
         if not (a == b and b == d):
-            lines += "\n" + str(id) + " QUAD 0;0 0;1; 1;1 1;0 " + " ".join([a, b, c, d])
+            lines += '\n' + str(id) + " QUAD 0;0 0;1; 1;1 1;0 " + " ".join([a, b, c, d])
             id += 1
         top += [[xTopBetween, yTopBetween, zTopBetween]]
         if topDownIndex != topDownNb - 1 or horizontalIndex != horizontalSides - 1:
-            lines += "\n"
+            lines += '\n'
     offset += commonFactorHorizontal / 2
     #break
 
@@ -91,7 +91,7 @@ print(lines)
 
 f = open(path, 'w')
 
-f.write(texture + "\n")
+f.write(texture + '\n')
 
 f.write(lines)
 

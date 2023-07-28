@@ -20,7 +20,7 @@ for r, d, files in os.walk(path):
         if len(lines) == 0:
             print("0: " + fileName)
             continue
-        if lines[0] == "\n":
+        if lines[0] == '\n':
             print("1: " + fileName)
             continue
         if not startsOnceWithNot(lines, "/"):

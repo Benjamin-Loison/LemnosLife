@@ -100,7 +100,7 @@ def workOn(BODY_MODEL, isLast):
     PREFIX_BODY_MODEL = BODY_MODEL + "["
 
     for line in lines:
-        line = line.replace("\n", "")
+        line = line.replace('\n', "")
         k = line.find("//")
         if k != -1:
             #print(line)
@@ -231,7 +231,7 @@ def workOn(BODY_MODEL, isLast):
             + translate("0;0;-" + zS + " " \
             + xS + ";0;-" + zS + " " \
             + xS + ";-" + yS + ";-" + zS + " " \
-            + "0;-" + yS + ";-" + zS, i) + "\n"
+            + "0;-" + yS + ";-" + zS, i) + '\n'
         maxTX, minTX, maxTY, minTY = bodyModels[i][4], bodyModels[i][4] + bodyModels[i][2], bodyModels[i][4], bodyModels[i][4] + bodyModels[i][3]
         minTX = tX(i, minTX)
         maxTX = tX(i, maxTX)
@@ -241,7 +241,7 @@ def workOn(BODY_MODEL, isLast):
             + translate("0;0;0" + " " \
             + xS + ";0;0" + " " \
             + xS + ";-" + yS + ";0" + " " \
-            + "0;-" + yS + ";0", i) + "\n" # HERE (below)
+            + "0;-" + yS + ";0", i) + '\n' # HERE (below)
         # used to be: minTX, maxTX, minTY, maxTY # new: maxTX, minTX, maxTY, minTY
         maxTX, minTX, maxTY, minTY = bodyModels[i][4], bodyModels[i][4] + bodyModels[i][2], 0, bodyModels[i][4]
         #print(i, minTX, maxTX, minTY, maxTY)
@@ -255,7 +255,7 @@ def workOn(BODY_MODEL, isLast):
             + translate("0;0;-" + zS + " " \
             + xS + ";0;-" + zS + " " \
             + xS + ";0;0" + " " \
-            + "0;0;0", i) + "\n"
+            + "0;0;0", i) + '\n'
         minTX, maxTX, minTY, maxTY = bodyModels[i][4] + bodyModels[i][2], bodyModels[i][4] + bodyModels[i][2] + bodyModels[i][2], 0, bodyModels[i][4]
         minTX = tX(i, minTX)
         maxTX = tX(i, maxTX)
@@ -265,7 +265,7 @@ def workOn(BODY_MODEL, isLast):
             + translate("0;-" + yS + ";-" + zS + " " \
             + xS + ";-" + yS + ";-" + zS + " " \
             + xS + ";-" + yS + ";0" + " " \
-            + "0;-" + yS + ";0", i) + "\n"
+            + "0;-" + yS + ";0", i) + '\n'
         maxTX, minTX, minTY, maxTY = 0, bodyModels[i][4], bodyModels[i][4], bodyModels[i][4] + bodyModels[i][3]
         minTX = tX(i, minTX)
         maxTX = tX(i, maxTX)
@@ -275,7 +275,7 @@ def workOn(BODY_MODEL, isLast):
             + translate("0;0;-" + zS + " " \
             + "0;-" + yS + ";-" + zS + " " \
             + "0;-" + yS + ";0" + " " \
-            + "0;0;0", i) + "\n"
+            + "0;0;0", i) + '\n'
         minTX, maxTX, minTY, maxTY = bodyModels[i][4] + bodyModels[i][2], bodyModels[i][4] + bodyModels[i][2] + bodyModels[i][4], bodyModels[i][4], bodyModels[i][4] + bodyModels[i][3]
         minTX = tX(i, minTX)
         maxTX = tX(i, maxTX)
@@ -306,7 +306,7 @@ def workOn(BODY_MODEL, isLast):
             w.write(toWrite) # used ot be str(i) + " QUAD 1;0 1;1 0;1 0;0 " + " ".join(map(str, bodyModels[i])) # .replace(".0;", "").replace(".0 ", "")
             #print(toWrite)
             if isLast or i != BODY_MODELS_LEN - 1:
-                w.write("\n")
+                w.write('\n')
     GLOBAL_OFFSET += 6 * BODY_MODELS_LEN
 
 #l = [LEFT_FRONT_WHEEL_MODEL]

@@ -76,10 +76,10 @@ for topDownIndex in range(topDownNb // 2 - 1, topDownNb - 1):
         #xTopNextBetweenB, yTopNextBetweenB, zTopNextBetweenB = getPoint(angleUp, (angleCur + angleNext) * commonFactorHorizontalNext / (commonFactorHorizontal * 2) + commonFactorHorizontal)
 
         # could also get id from computing with topDownIndex and horizontalSides and horizontalIndex
-        #lines += str(id) + " QUAD 0;0 0;1; 1;1 1;0 " + " ".join([s(xCur, yCur, zCur), s(xNext, yNext, zNext), s(xTopBetween, yTopBetween, zTopBetween), s(xNext, yNext, zNext)]) + "\n"
+        #lines += str(id) + " QUAD 0;0 0;1; 1;1 1;0 " + " ".join([s(xCur, yCur, zCur), s(xNext, yNext, zNext), s(xTopBetween, yTopBetween, zTopBetween), s(xNext, yNext, zNext)]) + '\n'
         #zNext = str(float(zNext) + 1)
 
-        #lines += str(id) + " QUAD 0;0 0;1; 1;1 1;0 " + " ".join([s(xCur, yCur, zCur), s(xTopBetween, yTopBetween, zTopBetween), s(xNext0, yNext0, zNext0), s(xTopBetween, yTopBetween, zTopBetween)]) + "\n"
+        #lines += str(id) + " QUAD 0;0 0;1; 1;1 1;0 " + " ".join([s(xCur, yCur, zCur), s(xTopBetween, yTopBetween, zTopBetween), s(xNext0, yNext0, zNext0), s(xTopBetween, yTopBetween, zTopBetween)]) + '\n'
         #fill = str(id + 1) + " QUAD 0;0 0;1; 1;1 1;0 " + " ".join([s(xBottomBetween, yBottomBetween, zBottomBetween), s(xTopBetween, yTopBetween, zTopBetween), s(xTopNextBetween, yTopNextBetween, zTopNextBetween), s(xTopBetween, yTopBetween, zTopBetween)])
         #lines += fill
         #zTopNextBetweenB = str(float(zTopNextBetweenB) + 1)
@@ -89,21 +89,21 @@ for topDownIndex in range(topDownNb // 2 - 1, topDownNb - 1):
         id += 2"""
         # don't bother with triangles by just displaying triangles like in Arma 3
         if topDownIndex != topDownNb - 1 or horizontalIndex != horizontalSides - 1:
-            lines += "\n"
+            lines += '\n'
         # don't do absorbing triangles !
 
 print(lines)
 
 f = open(path, 'w')
 
-f.write(texture + "\n")
+f.write(texture + '\n')
 
 """linesLen = len(lines)
 for linesIndex in range(linesLen):
     line = lines[linesIndex]
     f.write(line)
     if linesIndex != linesLen:
-        f.write("\n")"""
+        f.write('\n')"""
 
 f.write(lines)
 

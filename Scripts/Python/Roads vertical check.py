@@ -19,7 +19,7 @@ jGreatest = 0
 for linesIndex in range(linesLen):
     line = lines[linesIndex]
     lineHeaders = line.split('@')
-    lineType = lineHeaders[1].replace("\n", "")
+    lineType = lineHeaders[1].replace('\n', "")
     lineParts = lineHeaders[0].split()
     inc = 0.01
     newLine = ""
@@ -54,7 +54,7 @@ for linesIndex in range(linesLen):
     f.write(newLine + '@' + lineType) ## TODO: optimize with things like: .replace("0 ", "").replace(".0", "")
     if linesIndex < linesLen - 1:
         pass
-        f.write("\n") # also work with '\n' ? not a good idea in general if I remember well
+        f.write('\n') # also work with '\n' ? not a good idea in general if I remember well
 
 print(jGreatest)
 

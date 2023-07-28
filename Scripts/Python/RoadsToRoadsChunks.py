@@ -37,16 +37,16 @@ f = open("roadsChunks.txt", 'w')
 chunksLen = len(chunks)
 chunkIndex = 0
 for chunk in chunks:
-    f.write(chunk + "\n")
+    f.write(chunk + '\n')
     l = chunks[chunk]
     lLen = len(l)
     for lIndex in range(lLen):
         lEl = l[lIndex]
         f.write(lEl)
         if lIndex != lLen - 1:
-            f.write("\n")
+            f.write('\n')
     chunkIndex += 1
     if chunkIndex != chunksLen:
-        f.write("\n") # '\n' which language for having troubles ?
+        f.write('\n') # '\n' which language for having troubles ?
 
 f.close()

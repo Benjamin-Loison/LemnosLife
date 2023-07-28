@@ -370,7 +370,7 @@ for pointsIndex in range(pointsLen):
     point = points[pointsIndex]
     f.write(toString(point))
     if pointsIndex != pointsLen - 1:
-        f.write("\n") # still bug if use '\n' instead of "\n" ? or it is a C++ bug ?
+        f.write('\n') # still bug if use '\n' instead of '\n' ? or it is a C++ bug ?
 
 f.close()
 
@@ -394,7 +394,7 @@ for key in neighbors:
             neighborsStr += " "
     f.write(toString(key) + " " + neighborsStr)
     if keyIndex != neighborsLen - 1:
-        f.write("\n")
+        f.write('\n')
     keyIndex += 1
 
 f.close()
@@ -471,7 +471,7 @@ for key in links:
     if linkedLen > 1:
         f.write(' '.join(linked))
         if linksIndex != linksLen - 1:
-            f.write("\n") # why still having last empty line ?
+            f.write('\n') # why still having last empty line ?
     linksIndex += 1
 
 f.close()
@@ -510,7 +510,7 @@ for ptsIndex in range(ptsLen):
     f.write(pts[ptsIndex])
     if ptsIndex != ptsLen - 1:
         f.write(" ")
-f.write("\n")
+f.write('\n')
 
 def rep(line):
     for ptsIndex in range(ptsLen):
@@ -530,7 +530,7 @@ for linesIndex in range(linesLen):
         lineParts[linePartsIndex] = str(rev[linePart])
     f.write(' '.join(lineParts))
     if linesIndex != linesLen - 1: # not required for commented version
-        f.write("\n")
+        f.write('\n')
 
 f.close()
 

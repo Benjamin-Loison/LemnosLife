@@ -65,6 +65,6 @@ for structuresIndex in range(structuresLen):
     structure = [str(round(f, 2)).replace(".0", "") for f in structures[structuresIndex]]
     f.write(" ".join(structure))
     if structuresIndex < structuresLen - 1:
-        f.write("\n")
+        f.write('\n')
 
 f.close()

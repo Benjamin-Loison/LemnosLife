@@ -68,6 +68,6 @@ for facesIndex in range(faces):
     oldD = newD
     newD += d
     if facesIndex != faces - 1:
-        lines += "\n"
+        lines += '\n'
 
 print(lines)

@@ -101,7 +101,7 @@ if False:
         lon, lat = lonLatTab[nodeId]
         fT.write(str(nodeId) + " " + str(lon) + " " + str(lat))
         if i != ll -1:
-            fT.write("\n")
+            fT.write('\n')
         i += 1
     fT.close()
 
@@ -413,18 +413,18 @@ def write(strucId, x, y, angle, z = None, wholeMap = False):
             fLine = fLines[fLinesIndex]
             f.write(fLine)
             if fLinesIndex == subChkHeaderIndex:
-                #f.write(subChkHeader + "\n")
-                f.write(line + "\n")
+                #f.write(subChkHeader + '\n')
+                f.write(line + '\n')
     else:
         for fLinesIndex in range(fLinesLen): # could also do this in one line
             fLine = fLines[fLinesIndex]
             f.write(fLine)
         if fLinesLen != 0:
-            f.write("\n")
-        f.write(subChkHeader + "\n")
+            f.write('\n')
+        f.write(subChkHeader + '\n')
         f.write(line)
         #if fLines != []: # this doesn't make sens !
-        #    f.write("\n")
+        #    f.write('\n')
 
     f.close()
 
@@ -644,7 +644,7 @@ def getPicStr(pic):
         for x in range(picX):
             s += str(pic[y][x])
         if y != picY - 1:
-            s += "\n"
+            s += '\n'
     return s
 
 def printPic(pic):
@@ -930,7 +930,7 @@ for r, d, files in os.walk(buildingsSizedFolder):
         savePic(pixels, WSLPath(buildingsFolder + "OSM\\" + strucId + ".txt"))
         strucIdInt = int(strucId)
         #print(strucIdInt)
-        buildings[strucIdInt] = getPicStr(pixels).split("\n")
+        buildings[strucIdInt] = getPicStr(pixels).split('\n')
         #break
     buildingsAverageX /= filesLen
     buildingsAverageY /= filesLen
@@ -1068,7 +1068,7 @@ if True:
             buildingsTreated += 1
             nodes = getNodesFromLine(linesIndex)
             if justWriteNodesIdsAndPolygonFiles:
-                ffT.write(" ".join(nodes) + "\n")
+                ffT.write(" ".join(nodes) + '\n')
                 continue
             lonLat = [getLonLat(node) for node in nodes]
             coo = [getCoordinates(lon, lat) for lon, lat in lonLat]

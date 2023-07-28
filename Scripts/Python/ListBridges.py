@@ -32,7 +32,7 @@ for r, d, files in os.walk(path):
                 if linePartsSize == 2:
                     subChkX, subChkY = int(lineParts[0]), int(lineParts[1])
                 elif id in ["182", "548", "673", "808"]:
-                    toWrite += toCoo(lineParts[1], chkX, subChkX) + " " + toCoo(lineParts[2], chkY, subChkY) + "\n"
+                    toWrite += toCoo(lineParts[1], chkX, subChkX) + " " + toCoo(lineParts[2], chkY, subChkY) + '\n'
             f.close()
 
 toWrite = toWrite [:-1]
