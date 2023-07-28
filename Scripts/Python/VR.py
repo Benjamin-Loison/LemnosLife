@@ -17,19 +17,18 @@ all = [
 ]
 
 for l in all:
-    print(str(norm1(l)) + " " + str(norm2(l)))
+    print(str(norm1(l)) + ' ' + str(norm2(l)))
 
 ##
 
 import subprocess, os, time, math
 
-path = "C:\\Users\\Benjamin\\Desktop\\BensFolder\\DEV\\C and co\\C++\\Projects\\LemnosLife\\Client\\Mess\\"
+path = 'C:\\Users\\Benjamin\\Desktop\\BensFolder\\DEV\\C and co\\C++\\Projects\\LemnosLife\\Client\\Mess\\'
 
-cmd = "C:\\Users\\Benjamin\\Desktop\\platform-tools_r29.0.6-windows\\platform-tools\\adb.exe pull /sys/class/sensors/accelerometer_sensor/raw_data"
+cmd = 'C:\\Users\\Benjamin\\Desktop\\platform-tools_r29.0.6-windows\\platform-tools\\adb.exe pull /sys/class/sensors/accelerometer_sensor/raw_data'
 
 os.chdir(path)
 
-FNULL = open(os.devnull, 'w')
 
 initialTime = time.time()
 
@@ -57,16 +56,15 @@ def computeAngles(xyz):
     return phi, theta
 
 while True:
-    subprocess.call(cmd, stdout=FNULL, stderr=subprocess.STDOUT)
+    subprocess.check_call(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
-    f = open("raw_data")
-    data = f.readline()[:-1]
-    f.close()
+    with open('raw_data') as f:
+        data = f.readline()[:-1]
 
     currentTime = time.time()
     t = round(currentTime - initialTime, 2)
 
-    accelerometer = [int(composant) for composant in data.split(",")]
+    accelerometer = [int(composant) for composant in data.split(',')]
 
     if accelerometer != previousAccelerometer:
         print(t, i, accelerometer)
