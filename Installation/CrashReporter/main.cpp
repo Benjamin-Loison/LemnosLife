@@ -18,7 +18,7 @@
 using namespace std;
 
 // most code copied from client side
-string exec(const char* cmd), getDate(), uploadFile(string url, string fieldName, string filePath), getFileContentString(string path), getLastModifiedFile(string folder);
+string /*exec(const char* cmd),*/ getDate(), uploadFile(string url, string fieldName, string filePath), getFileContentString(string path), getLastModifiedFile(string folder);
 bool contains(string subject, string find), writeFile(string filePath, string option, string toWrite);
 void log(string toLog);
 
