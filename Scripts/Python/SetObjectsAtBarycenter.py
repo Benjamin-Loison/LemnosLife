@@ -42,13 +42,13 @@ for r, d, files in os.walk(path):
                     linePartPartsFloat = [float(linePartPart) for linePartPart in linePartParts]
                     x, y = linePartPartsFloat[0], linePartPartsFloat[1]
                     #barycenterX += linePartPartsFloat[0]
-                    if minX == None or x < minX:
+                    if minX is None or x < minX:
                         minX = x
-                    if minY == None or y < minY:
+                    if minY is None or y < minY:
                         minY = y
-                    if maxX == None or x > maxX:
+                    if maxX is None or x > maxX:
                         maxX = x
-                    if maxY == None or y > maxY:
+                    if maxY is None or y > maxY:
                         maxY = y
                     #barycenterY += linePartPartsFloat[1]
                     #barycenterLen += 1

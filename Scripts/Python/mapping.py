@@ -381,7 +381,7 @@ def write(strucId, x, y, angle, z = None, wholeMap = False):
     subChkX, subChkY = (x // SUB_CHK_SIZE) % SUB_CHK_PER_CHK, (y // SUB_CHK_SIZE) % SUB_CHK_PER_CHK
     #print(subChkX, strInt(subChkX), type(subChkX), type(strInt(subChkX)))
     subChkHeader = strInt(subChkX) + " " + strInt(subChkY)
-    if z == None:
+    if z is None:
         z = getGroundAltitude(x, y)
         if wholeMap and z <= 1:
             underWater += 1
@@ -809,13 +809,13 @@ def rotates(x, y, angle):
     points = [[x, 0], [x, y], [0, 0], [0, y]]
     for point in points:
         x, y = rotate(point, angleRad)
-        if xMax == None or x > xMax:
+        if xMax is None or x > xMax:
             xMax = x
-        if xMin == None or x < xMin:
+        if xMin is None or x < xMin:
             xMin = x
-        if yMax == None or y > yMax:
+        if yMax is None or y > yMax:
             yMax = y
-        if yMin == None or y < yMin:
+        if yMin is None or y < yMin:
             yMin = y
     #print(xMin, xMax, yMin, yMax)
     return math.ceil(xMax - xMin), math.ceil(yMax - yMin)
