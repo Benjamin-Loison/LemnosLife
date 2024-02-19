@@ -1,4 +1,4 @@
-# instead of online Geogebra lol
+# instead of online Geogebra
 
 import matplotlib.pyplot as plt
 

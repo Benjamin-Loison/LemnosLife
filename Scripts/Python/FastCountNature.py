@@ -20,7 +20,7 @@ for line in lines:
     if linePartsLen >= 3:
         count = int(lineParts[1])
         model = lineParts[2]
-        modelParts = model.split('\\') # used to be '/' lol
+        modelParts = model.split('\\') # used to be '/'
         modelPartsLen = len(modelParts)
         #print(line)
         if modelPartsLen > 1:

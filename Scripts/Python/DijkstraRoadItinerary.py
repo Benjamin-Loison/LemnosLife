@@ -207,7 +207,7 @@ print(len(points), len(pointsUnicity))
 
 segmentsUnicity = {} # unicity
 for segment in segments:
-    segmentsUnicity[str(segment)] = 0 # unhashable type: "list" love python lol
+    segmentsUnicity[str(segment)] = 0 # unhashable type: "list"
 print(len(segments), len(segmentsUnicity))
 
 def distance(point0, point1):
@@ -233,7 +233,7 @@ def findNearest(x, y, l):
 def find2Nearest(x, y):
     pts = points[:] # otherwise problem with pointer
     pointNearest = findNearest(x, y, pts)
-    pts.remove(pointNearest) # used to be [x, y] lol
+    pts.remove(pointNearest) # used to be [x, y]
     pointLessNear = findNearest(x, y, pts)
     return pointNearest, pointLessNear
 
@@ -265,11 +265,11 @@ for segments0Index in range(segmentsLen):
         if d > 2560000: # 1 600² (800 max length)
             continue
         intersection = collisionRoad(segment0, segment1) # used to be collision, find_intersection
-        if intersection != None: #[INFINITY, INFINITY]: # None is better than INFINITY lol
+        if intersection != None: #[INFINITY, INFINITY]: # None is better than INFINITY
             print("intersection: " + str(intersectionCounter))
             intersectionCounter += 1
             points += [intersection] # assume no intersection on already treated points (otherwise don't break the algorithm, sure ?) otherwise use addIfNotIn function
-            segments += [[intersection, segment0[0], 0, INFINITY], [intersection, segment0[1], 0, INFINITY], [intersection, segment1[0], 0, INFINITY], [intersection, segment1[1], 0, INFINITY]] # no intersection on intersection please god <3
+            segments += [[intersection, segment0[0], 0, INFINITY], [intersection, segment0[1], 0, INFINITY], [intersection, segment1[0], 0, INFINITY], [intersection, segment1[1], 0, INFINITY]] # no intersection on intersection
 
 # points: 41 972 -> 63 675 (delta = 21 703)
 # segments: 20 986 -> 107 798
@@ -546,4 +546,4 @@ f.close()
 # 0 1 1
 # 0 1
 
-# default technic doesn't pay the bill because indexes are written with approximatively the same numbers of characters than coordinates themselves lol 800 Kb -> 1 100 Kb (let's take this in order to be as near as possible from the internet code for Dijksta)
+# default technic doesn't pay the bill because indexes are written with approximatively the same numbers of characters than coordinates themselves 800 Kb -> 1 100 Kb (let's take this in order to be as near as possible from the internet code for Dijksta)

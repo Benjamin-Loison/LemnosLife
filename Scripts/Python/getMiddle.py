@@ -9,7 +9,7 @@ MIN_LON, MAX_LON = 25.0089582633, 25.4827062382
 MIN_Y, MAX_Y = 0, 30720
 MIN_LAT, MAX_LAT = 39.7155070496, 40.0959350219
 
-# don't need MAX_X/Y lol - ah si
+# don't need MAX_X/Y - we do
 
 def lon(x):
     return MIN_LON + ((x - MIN_X) / (MAX_X - MIN_X)) * (MAX_LON - MIN_LON)

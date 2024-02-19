@@ -177,7 +177,7 @@ class User
         Inventory* getInventoryPtr();
         OBB getOBB();
     private:
-        std::string m_username, m_ip, m_portStr, m_language, m_gangName, m_escorted, m_escorting, m_loading/*, m_huntingUsername*/, m_animation, m_inventoryStr; // could use a User pointer for huntingUser ? or circular build lol
+        std::string m_username, m_ip, m_portStr, m_language, m_gangName, m_escorted, m_escorting, m_loading/*, m_huntingUsername*/, m_animation, m_inventoryStr; // could use a User pointer for huntingUser ? or circular build
         View m_view, m_viewDeath;
         unsigned short m_userId, m_port, m_adminLevel, m_policeLevel, m_vipLevel, m_job, m_food, m_drink, m_health, m_regen, m_bleeding, m_breakBone;
         unsigned int m_tokens, m_disconnection, m_ridingVehicleId;

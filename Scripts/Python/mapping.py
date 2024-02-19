@@ -87,7 +87,7 @@ lonLatTab = {}
 for linesIndex in range(linesLen):
     line = lines[linesIndex]
     #needle = NODE_LOCATION
-    if NODE_LOCATION in line: # used to be needle lol
+    if NODE_LOCATION in line: # used to be needle
         nodeId = line.split(NODE_LOCATION)[1].split('"')[0]
         lon = float(line.split(LON_STR)[1].split('"')[0])
         lat = float(line.split(LAT_STR)[1].split('"')[0])
@@ -1135,7 +1135,7 @@ if True:
                 for yT in range(yDelta):
                     for xT in range(xDelta):
                         xAI = xMin + (xT / xDelta) * xD
-                        yAI = yMin + (yT / yDelta) * yD # used to be xDelta lol
+                        yAI = yMin + (yT / yDelta) * yD # used to be xDelta
                         #print(x, y, X, Y)
                         if isIn(xAI, yAI, X, Y): #x, y seems to overwrite on barycenter position otherwise
                             pic[yT][xT] = CST_T
