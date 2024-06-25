@@ -5,14 +5,14 @@
 To access the C++ client source code (1.1 MB), use in a terminal with [`git`](https://git-scm.com):
 
 ```
-git clone https://git:CPP_CLIENT_TOKEN@github.com/Benjamin-Loison/LemnosLife-Client.git
+git clone https://git:CPP_CLIENT_SOURCE_CODE_TOKEN@github.com/Benjamin-Loison/LemnosLife-Client.git
 ```
 
 You can also list and consult the issues by using respectively in a terminal with [`gh`](https://cli.github.com):
 
 > **_NOTE_**: To authenticate using `gh`:
 >
-> Run ` echo 'CPP_CLIENT_TOKEN' | gh auth login --with-token`
+> Run `echo 'CPP_CLIENT_SOURCE_CODE_TOKEN' | gh auth login --with-token`
 
 ```
 gh issue list
